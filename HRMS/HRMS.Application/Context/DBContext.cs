@@ -3,7 +3,7 @@ using HRMS.Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace HRMS.Domain
+namespace HRMS.Application
 {
 	public class DBContext : IdentityDbContext<AppUser>
 	{

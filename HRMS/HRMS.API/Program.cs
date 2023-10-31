@@ -1,7 +1,10 @@
+using HRMS.Application;
 using HRMS.Application.Context;
-using HRMS.Domain;
+using HRMS.Application.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
+string MyAllowSpecificOrigins = "m";
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +17,20 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<DBContext>(o=>o.UseSqlServer(builder.Configuration.GetConnectionString("DB")));
 builder.Services.AddIdentity<AppUser,IdentityRole>().AddEntityFrameworkStores<DBContext>();
+
+builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy(MyAllowSpecificOrigins,
+	builder =>
+	{
+		builder.AllowAnyOrigin();
+		builder.AllowAnyMethod();
+		builder.AllowAnyHeader();
+	});
+});
+
 
 var app = builder.Build();
 
@@ -28,6 +45,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.MapControllers();
 
