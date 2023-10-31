@@ -104,7 +104,14 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseCors(MyAllowSpecificOrigins);
+using (var serviceScope = app.Services.CreateScope())
+{
 
+    var dbContext = serviceScope.ServiceProvider.GetRequiredService<DBContext>();
+    var serviceProvider = serviceScope.ServiceProvider;
+    
+    SeedContext.Seed(dbContext, serviceProvider);
+}
 app.MapControllers();
 
 SeedDataBase.SeedAdminAndRoles(app).Wait();
