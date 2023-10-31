@@ -2,12 +2,16 @@ using HRMS.API;
 using HRMS.Application;
 using HRMS.Application.Services.UsereService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using HRMS.Application.Context;
+using HRMS.Application.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+
+string MyAllowSpecificOrigins = "m";
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,8 +53,6 @@ builder.Services.AddSwaggerGen(opt =>
 builder.Services.AddDbContext<DBContext>(o=>o.UseSqlServer(builder.Configuration.GetConnectionString("DB")));
 builder.Services.AddIdentity<AppUser,IdentityRole>().AddEntityFrameworkStores<DBContext>();
 
-builder.Services.AddScoped<IUserService, UserService>();
-
 builder.Services.AddAuthentication(options =>
 	{
 		options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -73,6 +75,20 @@ builder.Services.AddAuthentication(options =>
         }; 
 });
 
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy(MyAllowSpecificOrigins,
+	builder =>
+	{
+		builder.AllowAnyOrigin();
+		builder.AllowAnyMethod();
+		builder.AllowAnyHeader();
+	});
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -86,6 +102,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.MapControllers();
 

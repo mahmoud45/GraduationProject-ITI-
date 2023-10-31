@@ -1,4 +1,4 @@
-﻿using HRMS.Domain.Base;
+using HRMS.Domain.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -20,7 +20,7 @@ namespace HRMS.Domain.Models
 		public virtual Employee? Employee { get; set; }
 
 		[ForeignKey("SeasonalVacation")]
-		public int SeasonalVacationID { get; set; }
+		public int? SeasonalVacationID { get; set; }
 		public virtual SeasonalVacation? SeasonalVacation { get; set; }
 
 	}
