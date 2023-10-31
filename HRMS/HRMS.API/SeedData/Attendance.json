@@ -1,0 +1,30 @@
+[
+
+    {
+        "ArrivalTime": "0000-00-00 09:00:00",
+        "DepartureTime": "0000-00-00 17:00:00",
+        "AttendaceDate": "2023-10-10 00:00:00",
+        "EmpID": "1"
+        
+    },
+
+    {
+        "ArrivalTime": "0000-00-00 09:00:00",
+        "DepartureTime": "0000-00-00 17:00:00",
+        "AttendaceDate": "2023-10-10 00:00:00",
+        "EmpID": "2"
+
+
+    },
+    {
+        "ArrivalTime": "0000-00-00 09:00:00",
+        "DepartureTime": "0000-00-00 17:00:00",
+        "AttendaceDate": "2023-10-10 00:00:00",
+        "EmpID": "3"
+     
+    }
+
+
+
+
+]
