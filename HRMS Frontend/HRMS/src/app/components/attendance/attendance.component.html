@@ -1,0 +1,167 @@
+<main class="container">
+  <h2 class="text-center py-5">Report of Attendance</h2>
+  <section class="row">
+    <form [formGroup]="SearchForm">
+      <section class="col-lg-8 col-sm-10 offset-sm-1 offset-md-2">
+        <input
+          class="form-control px-4 py-2"
+          type="text"
+          placeholder="Search by Employee or department name"
+          formControlName="name"
+        />
+      </section>
+      <section class="row my-3">
+        <section class="col-md-4 offset-md-2 col-sm-12">
+          <label for="dateF" class="form-label col-md-3 col-sm-3">From :</label>
+          <input
+            type="date"
+            class="form-control col-md-9 col-sm-9 rounded-2 px-2 py-1 border-1 border-primary"
+            id="dateF"
+            formControlName="dateF"
+          />
+        </section>
+        <section class="col-md-4">
+          <section>
+            <label for="dateT" class="form-label col-md-3 col-sm-12"
+              >To :</label
+            >
+            <input
+              type="date"
+              class="form-control col-md-9 col-sm-10 rounded-2 px-2 py-1 border-1 border-primary"
+              id="dateT"
+              formControlName="dateT"
+            />
+          </section>
+        </section>
+        <section class="offset-md-2">
+          <small
+            [hidden]="FormValidationState"
+            *ngIf="SearchForm?.errors?.['checkDate']"
+            class="fs-6 text-danger alert-warning"
+            >(To date) can't be previous than (From Date)</small
+          >
+        </section>
+        <section class="offset-md-2">
+          <small
+            [hidden]="FormValidationState"
+            *ngIf="SearchForm?.errors?.['EmptyForm'] && SearchForm?.touched"
+            class="fs-6 text-danger alert-warning"
+            >Form Can't be Empty</small
+          >
+        </section>
+        <section class="offset-md-2">
+          <small
+            [hidden]="!FormValidationState"
+            class="fs-6 text-danger alert-warning"
+            >Enter Valid Data to Form</small
+          >
+        </section>
+      </section>
+      <section>
+        <button
+          type="button"
+          class="btn btn-outline-primary offset-md-5 col-lg-2"
+          (click)="getData()"
+        >
+          Search
+        </button>
+      </section>
+    </form>
+  </section>
+  <section class="m-md-3 row">
+    <table class="table table-light table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Department</th>
+          <th scope="col">Employee</th>
+          <th scope="col">Arrival Time</th>
+          <th scope="col">Departure Time</th>
+          <th scope="col">Attendance Date</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let x of DataModel; let i = index">
+        <tr>
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ x.dept_Name }}</td>
+          <td>{{ x.emp_Name }}</td>
+          <td>{{ x.arrivalTime | date : "shortTime" }}</td>
+          <td>{{ x.departureTime | date : "shortTime" }}</td>
+          <td>{{ x.attendaceDate | date }}</td>
+          <td>
+            <i
+              (click)="addAttendance(x.emp_ID, x.emp_Name)"
+              data-bs-toggle="modal"
+              data-bs-target="#AttendanceForm"
+              class="fs-5 bi bi-plus-circle-fill text-primary"
+            ></i>
+            <i
+              (click)="deleteAttendance(x.id)"
+              class="fs-5 bi bi-calendar-x-fill mx-2 text-danger"
+            ></i>
+            <i
+              data-bs-toggle="modal"
+              data-bs-target="#AttendanceForm"
+              (click)="editAttendance(x)"
+              class="fs-5 bi bi-pencil-square text-warning"
+            ></i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <div
+    class="modal fade"
+    id="AttendanceForm"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="AttendanceForm"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="AttendanceForm">
+            {{ AttendanceModel.emp_Name }}
+          </h5>
+          <button
+            type="button"
+            class="btn btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <section>
+            <input
+              type="time"
+              class="form-control"
+              [value]="setArrivalTime()"
+            />
+            <input
+              type="time"
+              class="form-control"
+              [value]="setDepartureTime()"
+            />
+            <input
+              type="time"
+              class="form-control"
+              [value]="setAttendanceDate()"
+            />
+          </section>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
