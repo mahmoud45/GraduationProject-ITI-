@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
-namespace HRMS.Application.Context
+namespace HRMS.Application
 {
 	public class AppUser : IdentityUser
 	{
