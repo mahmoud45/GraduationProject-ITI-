@@ -16,7 +16,7 @@ export class LoginAPIService {
     return this.http.get("https://localhost:7073/search/"+emp_name)
   }
   addAttendance(DTOModel:IAttendanceModel):any{
-    return this.http.post("",DTOModel)
+    return this.http.post("https://localhost:7073/api/Attendance",DTOModel)
   }
   editAttendance(DTOModel:IAttendanceModel):any{
     return this.http.put("",DTOModel)

@@ -14,6 +14,11 @@ export class AttendanceComponent  {
 
   FormValidationState:boolean=false;
   SearchForm: FormGroup;
+  attendanceForm=new FormGroup({
+    arrivalTime: new FormControl("",Validators.required),
+    departureTime: new FormControl("",Validators.required),
+    attendanceDate: new FormControl("",Validators.required)
+  });
 
   DataModel:IAttendanceModel[]=[];
   AttendanceModel:IAttendanceModel=this.initializeAttendanceModel();
@@ -28,6 +33,14 @@ export class AttendanceComponent  {
     });
   }
   
+  getDataSubmit(e:Event){
+    e.preventDefault()
+    if(this.SearchForm.invalid)
+      return;
+    console.log("hello");
+    
+    this.getData()
+  }
   getData(){
     if(this.SearchForm.invalid){
       this.FormValidationState = true;
@@ -63,15 +76,7 @@ export class AttendanceComponent  {
     }
 
   }
-  // validateForm(){
-  //   if(!this.SearchForm.get("name")?.value &&
-  //      !this.SearchForm.get("dateF")?.value || !this.SearchForm.get("dateT")?.value)
-  //     {
-  //       this.FormValidationState=true; 
-  //       return;
-  //     }
-  //     this.FormValidationState=false; 
-  // }
+
   filterDataByDate(){
     const data:IAttendanceModel[] = this.DataModel;
     this.DataModel=[];
@@ -93,8 +98,9 @@ export class AttendanceComponent  {
   }
 
 
-  editAttendance(DTOModel:IAttendanceModel){}
-  deleteAttendance(attendanceID:number){
+  editAttendance(DTOModel:IAttendanceModel){
+  }
+  deleteAttendance(attendanceID:any){
     const userConfirmed = window.confirm('Do you really want to delete this?');
 
     if (userConfirmed) {
@@ -124,13 +130,44 @@ export class AttendanceComponent  {
       attendaceDate: new Date()
     }
   }
-  setArrivalTime():Date|null{
-    return this.AttendanceModel.id==0?null:this.AttendanceModel.arrivalTime;
+  setArrivalTime():string|null{
+    return this.AttendanceModel.id==0?null:this.AttendanceModel.arrivalTime.toTimeString();
   }
-  setDepartureTime():Date|null{
-    return this.AttendanceModel.id==0?null:this.AttendanceModel.departureTime;
+  setDepartureTime():string|null{
+    return this.AttendanceModel.id==0?null:this.AttendanceModel.departureTime.toTimeString();
   }
   setAttendanceDate():Date|null{
     return this.AttendanceModel.id==0?null:this.AttendanceModel.attendaceDate;
+  }
+  attendanceModelFormFunction(e:Event){
+
+    e.preventDefault()
+
+    if(this.attendanceForm.invalid)
+      return;
+
+    this.AttendanceModel.arrivalTime = this.convertTimeToDate(this.attendanceForm.get('arrivalTime')?.value); 
+    this.AttendanceModel.departureTime = this.convertTimeToDate(this.attendanceForm.get('departureTime')?.value)
+    let date:any = this.attendanceForm.get('attendanceDate')?.value;
+    this.AttendanceModel.attendaceDate = new Date(date);
+
+    console.log(this.AttendanceModel);
+    this.AttendanceModel.id=null;
+    if (this.AttendanceModel.dept_Name === "") {
+      this.api.addAttendance(this.AttendanceModel).subscribe({
+        next:()=>{},
+        error:()=>{
+          console.log("post error");
+        },
+        complete:()=>{
+        }
+      });
+    }
+  }
+  convertTimeToDate(time:any):Date{
+    let date:Date=new Date();
+    date.setHours(parseInt(time?.split(":")[0]));
+    date.setMinutes(parseInt(time.split(":")[1]));
+    return date;
   }
 }

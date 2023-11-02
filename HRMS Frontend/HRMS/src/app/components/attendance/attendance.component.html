@@ -1,7 +1,7 @@
 <main class="container">
   <h2 class="text-center py-5">Report of Attendance</h2>
   <section class="row">
-    <form [formGroup]="SearchForm">
+    <form [formGroup]="SearchForm" (submit)="getDataSubmit($event)">
       <section class="col-lg-8 col-sm-10 offset-sm-1 offset-md-2">
         <input
           class="form-control px-4 py-2"
@@ -59,9 +59,8 @@
       </section>
       <section>
         <button
-          type="button"
+          type="submit"
           class="btn btn-outline-primary offset-md-5 col-lg-2"
-          (click)="getData()"
         >
           Search
         </button>
@@ -122,9 +121,9 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="AttendanceForm">
+          <h3 class="modal-title" id="AttendanceForm">
             {{ AttendanceModel.emp_Name }}
-          </h5>
+          </h3>
           <button
             type="button"
             class="btn btn-close"
@@ -133,23 +132,58 @@
           ></button>
         </div>
         <div class="modal-body">
-          <section>
+          <form
+            [formGroup]="attendanceForm"
+            (submit)="attendanceModelFormFunction($event)"
+          >
             <input
               type="time"
               class="form-control"
               [value]="setArrivalTime()"
+              formControlName="arrivalTime"
             />
+            <small
+              class="text-danger"
+              *ngIf="
+                attendanceForm.get('arrivalTime')?.hasError('required') &&
+                attendanceForm.get('arrivalTime')?.touched
+              "
+              >arrival time is required</small
+            >
             <input
               type="time"
               class="form-control"
               [value]="setDepartureTime()"
+              formControlName="departureTime"
             />
+            <small
+              class="text-danger"
+              *ngIf="
+                attendanceForm.get('departureTime')?.hasError('required') &&
+                attendanceForm.get('departureTime')?.touched
+              "
+              >departure time is required</small
+            >
             <input
-              type="time"
+              type="date"
               class="form-control"
               [value]="setAttendanceDate()"
+              formControlName="attendanceDate"
             />
-          </section>
+            <small
+              class="text-danger"
+              *ngIf="
+                attendanceForm.get('attendanceDate')?.hasError('required') &&
+                attendanceForm.get('attendanceDate')?.touched
+              "
+              >attendance date is required</small
+            >
+            <input
+              type="submit"
+              class="btn btn-primary form-control"
+              (submit)="attendanceModelFormFunction($event)"
+            />
+          </form>
         </div>
         <div class="modal-footer">
           <button
@@ -159,7 +193,6 @@
           >
             Close
           </button>
-          <button type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>
