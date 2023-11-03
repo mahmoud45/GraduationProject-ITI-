@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using HRMS.Application.Repository.SalaryRepository;
 
 string MyAllowSpecificOrigins = "m";
 
@@ -74,10 +75,12 @@ builder.Services.AddAuthentication(options =>
 			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
         }; 
 });
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.Load("HRMS.Application")));
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
-
+builder.Services.AddScoped<ISalaryRepository,SalaryRepository>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy(MyAllowSpecificOrigins,
@@ -105,7 +108,15 @@ app.UseCors(MyAllowSpecificOrigins);
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseCors(MyAllowSpecificOrigins);
+using (var serviceScope = app.Services.CreateScope())
+{
 
+    var dbContext = serviceScope.ServiceProvider.GetRequiredService<DBContext>();
+    var serviceProvider = serviceScope.ServiceProvider;
+    
+    SeedContext.Seed(dbContext, serviceProvider);
+}
 app.MapControllers();
 
 SeedDataBase.SeedAdminAndRoles(app).Wait();

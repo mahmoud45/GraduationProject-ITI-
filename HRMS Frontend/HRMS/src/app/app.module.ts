@@ -8,12 +8,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { SalaryComponent } from './components/salary/salary.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    AttendanceComponent
+    AttendanceComponent,
+    SalaryComponent
   ],
   imports: [
     BrowserModule,
