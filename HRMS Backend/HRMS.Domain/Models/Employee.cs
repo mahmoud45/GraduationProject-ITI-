@@ -27,7 +27,7 @@ namespace HRMS.Domain.Models
         public bool IsDeleted { get; set; }
 
 		[ForeignKey("Department")]
-        public int DepartID { get; set; }
+        public int? DepartID { get; set; }
         public virtual Department? Department { get; set; }
 		[ForeignKey("SpecialSettings")]
 		public int? SpecialSetting { get; set; }

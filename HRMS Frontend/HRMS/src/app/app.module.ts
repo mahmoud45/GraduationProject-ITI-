@@ -12,6 +12,7 @@ import { HomeComponent } from './components/home/home.component';
 import { JwtModule } from '@auth0/angular-jwt';
 import { RegisterComponent } from './components/user/register/register.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { SalaryComponent } from './components/salary/salary.component';
 
 export function tokenGetter() {
     return localStorage.getItem("access_token");
@@ -24,7 +25,8 @@ declarations: [
         AttendanceComponent,
         HomeComponent,
         RegisterComponent,
-        NavbarComponent
+        NavbarComponent,
+        SalaryComponent
     ],
 imports: [
         BrowserModule,
@@ -42,5 +44,6 @@ imports: [
     ],
 providers: [],
 bootstrap: [AppComponent]
+
 })
 export class AppModule { }

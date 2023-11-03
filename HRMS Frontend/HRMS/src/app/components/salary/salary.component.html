@@ -1,0 +1,146 @@
+
+<main class="container" >
+
+  <h2 class="text-center py-5">Salary Report</h2>
+
+                               <!-- Search -->
+  <section class="row">
+    <form >
+      <section class="col-lg-8 col-sm-10 offset-sm-1 offset-md-2">
+        <input
+          class="form-control px-4 py-2"
+          type="text"
+          placeholder="Search by Employee or Department name"
+          formControlName="name"
+        />
+      </section>
+
+
+      <section class="row my-3">
+        <section class="col-md-4 offset-md-2 col-sm-12">
+          <label for="month" class="form-label col-md-3 col-sm-3">Month</label>
+          <select
+          class="form-select col-md-9 col-sm-9 rounded-2 px-2 py-1 border-1 border-primary"
+          id="month"
+          formControlName="month"
+
+        >
+          <option value="01">January</option>
+          <option value="02">February</option>
+          <option value="03">March</option>
+          <option value="04">April</option>
+          <option value="05">May</option>
+          <option value="06">June</option>
+          <option value="07">July</option>
+          <option value="08">August</option>
+          <option value="09">September</option>
+          <option value="10">October</option>
+          <option value="11">November</option>
+          <option value="12">December</option>
+        </select>
+        </section>
+
+
+        <section class="col-md-4">
+          <section>
+            <label for="dateT" class="form-label col-md-3 col-sm-12"
+              >Year :</label
+            >
+            <select
+      class="form-select col-md-9 col-sm-10 rounded-2 px-2 py-1 border-1 border-primary"
+      id="year"
+      formControlName="year"
+    >
+      <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+    </select>
+          </section>
+        </section>
+
+        <section class="offset-md-2">
+          <!-- <small
+            [hidden]="FormValidationState"
+            *ngIf="SearchForm?.errors?.['checkDate']"
+            class="fs-6 text-danger alert-warning"
+            >(To date) can't be previous than (From Date)</small
+          > -->
+        </section>
+        <section class="offset-md-2">
+          <!-- <small
+            [hidden]="FormValidationState"
+            *ngIf="SearchForm?.errors?.['EmptyForm'] && SearchForm?.touched"
+            class="fs-6 text-danger alert-warning"
+            >Form Can't be Empty</small
+          > -->
+        </section>
+        <section class="offset-md-2">
+          <!-- <small
+            [hidden]="!FormValidationState"
+            class="fs-6 text-danger alert-warning"
+            >Enter Valid Data to Form</small
+          > -->
+        </section>
+      </section>
+      <section>
+        <button
+          type="button"
+          class="btn btn-outline-primary offset-md-5 col-lg-2"
+
+        >
+          Search
+        </button>
+      </section>
+    </form>
+  </section>
+
+                               <!-- table -->
+
+ <section class="m-md-3 row">
+    <table class="table table-light table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Employee</th>
+          <th scope="col">Department</th>
+          <th scope="col">Salary</th>
+          <th scope="col">Attendance Days</th>
+          <th scope="col">Absence Days</th>
+          <th scope="col">Bonus in Hours</th>
+          <th scope="col">penalty in Hours</th>
+          <th scope="col">Total Bonus</th>
+          <th scope="col">Total penalty</th>
+          <th scope="col">Total salary</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <!-- <tbody *ngFor="let x of DataModel; let i = index">
+        <tr>
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ x.dept_Name }}</td>
+          <td>{{ x.emp_Name }}</td>
+          <td>{{ x.arrivalTime | date : "shortTime" }}</td>
+          <td>{{ x.departureTime | date : "shortTime" }}</td>
+          <td>{{ x.attendaceDate | date }}</td>
+          <td>
+            <i
+              (click)="addAttendance(x.emp_ID, x.emp_Name)"
+              data-bs-toggle="modal"
+              data-bs-target="#AttendanceForm"
+              class="fs-5 bi bi-plus-circle-fill text-primary"
+            ></i>
+            <i
+              (click)="deleteAttendance(x.id)"
+              class="fs-5 bi bi-calendar-x-fill mx-2 text-danger"
+            ></i>
+            <i
+              data-bs-toggle="modal"
+              data-bs-target="#AttendanceForm"
+              (click)="editAttendance(x)"
+              class="fs-5 bi bi-pencil-square text-warning"
+            ></i>
+          </td>
+        </tr>
+      </tbody> -->
+    </table>
+  </section>
+
+</main>
