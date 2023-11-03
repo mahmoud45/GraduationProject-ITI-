@@ -1,6 +1,7 @@
 ﻿using HRMS.Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace HRMS.Application
 {
@@ -22,9 +23,12 @@ namespace HRMS.Application
 		public DbSet<SeasonalVacation> SeasonalVacations { get; set; }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+
 		{
-			optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=HRMS;Trusted_Connection=True;TrustServerCertificate=True;");
-		}
+
+            optionsBuilder.UseSqlServer("Server=DESKTOP-IO8UVS4\\SQLEXPRESS;Database=HRMS;Trusted_Connection=True;TrustServerCertificate=True;");
+
+        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
