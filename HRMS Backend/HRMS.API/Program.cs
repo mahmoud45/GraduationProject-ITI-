@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using HRMS.Application.Repository.SalaryRepository;
 
 string MyAllowSpecificOrigins = "m";
 
@@ -74,10 +75,12 @@ builder.Services.AddAuthentication(options =>
 			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
         }; 
 });
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.Load("HRMS.Application")));
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
-
+builder.Services.AddScoped<ISalaryRepository,SalaryRepository>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy(MyAllowSpecificOrigins,
