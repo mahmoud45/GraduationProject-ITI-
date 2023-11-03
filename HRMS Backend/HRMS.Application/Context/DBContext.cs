@@ -26,9 +26,8 @@ namespace HRMS.Application
 
 		{
 
-            optionsBuilder.UseSqlServer("Server=DESKTOP-IO8UVS4\\SQLEXPRESS;Database=HRMS;Trusted_Connection=True;TrustServerCertificate=True;");
-
-        }
+			optionsBuilder.UseSqlServer("Server=.;Database=HRMS;Trusted_Connection=True;TrustServerCertificate=True;");
+		}
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
