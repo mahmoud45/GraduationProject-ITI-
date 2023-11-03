@@ -37,8 +37,8 @@ imports: [
         JwtModule.forRoot({
             config: {
                 tokenGetter: tokenGetter,
-                allowedDomains: ["example.com"],
-                disallowedRoutes: ["http://example.com/examplebadroute/"],
+                allowedDomains: ['*'],
+                disallowedRoutes: [],
             },
         }),
     ],
