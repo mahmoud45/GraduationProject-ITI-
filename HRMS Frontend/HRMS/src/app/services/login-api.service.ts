@@ -19,7 +19,7 @@ export class LoginAPIService {
     return this.http.post("https://localhost:7073/api/Attendance",DTOModel)
   }
   editAttendance(DTOModel:IAttendanceModel):any{
-    return this.http.put("",DTOModel)
+    return this.http.put("https://localhost:7073/api/Attendance",DTOModel)
   }
   deleteAttendance(id:number):any{
     return this.http.delete("https://localhost:7073/api/Attendance?id="+id)

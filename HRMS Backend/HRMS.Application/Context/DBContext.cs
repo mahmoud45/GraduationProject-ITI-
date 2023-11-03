@@ -23,7 +23,7 @@ namespace HRMS.Application
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=HRMS;Trusted_Connection=True;TrustServerCertificate=True;");
+			optionsBuilder.UseSqlServer("Server=MOSTAFAMAGED\\SQLEXPRESS;Database=HRMS;Trusted_Connection=True;TrustServerCertificate=True;");
 		}
 
         protected override void OnModelCreating(ModelBuilder builder)

@@ -87,7 +87,7 @@
           <td>{{ x.emp_Name }}</td>
           <td>{{ x.arrivalTime | date : "shortTime" }}</td>
           <td>{{ x.departureTime | date : "shortTime" }}</td>
-          <td>{{ x.attendaceDate | date }}</td>
+          <td>{{ x.attendanceDate | date }}</td>
           <td>
             <i
               (click)="addAttendance(x.emp_ID, x.emp_Name)"
@@ -139,7 +139,6 @@
             <input
               type="time"
               class="form-control"
-              [value]="setArrivalTime()"
               formControlName="arrivalTime"
             />
             <small
@@ -153,7 +152,6 @@
             <input
               type="time"
               class="form-control"
-              [value]="setDepartureTime()"
               formControlName="departureTime"
             />
             <small
@@ -167,7 +165,6 @@
             <input
               type="date"
               class="form-control"
-              [value]="setAttendanceDate()"
               formControlName="attendanceDate"
             />
             <small
@@ -181,7 +178,7 @@
             <input
               type="submit"
               class="btn btn-primary form-control"
-              (submit)="attendanceModelFormFunction($event)"
+              data-bs-dismiss="modal"
             />
           </form>
         </div>

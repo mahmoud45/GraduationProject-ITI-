@@ -53,6 +53,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DBContext>(o=>o.UseSqlServer(builder.Configuration.GetConnectionString("DB")));
 builder.Services.AddIdentity<AppUser,IdentityRole>().AddEntityFrameworkStores<DBContext>();
 
+builder.Services.AddScoped(typeof(IGenaricrepository<>), typeof(GenaricRepository<>));
 //builder.Services.AddAuthentication(options =>
 //	{
 //		options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

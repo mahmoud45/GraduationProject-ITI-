@@ -5,5 +5,5 @@ export interface IAttendanceModel {
     dept_Name: string,
     arrivalTime: Date,
     departureTime: Date,
-    attendaceDate: Date
+    attendanceDate: Date
 }

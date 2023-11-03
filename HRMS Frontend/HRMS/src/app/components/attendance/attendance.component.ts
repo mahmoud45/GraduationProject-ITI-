@@ -37,11 +37,11 @@ export class AttendanceComponent  {
     e.preventDefault()
     if(this.SearchForm.invalid)
       return;
-    console.log("hello");
     
     this.getData()
   }
   getData(){
+
     if(this.SearchForm.invalid){
       this.FormValidationState = true;
       return;
@@ -74,16 +74,15 @@ export class AttendanceComponent  {
         }
       });
     }
-
   }
 
   filterDataByDate(){
     const data:IAttendanceModel[] = this.DataModel;
     this.DataModel=[];
     for (const key of data) {
-      if (new Date(key.attendaceDate).toISOString().split('T')[0]
+      if (new Date(key.attendanceDate).toISOString().split('T')[0]
       >=new Date(this.SearchForm.get("dateF")?.value).toISOString().split('T')[0]
-      && new Date(key.attendaceDate).toISOString().split('T')[0]
+      && new Date(key.attendanceDate).toISOString().split('T')[0]
       <=new Date(this.SearchForm.get("dateT")?.value).toISOString().split('T')[0]) 
       {
         this.DataModel.push(key)
@@ -93,18 +92,29 @@ export class AttendanceComponent  {
   addAttendance(emp_ID:number,emp_name:string){
     this.AttendanceModel=this.initializeAttendanceModel();
 
+    this.attendanceForm.get("arrivalTime")?.setValue("");
+    this.attendanceForm.get("departureTime")?.setValue("");
+    this.attendanceForm.get("attendanceDate")?.setValue("");
+
     this.AttendanceModel.emp_ID=emp_ID;
     this.AttendanceModel.emp_Name=emp_name;
   }
 
 
   editAttendance(DTOModel:IAttendanceModel){
+    this.AttendanceModel=DTOModel;
+
+    let arrivalTime:String=this.AttendanceModel.arrivalTime.toString().split('T')[1];
+    let departureTime:String=this.AttendanceModel.departureTime.toString().split('T')[1];
+
+    this.attendanceForm.get("arrivalTime")?.setValue(arrivalTime.substring(0,arrivalTime.lastIndexOf(':')));
+    this.attendanceForm.get("departureTime")?.setValue(departureTime.substring(0,departureTime.lastIndexOf(':')));
+    this.attendanceForm.get("attendanceDate")?.setValue(this.AttendanceModel.attendanceDate.toString().split('T')[0]);
   }
   deleteAttendance(attendanceID:any){
     const userConfirmed = window.confirm('Do you really want to delete this?');
 
     if (userConfirmed) {
-      this.api.deleteAttendance(attendanceID)
       this.api.deleteAttendance(attendanceID).subscribe({
         next:(response:any)=>{       
         },
@@ -127,18 +137,10 @@ export class AttendanceComponent  {
       dept_Name: "",
       arrivalTime: new Date(),
       departureTime: new Date(),
-      attendaceDate: new Date()
+      attendanceDate: new Date()
     }
   }
-  setArrivalTime():string|null{
-    return this.AttendanceModel.id==0?null:this.AttendanceModel.arrivalTime.toTimeString();
-  }
-  setDepartureTime():string|null{
-    return this.AttendanceModel.id==0?null:this.AttendanceModel.departureTime.toTimeString();
-  }
-  setAttendanceDate():Date|null{
-    return this.AttendanceModel.id==0?null:this.AttendanceModel.attendaceDate;
-  }
+
   attendanceModelFormFunction(e:Event){
 
     e.preventDefault()
@@ -149,25 +151,38 @@ export class AttendanceComponent  {
     this.AttendanceModel.arrivalTime = this.convertTimeToDate(this.attendanceForm.get('arrivalTime')?.value); 
     this.AttendanceModel.departureTime = this.convertTimeToDate(this.attendanceForm.get('departureTime')?.value)
     let date:any = this.attendanceForm.get('attendanceDate')?.value;
-    this.AttendanceModel.attendaceDate = new Date(date);
+    this.AttendanceModel.attendanceDate = new Date(date);
 
-    console.log(this.AttendanceModel);
-    this.AttendanceModel.id=null;
-    if (this.AttendanceModel.dept_Name === "") {
+    if (!this.AttendanceModel.dept_Name ) {
+      this.AttendanceModel.id=null;
       this.api.addAttendance(this.AttendanceModel).subscribe({
         next:()=>{},
         error:()=>{
-          console.log("post error");
+          window.alert("error in adding")
         },
         complete:()=>{
+          window.alert("successfully added")
+          this.getData()
+        }
+      });
+    }
+    else {
+      this.api.editAttendance(this.AttendanceModel).subscribe({
+        next:()=>{},
+        error:()=>{
+          window.alert("error in updating")
+        },
+        complete:()=>{
+          window.alert("successfully updated")
+          this.getData()
         }
       });
     }
   }
   convertTimeToDate(time:any):Date{
     let date:Date=new Date();
-    date.setHours(parseInt(time?.split(":")[0]));
-    date.setMinutes(parseInt(time.split(":")[1]));
+    date.setUTCHours(parseInt(time?.split(":")[0]));
+    date.setUTCMinutes(parseInt(time.split(":")[1]));
     return date;
   }
 }
