@@ -62,8 +62,7 @@ namespace HRMS.Application.Services.SalaryServices.Queries.GetSalaries
                         }
                     }
                     penalityHours += mappedObjs[i].Absence * 8;
-                    //mappedObjs[i].SpecialSettingsBouns = bounsHours;
-                    //mappedObjs[i].SpecialSettingsPenality = penalityHours;
+                    
                     mappedObjs[i].TotalBouns += bounsHours * mappedObjs[i].SpecialSettingsBonus;
                     mappedObjs[i].TotalPenality += penalityHours * mappedObjs[i].SpecialSettingsPenality;
                     mappedObjs[i].TotalSalary += (mappedObjs[i].Salary + mappedObjs[i].TotalBouns) - mappedObjs[i].TotalPenality;

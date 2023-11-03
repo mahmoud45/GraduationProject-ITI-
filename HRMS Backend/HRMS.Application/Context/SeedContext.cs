@@ -76,11 +76,11 @@ namespace HRMS.Application.Context
                 string attendanceAsJson = File.ReadAllText(@"SeedData" + Path.DirectorySeparatorChar + "Attendance.json");
                 List<Attendance> attendance = JsonConvert.DeserializeObject<List<Attendance>>(attendanceAsJson);
                 var emp = context.Employees.FirstOrDefault().Id;
-
+               
                 //foreach (var item in attendance)
                 //{
                 //    item.EmpID = emp ?? 1; 
-
+                    
                 //}
 
                 context.Attendances.AddRange(attendance);
