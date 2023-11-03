@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using HRMS.Application.Repository.SalaryRepository;
 
 string MyAllowSpecificOrigins = "m";
 
@@ -54,31 +55,34 @@ builder.Services.AddDbContext<DBContext>(o=>o.UseSqlServer(builder.Configuration
 builder.Services.AddIdentity<AppUser,IdentityRole>().AddEntityFrameworkStores<DBContext>();
 
 builder.Services.AddScoped(typeof(IGenaricrepository<>), typeof(GenaricRepository<>));
-//builder.Services.AddAuthentication(options =>
-//	{
-//		options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//		options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//		options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 
-//	}).AddJwtBearer(options => {
-//		options.SaveToken = true;
-//		options.RequireHttpsMetadata = false;
-//		options.TokenValidationParameters = new TokenValidationParameters()
-//		{
-//			ValidateIssuer = true,
-//			ValidIssuer = builder.Configuration["JWT:Issuer"],
+builder.Services.AddAuthentication(options =>
+	{
+		options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+		options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+		options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 
-//			ValidateAudience = true,
-//			ValidAudience = builder.Configuration["JWT:Audience"],
+	}).AddJwtBearer(options => {
+		options.SaveToken = true;
+		options.RequireHttpsMetadata = false;
+		options.TokenValidationParameters = new TokenValidationParameters()
+		{
+			ValidateIssuer = true,
+			ValidIssuer = builder.Configuration["JWT:Issuer"],
 
-//			ValidateIssuerSigningKey = true,
-//			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
-//        }; 
-//});
+			ValidateAudience = true,
+			ValidAudience = builder.Configuration["JWT:Audience"],
+
+			ValidateIssuerSigningKey = true,
+			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
+        }; 
+});
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.Load("HRMS.Application")));
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
-
+builder.Services.AddScoped<ISalaryRepository,SalaryRepository>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy(MyAllowSpecificOrigins,
@@ -106,6 +110,15 @@ app.UseCors(MyAllowSpecificOrigins);
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseCors(MyAllowSpecificOrigins);
+using (var serviceScope = app.Services.CreateScope())
+{
+
+    var dbContext = serviceScope.ServiceProvider.GetRequiredService<DBContext>();
+    var serviceProvider = serviceScope.ServiceProvider;
+    
+    SeedContext.Seed(dbContext, serviceProvider);
+}
 app.MapControllers();
 
 SeedDataBase.SeedAdminAndRoles(app).Wait();

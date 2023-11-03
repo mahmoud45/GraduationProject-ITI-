@@ -5,25 +5,47 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { HttpClientModule } from '@angular/common/http';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { HomeComponent } from './components/home/home.component';
+import { JwtModule } from '@auth0/angular-jwt';
+import { RegisterComponent } from './components/user/register/register.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { SalaryComponent } from './components/salary/salary.component';
+
+export function tokenGetter() {
+    return localStorage.getItem("access_token");
+}
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    AttendanceComponent
-  ],
-  imports: [
-    FormsModule,
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    MatSlideToggleModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+
+declarations: [
+        AppComponent,
+        LoginComponent,
+        AttendanceComponent,
+        HomeComponent,
+        RegisterComponent,
+        NavbarComponent,
+        SalaryComponent
+    ],
+imports: [
+        BrowserModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        MatSlideToggleModule,
+        JwtModule.forRoot({
+            config: {
+                tokenGetter: tokenGetter,
+                allowedDomains: ['*'],
+                disallowedRoutes: [],
+            },
+        }),
+    ],
+providers: [],
+bootstrap: [AppComponent]
+
 })
 export class AppModule { }
