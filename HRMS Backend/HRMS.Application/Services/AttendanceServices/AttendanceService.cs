@@ -18,7 +18,7 @@ namespace HRMS.Application.Services.AttendanceServices
 				Id = attendanceDTO.ID,
 				ArrivalTime = attendanceDTO.ArrivalTime,
 				DepartureTime = attendanceDTO.DepartureTime,
-				AttendaceDate = attendanceDTO.AttendaceDate,
+				AttendaceDate = attendanceDTO.AttendanceDate,
 				EmpID = attendanceDTO.Emp_ID
 			};
 		}
@@ -28,7 +28,7 @@ namespace HRMS.Application.Services.AttendanceServices
 				ID = attendance.Id,
 				ArrivalTime = attendance.ArrivalTime,
 				DepartureTime = attendance.DepartureTime,
-				AttendaceDate = attendance.AttendaceDate,
+				AttendanceDate = attendance.AttendaceDate,
 				Emp_Name = attendance.Employee.FirstName + " " + attendance.Employee.LastName,
 				Dept_Name = attendance.Employee.Department.Name,
 				Emp_ID = attendance.EmpID
@@ -44,7 +44,7 @@ namespace HRMS.Application.Services.AttendanceServices
 					ID = item.Id,
 					ArrivalTime = item.ArrivalTime,
 					DepartureTime = item.DepartureTime,
-					AttendaceDate = item.AttendaceDate,
+					AttendanceDate = item.AttendaceDate,
 					Emp_Name = item.Employee.FirstName + " " + item.Employee.LastName,
 					Dept_Name = item.Employee.Department.Name,
 					Emp_ID = item.EmpID

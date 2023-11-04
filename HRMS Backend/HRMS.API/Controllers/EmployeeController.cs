@@ -2,8 +2,10 @@
 using HRMS.Application.Models;
 using HRMS.Application.Repository;
 using HRMS.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static HRMS.Domain.Data.Constants.Authorization;
 
 namespace HRMS.API.Controllers
 {
@@ -22,8 +24,8 @@ namespace HRMS.API.Controllers
                
             }
 
-            [HttpGet]
-            public async Task<ActionResult<IEnumerable<Employee>>> GetAll()
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Employee>>> GetAll()
             {
                 var Employee = await _genaricrepository.GetAllAsync();
                 if (Employee is null)
@@ -59,7 +61,7 @@ namespace HRMS.API.Controllers
 
             }
 
-            [HttpPut("{id}")]
+            [HttpPut("{id}"),Authorize(Roles="programmerr")]
             public IActionResult Edite(int id, [FromForm] EmployeeDto employeeDto)
             {
                 if (!ModelState.IsValid)
