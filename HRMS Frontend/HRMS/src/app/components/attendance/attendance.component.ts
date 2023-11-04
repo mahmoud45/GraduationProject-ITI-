@@ -115,6 +115,7 @@ export class AttendanceComponent implements OnInit {
   //   } 
   // }
   addAttendance(){
+
     this.AttendanceModel=this.initializeAttendanceModel();
 
     this.attendanceForm.get("arrivalTime")?.setValue("");
@@ -123,7 +124,6 @@ export class AttendanceComponent implements OnInit {
     
     this.attendanceForm.markAsUntouched();
   }
-
   editAttendance(DTOModel:IAttendanceModel){
     this.AttendanceModel=DTOModel;
 

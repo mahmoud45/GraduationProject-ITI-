@@ -2,8 +2,10 @@
 using HRMS.Application.Models;
 using HRMS.Application.Repository;
 using HRMS.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static HRMS.Domain.Data.Constants.Authorization;
 
 namespace HRMS.API.Controllers
 {
@@ -22,8 +24,8 @@ namespace HRMS.API.Controllers
                
             }
 
-            [HttpGet]
-            public async Task<ActionResult<IEnumerable<Employee>>> GetAll()
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Employee>>> GetAll()
             {
                 var Employee = await _genaricrepository.GetAllAsync();
                 if (Employee is null)
@@ -40,16 +42,16 @@ namespace HRMS.API.Controllers
 
                 var emolyee = new Employee()
                 {
-                    FirstName = employeeDto.FirstName,
-                    LastName = employeeDto.LastName,
-                    Address = employeeDto.Address,
+                    FirstName = employeeDto.firstName,
+                    LastName = employeeDto.lastName,
+                    Address = employeeDto.address,
                     Phone = employeeDto.Phone,
                     Gender = employeeDto.Gender,
                     Nationality = employeeDto.Nationality,
                     BirthDate = employeeDto.BirthDate,
                     NationalId = employeeDto.NationalId,
                     HireDate = employeeDto.HireDate,
-                    Salary = employeeDto.Salary,
+                    salary = employeeDto.salary,
                     ArrivalTime = employeeDto.ArrivalTime,
                     LeaveTime = employeeDto.LeaveTime,
                 };
@@ -59,7 +61,7 @@ namespace HRMS.API.Controllers
 
             }
 
-            [HttpPut("{id}")]
+            [HttpPut("{id}"),Authorize(Roles="programmerr")]
             public IActionResult Edite(int id, [FromForm] EmployeeDto employeeDto)
             {
                 if (!ModelState.IsValid)
@@ -69,15 +71,15 @@ namespace HRMS.API.Controllers
                 if (emp == null)
                     return NotFound($"No Employee with this {emp.Id}");
 
-                emp.FirstName = employeeDto.FirstName;
-                emp.Address = employeeDto.Address;
+                emp.FirstName = employeeDto.firstName;
+                emp.Address = employeeDto.address;
                 emp.Phone = employeeDto.Phone;
                 emp.Gender = employeeDto.Gender;
                 emp.Nationality = employeeDto.Nationality;
                 emp.BirthDate = employeeDto.BirthDate;
                 emp.NationalId = employeeDto.NationalId;
                 emp.HireDate = employeeDto.HireDate;
-                emp.Salary = employeeDto.Salary;
+                emp.salary = employeeDto.salary;
                 emp.ArrivalTime = employeeDto.ArrivalTime;
                 emp.LeaveTime = employeeDto.LeaveTime;
                 _genaricrepository.Edite(emp);

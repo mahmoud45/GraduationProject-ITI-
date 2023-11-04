@@ -22,7 +22,7 @@ namespace HRMS.Application.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("HRMS.Application.Context.AppUser", b =>
+            modelBuilder.Entity("HRMS.Application.AppUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -158,7 +158,7 @@ namespace HRMS.Application.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DepartID")
+                    b.Property<int?>("DepartID")
                         .HasColumnType("int");
 
                     b.Property<string>("FirstName")
@@ -412,9 +412,7 @@ namespace HRMS.Application.Migrations
                 {
                     b.HasOne("HRMS.Domain.Models.Department", "Department")
                         .WithMany("Employees")
-                        .HasForeignKey("DepartID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DepartID");
 
                     b.HasOne("HRMS.Domain.Models.GeneralSettings", "SpecialSettings")
                         .WithOne("Employee")
@@ -436,7 +434,7 @@ namespace HRMS.Application.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("HRMS.Application.Context.AppUser", null)
+                    b.HasOne("HRMS.Application.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -445,7 +443,7 @@ namespace HRMS.Application.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("HRMS.Application.Context.AppUser", null)
+                    b.HasOne("HRMS.Application.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -460,7 +458,7 @@ namespace HRMS.Application.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HRMS.Application.Context.AppUser", null)
+                    b.HasOne("HRMS.Application.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -469,7 +467,7 @@ namespace HRMS.Application.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("HRMS.Application.Context.AppUser", null)
+                    b.HasOne("HRMS.Application.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -21,7 +21,7 @@ namespace HRMS.Domain.Models
         public string NationalId { get; set; }
         public DateTime HireDate { get; set; }
         [Column(TypeName ="money")]
-        public decimal Salary { get; set; }
+        public decimal salary { get; set; }
 		public DateTime ArrivalTime { get; set; }
 		public DateTime LeaveTime { get; set; }
         public bool IsDeleted { get; set; }

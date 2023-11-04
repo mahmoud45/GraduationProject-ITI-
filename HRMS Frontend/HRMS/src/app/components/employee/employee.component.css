@@ -1,0 +1,12 @@
+/* Add this to your component's CSS file or styles.css */
+.table th {
+    
+    color: #0d0dec; 
+  }
+  h2{
+    color: #0d0dec;
+  }
+  
+  .table tbody td {
+    margin-bottom: 20px; /* Adjust the margin as per your preference */
+  }
