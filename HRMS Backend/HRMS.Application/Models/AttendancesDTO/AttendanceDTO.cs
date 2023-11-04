@@ -14,6 +14,6 @@ namespace HRMS.Application.Models.AttendancesDTO
 		public string? Dept_Name { get; set; }
 		public DateTime ArrivalTime { get; set; }
 		public DateTime DepartureTime { get; set; }
-		public DateTime AttendaceDate { get; set; }
+		public DateTime AttendanceDate { get; set; }
 	}
 }
