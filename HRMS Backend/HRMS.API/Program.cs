@@ -77,6 +77,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+builder.Services.AddScoped<ISeasonalVacationRepository, SeasonalVacationRepository>();
 
 builder.Services.AddCors(options =>
 {

@@ -50,7 +50,6 @@ namespace HRMS.API.Controllers
 
             await roleManager.AddClaimAsync(generalSettingsRole, AddSettingsClaim);  
             await roleManager.AddClaimAsync(generalSettingsRole, EditSettingsClaim); 
-            
             await roleManager.AddClaimAsync(generalSettingsRole, DeleteSettingsClaim);  
             await roleManager.AddClaimAsync(generalSettingsRole, showSettingsClaim);
 
