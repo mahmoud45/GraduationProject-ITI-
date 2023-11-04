@@ -10,6 +10,8 @@ using HRMS.Domain.Models;
 using HRMS.Application.Repository;
 using HRMS.Application.Services.AttendanceServices;
 using HRMS.Application.Models.AttendancesDTO;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Net;
 
 namespace HRMS.API.Controllers
 {
@@ -30,8 +32,24 @@ namespace HRMS.API.Controllers
         [HttpGet]
         public ActionResult<List<AttendanceDTO>> GetAttendances()
         {
-            return attendanceService.GetListAttendanceDTO(attendanceRepository.getAllAttendances());
-        }
+			Request.Headers.TryGetValue("Pnum", out var PageNumber);
+			Request.Headers.TryGetValue("FDate", out var FromDate);
+			Request.Headers.TryGetValue("TDate", out var ToDate);
+
+			List<AttendanceDTO> list = attendanceService.GetListAttendanceDTO(attendanceRepository.getAllAttendances(
+				int.Parse(PageNumber), DateTime.Parse(FromDate), DateTime.Parse(ToDate)));
+
+
+			//List<AttendanceDTO> list = attendanceService.GetListAttendanceDTO(attendanceRepository.getAllAttendances(
+			//	1, new DateTime(2020,1,20), DateTime.Now.AddDays(10)));
+
+			HttpContext.Response.Headers.Add("next",list.Count>10?"true":"false");
+			HttpContext.Response.Headers.Add("name","mostafa");
+			Response.Headers.Add("Access-Control-Expose-Headers", "next,name");
+
+			return list.Take(10).ToList();
+		}
+
 		[Route("/search/{name:alpha}", Name = "GetAttendancesByName")]
 		[HttpGet]
 		public ActionResult<List<AttendanceDTO>> GetAttendancesByName(string name)
@@ -42,7 +60,7 @@ namespace HRMS.API.Controllers
         [HttpGet]
         public ActionResult<List<AttendanceDTO>> GetAttendancesByEmployeeName(string emp_name)
         {
-            return attendanceService.GetListAttendanceDTO(attendanceRepository.getAttendancesByEmployeeName(emp_name));
+			return attendanceService.GetListAttendanceDTO(attendanceRepository.getAttendancesByEmployeeName(emp_name));
         }
         [Route("/dept/{dept_name:alpha}", Name = "GetAttendancesByDepartmentName")]
 		[HttpGet]

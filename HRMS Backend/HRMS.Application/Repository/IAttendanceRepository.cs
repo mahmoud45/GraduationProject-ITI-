@@ -9,7 +9,7 @@ namespace HRMS.Application.Repository
 {
 	public interface IAttendanceRepository
 	{
-		List<Attendance> getAllAttendances();
+		List<Attendance> getAllAttendances(int Pnum, DateTime FDate, DateTime TDate);
 		List<Attendance> getAttendancesByName(string name);
 		List<Attendance> getAttendancesByEmployeeName(string emp_name);
 		Attendance getAttendancesByID(int id);

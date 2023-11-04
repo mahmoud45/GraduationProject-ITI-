@@ -33,9 +33,10 @@ namespace HRMS.Application.Repository
 			dBContext.Update(attendance);
 		}
 
-		public List<Attendance> getAllAttendances()
+		public List<Attendance> getAllAttendances(int Pnum,DateTime FDate,DateTime TDate)
 		{
-			return dBContext.Attendances.Include(a=>a.Employee).ThenInclude(e => e.Department).ToList();
+			return dBContext.Attendances.Include(a=>a.Employee).ThenInclude(e => e.Department)
+				.Where(a=>a.AttendaceDate>= FDate&&a.AttendaceDate<=TDate).Skip(Pnum*10).Take(11).ToList();
 		}
 
 		public List<Attendance> getAttendancesByDepartmentName(string dept_name)
