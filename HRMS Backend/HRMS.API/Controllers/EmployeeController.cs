@@ -40,16 +40,16 @@ namespace HRMS.API.Controllers
 
                 var emolyee = new Employee()
                 {
-                    FirstName = employeeDto.FirstName,
-                    LastName = employeeDto.LastName,
-                    Address = employeeDto.Address,
+                    FirstName = employeeDto.firstName,
+                    LastName = employeeDto.lastName,
+                    Address = employeeDto.address,
                     Phone = employeeDto.Phone,
                     Gender = employeeDto.Gender,
                     Nationality = employeeDto.Nationality,
                     BirthDate = employeeDto.BirthDate,
                     NationalId = employeeDto.NationalId,
                     HireDate = employeeDto.HireDate,
-                    Salary = employeeDto.Salary,
+                    salary = employeeDto.salary,
                     ArrivalTime = employeeDto.ArrivalTime,
                     LeaveTime = employeeDto.LeaveTime,
                 };
@@ -69,15 +69,15 @@ namespace HRMS.API.Controllers
                 if (emp == null)
                     return NotFound($"No Employee with this {emp.Id}");
 
-                emp.FirstName = employeeDto.FirstName;
-                emp.Address = employeeDto.Address;
+                emp.FirstName = employeeDto.firstName;
+                emp.Address = employeeDto.address;
                 emp.Phone = employeeDto.Phone;
                 emp.Gender = employeeDto.Gender;
                 emp.Nationality = employeeDto.Nationality;
                 emp.BirthDate = employeeDto.BirthDate;
                 emp.NationalId = employeeDto.NationalId;
                 emp.HireDate = employeeDto.HireDate;
-                emp.Salary = employeeDto.Salary;
+                emp.salary = employeeDto.salary;
                 emp.ArrivalTime = employeeDto.ArrivalTime;
                 emp.LeaveTime = employeeDto.LeaveTime;
                 _genaricrepository.Edite(emp);

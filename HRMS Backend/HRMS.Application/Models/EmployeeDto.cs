@@ -5,12 +5,12 @@ namespace HRMS.Application.Models
 {
     public class EmployeeDto
     {
+        [Required(ErrorMessage = "field is requirdssss")]
+        public string firstName { get; set; }
         [Required(ErrorMessage = "field is requird")]
-        public string FirstName { get; set; }
+        public string lastName { get; set; }
         [Required(ErrorMessage = "field is requird")]
-        public string LastName { get; set; }
-        [Required(ErrorMessage = "field is requird")]
-        public string Address { get; set; }
+        public string address { get; set; }
         [Required]
         [Phone]
         [MinLength(11, ErrorMessage = "pls enter 11 number")]
@@ -28,7 +28,7 @@ namespace HRMS.Application.Models
         public DateTime HireDate { get; set; }
         [Required(ErrorMessage = ("pls enter a salary requird with vailed correct salary "))]
         [Column(TypeName = "money")]
-        public decimal Salary { get; set; }
+        public decimal salary { get; set; }
         [DataType(DataType.Time)]
         public DateTime ArrivalTime { get; set; }
         [DataType(DataType.Time)]

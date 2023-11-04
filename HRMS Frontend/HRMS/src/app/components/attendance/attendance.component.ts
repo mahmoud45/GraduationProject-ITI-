@@ -71,7 +71,7 @@ export class AttendanceComponent  {
   //       return;
   //     }
   //     this.FormValidationState=false; 
-  // }
+  // }  
   filterDataByDate(){
     const data:IAttendanceModel[] = this.DataModel;
     this.DataModel=[];
@@ -94,7 +94,8 @@ export class AttendanceComponent  {
 
 
   editAttendance(DTOModel:IAttendanceModel){}
-  deleteAttendance(attendanceID:number){
+  deleteAttendance(attendanceID:number)
+  {
     const userConfirmed = window.confirm('Do you really want to delete this?');
 
     if (userConfirmed) {
