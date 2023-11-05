@@ -11,93 +11,109 @@ namespace HRMS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
-        public class EmployeeController : ControllerBase
+    public class EmployeeController : ControllerBase
+    {
+        private readonly IGenaricrepository<Employee> _genaricrepository;
+        public EmployeeController(IGenaricrepository<Employee> genaricrepository)
         {
-
-            private readonly IGenaricrepository<Employee> _genaricrepository;
-            
-
-            public EmployeeController(IGenaricrepository<Employee> genaricrepository)
-            {
-                _genaricrepository = genaricrepository;
+            _genaricrepository = genaricrepository;
                
-            }
+        }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employee>>> GetAll()
-            {
-                var Employee = await _genaricrepository.GetAllAsync();
-                if (Employee is null)
+        {
+            var Employee = await _genaricrepository.GetAllAsync();
+            if (Employee is null)
                 return NotFound();
 
-                return Ok(Employee);
-            }
-
-            [HttpPost]
-            public ActionResult Create([FromForm] EmployeeDto employeeDto)
+            List<EmployeeDto> employees = new List<EmployeeDto>();
+            foreach (var employee in Employee)
             {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
+		        var employeeDTO = new EmployeeDto()
+		        {
+                    id=employee.Id,
+			        firstName = employee.FirstName,
+			        lastName = employee.LastName,
+			        address = employee.Address,
+			        Phone = employee.Phone,
+			        Gender = employee.Gender,
+			        Nationality = employee.Nationality,
+			        BirthDate = employee.BirthDate,
+			        NationalId = employee.NationalId,
+			        HireDate = employee.HireDate,
+			        salary = employee.salary,
+			        ArrivalTime = employee.ArrivalTime,
+			        LeaveTime = employee.LeaveTime,
+		        };
+                employees.Add(employeeDTO);
+	        }
+            return Ok(employees);
+        }
 
-                var emolyee = new Employee()
-                {
-                    FirstName = employeeDto.firstName,
-                    LastName = employeeDto.lastName,
-                    Address = employeeDto.address,
-                    Phone = employeeDto.Phone,
-                    Gender = employeeDto.Gender,
-                    Nationality = employeeDto.Nationality,
-                    BirthDate = employeeDto.BirthDate,
-                    NationalId = employeeDto.NationalId,
-                    HireDate = employeeDto.HireDate,
-                    salary = employeeDto.salary,
-                    ArrivalTime = employeeDto.ArrivalTime,
-                    LeaveTime = employeeDto.LeaveTime,
-                };
-                _genaricrepository.Create(emolyee);
-                return Ok(emolyee);
-
-
-            }
-
-            [HttpPut("{id}"),Authorize(Roles="programmerr")]
-            public IActionResult Edite(int id, [FromForm] EmployeeDto employeeDto)
+        [HttpPost]
+        public ActionResult<EmployeeDto> Create(EmployeeDto employeeDto)
+        {
+            var employee = new Employee()
             {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
-                var emp = _genaricrepository.GetById(id);
+                FirstName = employeeDto.firstName,
+                LastName = employeeDto.lastName,
+                Address = employeeDto.address,
+                Phone = employeeDto.Phone,
+                Gender = employeeDto.Gender,
+                Nationality = employeeDto.Nationality,
+                BirthDate = employeeDto.BirthDate,
+                NationalId = employeeDto.NationalId,
+                HireDate = employeeDto.HireDate,
+                salary = employeeDto.salary,
+                ArrivalTime = employeeDto.ArrivalTime,
+                LeaveTime = employeeDto.LeaveTime,
+            };
 
-                if (emp == null)
-                    return NotFound($"No Employee with this {emp.Id}");
+            //علشان امشى حالى بس هى غلط
+            employee.DepartID = 1;
 
-                emp.FirstName = employeeDto.firstName;
-                emp.Address = employeeDto.address;
-                emp.Phone = employeeDto.Phone;
-                emp.Gender = employeeDto.Gender;
-                emp.Nationality = employeeDto.Nationality;
-                emp.BirthDate = employeeDto.BirthDate;
-                emp.NationalId = employeeDto.NationalId;
-                emp.HireDate = employeeDto.HireDate;
-                emp.salary = employeeDto.salary;
-                emp.ArrivalTime = employeeDto.ArrivalTime;
-                emp.LeaveTime = employeeDto.LeaveTime;
-                _genaricrepository.Edite(emp);
+            _genaricrepository.Create(employee);
+            return Ok(employeeDto);
+        }
 
-                return Ok();
+        [HttpPut("{id}"),Authorize(Roles="programmerr")]
+        public IActionResult Edite(int id, [FromForm] EmployeeDto employeeDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var emp = _genaricrepository.GetById(id);
 
-            }
+            if (emp == null)
+                return NotFound($"No Employee with this {emp.Id}");
 
-            [HttpDelete("{id}")]
-            public async Task<IActionResult> DeleteAsync(int id)
-            {
-                var employee = _genaricrepository.GetById(id);
+            emp.FirstName = employeeDto.firstName;
+            emp.Address = employeeDto.address;
+            emp.Phone = employeeDto.Phone;
+            emp.Gender = employeeDto.Gender;
+            emp.Nationality = employeeDto.Nationality;
+            emp.BirthDate = employeeDto.BirthDate;
+            emp.NationalId = employeeDto.NationalId;
+            emp.HireDate = employeeDto.HireDate;
+            emp.salary = employeeDto.salary;
+            emp.ArrivalTime = employeeDto.ArrivalTime;
+            emp.LeaveTime = employeeDto.LeaveTime;
+            _genaricrepository.Edite(emp);
 
-                if (employee == null)
-                    return NotFound($"No employee was found with ID {id}");
-                await _genaricrepository.Delete(employee);
-                return Ok();
-            }
+            return Ok();
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var employee = _genaricrepository.GetById(id);
+
+            if (employee == null)
+                return NotFound($"No employee was found with ID {id}");
+            await _genaricrepository.Delete(employee);
+            return Ok();
         }
     }
+}
 

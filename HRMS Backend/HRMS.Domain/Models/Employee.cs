@@ -26,8 +26,8 @@ namespace HRMS.Domain.Models
 		public DateTime LeaveTime { get; set; }
         public bool IsDeleted { get; set; }
 
-		[ForeignKey("Department")]
-        public int? DepartID { get; set; }
+        [ForeignKey("Department")]
+        public int? DepartID { get; set; } = null;
         public virtual Department? Department { get; set; }
 		[ForeignKey("SpecialSettings")]
 		public int? SpecialSetting { get; set; }

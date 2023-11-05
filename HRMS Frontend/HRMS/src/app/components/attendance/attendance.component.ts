@@ -19,7 +19,7 @@ export class AttendanceComponent implements OnInit {
   FormValidationState:boolean=false;
   SearchForm: FormGroup;
   attendanceForm=new FormGroup({
-    empID:new FormControl("",Validators.required),
+    empID:new FormControl(0,Validators.required),
     arrivalTime: new FormControl("",Validators.required),
     departureTime: new FormControl("",Validators.required),
     attendanceDate: new FormControl("",Validators.required)
@@ -38,12 +38,12 @@ export class AttendanceComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    this.AllEmployees=this.api.getEmployees().subscribe({
+    this.api.getEmployees().subscribe({
         next:(response:any)=>{
           this.AllEmployees = response;        
         },
         error:()=>{
-          window.alert("error in retrieving employees")
+          window.alert("error in loading employees data")
         },
         complete:()=>{}
       });
@@ -51,53 +51,79 @@ export class AttendanceComponent implements OnInit {
   
   getDataSubmit(e:Event){
     e.preventDefault()
-    if(this.SearchForm.invalid)
-      return;
-    
+    this.PageNumber=0;
     this.getData()
   }
   getData(){
-
     if(this.SearchForm.invalid){
       this.FormValidationState = true;
       return;
     }
     this.FormValidationState=false;
 
+    console.log(this.SearchForm.get("dateF")?.value);
+    console.log(this.SearchForm.get("dateT")?.value);
+    
+
     if(this.SearchForm.get("name")?.value){
-      this.api.getAllAttendanceByName(this.SearchForm.get("name")?.value,
+      if (this.SearchForm.get("dateF")?.value && this.SearchForm.get("dateT")?.value) {
+        this.api.getAllAttendanceByNameByDates(this.SearchForm.get("name")?.value,
         new Date(this.SearchForm.get("dateF")?.value),
-        new Date(this.SearchForm.get("dateF")?.value)).subscribe({
+        new Date(this.SearchForm.get("dateT")?.value),this.PageNumber).subscribe({
             next:(response:any)=>{
-              this.DataModel = response;        
+              this.DataModel = response.body;
+              this.next= response.headers.get("next")==="true"?true:false;        
             },
             error:()=>{
               window.alert("error in retrieving data")
             },
             complete:()=>{
-              if(this.SearchForm.get("dateF")?.value&&this.SearchForm.get("dateT")?.value){
-                // this.filterDataByDate()
-              } 
+            }
+          });  
+      }
+      else{
+        this.api.getAllAttendanceByName(this.SearchForm.get("name")?.value,this.PageNumber).subscribe({
+            next:(response:any)=>{
+              this.DataModel = response.body;
+              this.next= response.headers.get("next")==="true"?true:false;        
+            },
+            error:()=>{
+              window.alert("error in retrieving data")
+            },
+            complete:()=>{
             }
           });
+      }
     }
-    else{
+    else{  
+      if (this.SearchForm.get("dateF")?.value && this.SearchForm.get("dateT")?.value) {
       
-      this.api.getAllAttendance(new Date(this.SearchForm.get("dateF")?.value),
-      new Date(this.SearchForm.get("dateT")?.value),this.PageNumber).subscribe({
-          next:(response:any)=>{
-            this.DataModel = response.body;     
-            this.next= response.headers.get("next")==="true"?true:false;        
-          },
-          error:()=>{
-            window.alert("error in retrieving data")
-          },
-          complete:()=>{
-            // if(this.SearchForm.get("dateF")?.value&&this.SearchForm.get("dateT")?.value){
-            //   this.filterDataByDate()
-            // }
-          }
-      });
+        this.api.getAllAttendanceByDates(new Date(this.SearchForm.get("dateF")?.value),
+        new Date(this.SearchForm.get("dateT")?.value),this.PageNumber).subscribe({
+            next:(response:any)=>{
+              this.DataModel = response.body;     
+              this.next= response.headers.get("next")==="true"?true:false;        
+            },
+            error:()=>{
+              window.alert("error in retrieving data")
+            },
+            complete:()=>{
+            }
+        });
+      }
+      else{
+        this.api.getAllAttendance(this.PageNumber).subscribe({
+            next:(response:any)=>{
+              this.DataModel = response.body;     
+              this.next= response.headers.get("next")==="true"?true:false;        
+            },
+            error:()=>{
+              window.alert("error in retrieving data")
+            },
+            complete:()=>{
+            }
+        });
+      }
     }
   }
 
@@ -133,6 +159,7 @@ export class AttendanceComponent implements OnInit {
     this.attendanceForm.get("arrivalTime")?.setValue(arrivalTime.substring(0,arrivalTime.lastIndexOf(':')));
     this.attendanceForm.get("departureTime")?.setValue(departureTime.substring(0,departureTime.lastIndexOf(':')));
     this.attendanceForm.get("attendanceDate")?.setValue(this.AttendanceModel.attendanceDate.toString().split('T')[0]);
+    this.attendanceForm.get("empID")?.setValue(this.AllEmployees.find(x=>x.id==this.AttendanceModel.emp_ID)?.id??0 )
   }
   deleteAttendance(attendanceID:any){
     const userConfirmed = window.confirm('Do you really want to delete this?');

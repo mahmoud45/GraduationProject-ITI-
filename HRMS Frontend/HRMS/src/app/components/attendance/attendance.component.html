@@ -57,23 +57,22 @@
           >
         </section>
       </section>
-      <section>
-        <button
-          type="submit"
-          class="btn btn-outline-primary offset-md-2 col-lg-2"
-        >
+      <section class="offset-md-2 col-lg-2">
+        <button type="submit" class="btn btn-outline-primary px-md-5">
           Search
-        </button>
-        <button
-          (click)="addAttendance()"
-          data-bs-toggle="modal"
-          data-bs-target="#AttendanceForm"
-          class="btn btn-outline-success offset-md-4 col-lg-2"
-        >
-          Add Attendance
         </button>
       </section>
     </form>
+    <section id="addAttendance" class="offset-md-8 text-end pe-2 col-lg-2">
+      <button
+        (click)="addAttendance()"
+        data-bs-toggle="modal"
+        data-bs-target="#AttendanceForm"
+        class="btn btn-outline-success"
+      >
+        Add Attendance
+      </button>
+    </section>
   </section>
   <section class="m-md-3 row">
     <table class="table table-light table-striped table-hover">

@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IEmployee } from '../models/iemployee';
@@ -7,17 +6,16 @@ import { IEmployee } from '../models/iemployee';
   providedIn: 'root'
 })
 export class EmployeeservicesService {
-  baseUrl :string ='https://localhost:7073/api/Employee' ;
-  constructor(private http :HttpClient) { }
+  constructor(public http :HttpClient) { }
 
-  GetAllEmployees() :Observable<IEmployee[]>
+  GetAllEmployees() :any
   {
-   return this.http.get<IEmployee[]>(this.baseUrl)
+   return this.http.get("https://localhost:7073/api/Employee")
   }
 
-  AddEmployee(AddEmployee:IEmployee)
+  AddEmployee(AddEmployee:IEmployee):any
   {
-   return this.http.post('https://localhost:7073/api/Employee',AddEmployee)
+   return this.http.post("https://localhost:7073/api/Employee",AddEmployee)
   }
   deleteEmployee(employeeid:number)
   {

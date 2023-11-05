@@ -1,4 +1,3 @@
-import { RouterModule } from '@angular/router';
 import { EmployeeservicesService } from './../../services/employeeservices.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -17,10 +16,8 @@ export class EmployeeComponent implements OnInit {
   constructor(private _Employeeservices:EmployeeservicesService) {}
   ngOnInit() : void {
       this._Employeeservices.GetAllEmployees().subscribe({
-        next: (response)=>{
+        next: (response:any)=>{
           this.employees=response;
-        
-         
         },
         error:()=>{},
         complete:()=>{},

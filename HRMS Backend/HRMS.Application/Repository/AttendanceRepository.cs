@@ -33,10 +33,16 @@ namespace HRMS.Application.Repository
 			dBContext.Update(attendance);
 		}
 
-		public List<Attendance> getAllAttendances(int Pnum,DateTime FDate,DateTime TDate)
+		public List<Attendance> getAllAttendancesByDates(int Pnum,DateTime FDate,DateTime TDate)
 		{
 			return dBContext.Attendances.Include(a=>a.Employee).ThenInclude(e => e.Department)
 				.Where(a=>a.AttendaceDate>= FDate&&a.AttendaceDate<=TDate).Skip(Pnum*10).Take(11).ToList();
+		}
+
+		public List<Attendance> getAllAttendances(int Pnum)
+		{
+			return dBContext.Attendances.Include(a => a.Employee).ThenInclude(e => e.Department)
+					.Skip(Pnum * 10).Take(11).ToList();
 		}
 
 		public List<Attendance> getAttendancesByDepartmentName(string dept_name)
@@ -63,11 +69,20 @@ namespace HRMS.Application.Repository
 			return dBContext.Attendances.Include(a => a.Employee).ThenInclude(e => e.Department).Where(x => x.Id==id).FirstOrDefault();
 		}
 
-		public List<Attendance> getAttendancesByName(string name)
+		public List<Attendance> getAttendancesByNameByDates(string name, int Pnum, DateTime FDate, DateTime TDate)
 		{
 			var list = getAttendancesByDepartmentName(name)?.ToList();
-			return (list.Count != 0) ? list : getAttendancesByEmployeeName(name).ToList();
+			return (list.Count != 0) ? list.Where(a => a.AttendaceDate >= FDate && a.AttendaceDate <= TDate).Skip(Pnum * 10).Take(11).ToList()
+				: getAttendancesByEmployeeName(name).Where(a => a.AttendaceDate >= FDate && a.AttendaceDate <= TDate).Skip(Pnum * 10).Take(11).ToList();
 		}
+
+		public List<Attendance> getAttendancesByName(string name, int Pnum)
+		{
+			var list = getAttendancesByDepartmentName(name)?.ToList();
+			return (list.Count != 0) ? list.Skip(Pnum * 10).Take(11).ToList()
+					: getAttendancesByEmployeeName(name).Skip(Pnum * 10).Take(11).ToList();
+		}
+
 
 		int IAttendanceRepository.saveChanges()
 		{
