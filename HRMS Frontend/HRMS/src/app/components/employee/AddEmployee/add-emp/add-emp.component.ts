@@ -1,83 +1,76 @@
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployeeservicesService } from './../../../../services/employeeservices.service';
-import { Component, OnInit } from '@angular/core';
-import { IEmployee } from 'src/app/models/iemployee';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-emp',
   templateUrl: './add-emp.component.html',
-  styleUrls: ['./add-emp.component.css']
+  styleUrls: ['./add-emp.component.css'],
 })
+export class AddEmpComponent {
+  empval: FormGroup;
+  submitted = false;
 
-
-export class AddEmpComponent  {
-  
-  dates:{birthDate:string,hireDate:string,
-         arrivalTime: string,leaveTime:string}
-         =
-         {birthDate:"",hireDate:"",
-          arrivalTime:"",leaveTime:""
-    };
-  modelemployee :IEmployee ;
-
-constructor( private Employeservices:EmployeeservicesService){
-  this.modelemployee={
-    id :0,
-    firstName:'',
-    lastName:'',
-    address:'',
-    phone:0,
-    gender:'',
-    nationality:'',
-    nationalId:0,
-    salary:0,
-    birthDate:new Date(),
-    hireDate:new Date(),
-    arrivalTime:new Date(),
-    leaveTime:new Date(),
-  }
-
-}
-onsubmitform(e:Event)
-  {
-    e.preventDefault();
-
-    this.modelemployee.birthDate=new Date(this.dates.birthDate)
-    this.modelemployee.hireDate=new Date(this.dates.hireDate)
-
-    this.modelemployee.arrivalTime=new Date(this.convertTimeToDate(this.dates.arrivalTime))
-    this.modelemployee.leaveTime=new Date(this.convertTimeToDate(this.dates.leaveTime))
-    
-    console.log(this.modelemployee);
-
-
-    this.Employeservices.AddEmployee(this.modelemployee).subscribe({
-      next:()=>{},
-      error:()=>{
-        window.alert("error in adding")
-      },
-      complete:()=>{
-        window.alert("successfully added")
-      }
+  constructor(private fb: FormBuilder, private employeeServices: EmployeeservicesService,private router:Router) {
+    this.empval = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      address: ['', Validators.required],
+      phone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(11)]],
+      gender: ['', Validators.required],
+      nationality: ['', Validators.required],
+      nationalId: ['', [Validators.required]],
+      salary: ['', [Validators.required]],
+      birthDate: ['', Validators.required],
+      hireDate: ['', Validators.required],
+      arrivalTime: ['', Validators.required],
+      leaveTime: ['', Validators.required]
     });
-
   }
 
-  convertTimeToDate(time:any):Date{
-    let date:Date=new Date();
-    date.setUTCHours(parseInt(time?.split(":")[0]));
-    date.setUTCMinutes(parseInt(time.split(":")[1]));
-    return date;
+  onsubmitform() {
+    this.submitted = true;
+
+    if (this.empval.valid) {
+      const formData = this.empval.value;
+
+      const dates = {
+        birthDate: formData.birthDate,
+        hireDate: formData.hireDate,
+        arrivalTime: formData.arrivalTime,
+        leaveTime: formData.leaveTime,
+      };
+
+      const arrivalTime = this.convertTimeToDate(dates.arrivalTime);
+      const leaveTime = this.convertTimeToDate(dates.leaveTime);
+
+      const employeeData = { ...formData, arrivalTime, leaveTime };
+
+      this.employeeServices.AddEmployee(employeeData).subscribe({
+        next: () => {
+          window.alert('Successfully added');
+          this.router.navigate(['/employee']);
+        },
+        error: () => {
+          console.error();
+          window.alert('Error in adding');
+        }
+      });
+    } else {
+      window.alert('Please fill out all required fields and correct any validation errors.');
+    }
   }
 
+  convertTimeToDate(time: any): Date {
+    if (typeof time === 'string' && /^\d{2}:\d{2}$/.test(time)) {
+      const [hours, minutes] = time.split(':').map(Number);
+      const date = new Date();
+      date.setUTCHours(hours);
+      date.setUTCMinutes(minutes);
+      return date;
+    } else {
+      throw new Error('Invalid time format. Please use HH:mm format.');
+    }
+  }
 }
-
-
-
-
-
-
-
-
-
-

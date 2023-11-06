@@ -1,10 +1,10 @@
 /* Add this to your component's CSS file or styles.css */
 .table th {
     
-    color: #0d0dec; 
+    color: #000; 
   }
   h2{
-    color: #0d0dec;
+    color: #0d75ec;
   }
   
   .table tbody td {
