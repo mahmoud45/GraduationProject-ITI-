@@ -9,7 +9,7 @@ import { SalaryComponent } from './components/salary/salary.component';
 import { AddEmpComponent } from './components/employee/AddEmployee/add-emp/add-emp.component';
 import { EmployeeComponent } from './components/employee/employee.component';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './components/login/login.component';
+import { LoginComponent } from './components/user/login/login.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -33,7 +33,7 @@ declarations:
     SalaryComponent,
     EmployeeComponent,
     AddEmpComponent,
-],  
+],
 imports: [
         BrowserModule,
         AppRoutingModule,
