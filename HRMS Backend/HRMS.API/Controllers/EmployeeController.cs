@@ -31,7 +31,8 @@ namespace HRMS.API.Controllers
             foreach (var employee in Employee)
             {
 		        var employeeDTO = new EmployeeDto()
-		        {
+		        {   
+                    id=employee.Id,
 			        firstName = employee.FirstName,
 			        lastName = employee.LastName,
 			        address = employee.Address,
@@ -79,7 +80,7 @@ namespace HRMS.API.Controllers
 
 
         [HttpPost]
-        public ActionResult<EmployeeDto> Create([FromForm] EmployeeDto employeeDto)
+        public ActionResult<EmployeeDto> Create( EmployeeDto employeeDto)
         {
             var employee = new Employee()
             {

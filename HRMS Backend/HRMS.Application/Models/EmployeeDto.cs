@@ -5,16 +5,16 @@ namespace HRMS.Application.Models
 {
     public class EmployeeDto
     {
-
-		[Required(ErrorMessage = "field is requird")]
-		public string firstName { get; set; }
+        public int? id { get; set; }
+        [Required(ErrorMessage = "field is requird")]
+        public string firstName { get; set; }
         [Required(ErrorMessage = "field is requird")]
         public string lastName { get; set; }
         [Required(ErrorMessage = "field is requird")]
         public string address { get; set; }
         [Required]
         [Phone]
-        [MinLength(11,ErrorMessage= "pls enter 11 number")]
+        [MinLength(11, ErrorMessage = "pls enter 11 number")]
         public string Phone { get; set; }
         public char Gender { get; set; }
         [Required(ErrorMessage = "field is requird")]
