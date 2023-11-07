@@ -60,7 +60,6 @@ namespace HRMS.API.Controllers
 
             var employeeDTO = new EmployeeDto()
             {
-                id = Employee.Id,
                 firstName = Employee.FirstName,
                 lastName = Employee.LastName,
                 address = Employee.Address,
