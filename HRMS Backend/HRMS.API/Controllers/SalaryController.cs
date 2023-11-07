@@ -24,7 +24,7 @@ namespace HRMS.API.Controllers
 
         [HttpGet]
         [Route("Get")]
-        public async Task<List<SalaryDTO>>? Get(int pageNumber, int pageSize, string? search, string? month, string? year)
+        public async Task<PaginatedDtO>? Get(int pageNumber, int pageSize, string? search, string? month, string? year)
         {
             return  await _mediator.Send(new GetSalariesQuery()
             {

@@ -1,90 +1,71 @@
+<main class="container">
+  <h1 class="text-center py-5">Salary Report</h1>
 
-<main class="container" >
-
-  <h2 class="text-center py-5">Salary Report</h2>
-
-                               <!-- Search -->
+  <!-- Search -->
   <section class="row">
-    <form >
+    <form>
       <section class="col-lg-8 col-sm-10 offset-sm-1 offset-md-2">
         <input
+          #search
           class="form-control px-4 py-2"
           type="text"
           placeholder="Search by Employee or Department name"
-          formControlName="name"
+          [value]=""
+          (change)="setSearch(search.value)"
         />
       </section>
-
 
       <section class="row my-3">
         <section class="col-md-4 offset-md-2 col-sm-12">
           <label for="month" class="form-label col-md-3 col-sm-3">Month</label>
           <select
-          class="form-select col-md-9 col-sm-9 rounded-2 px-2 py-1 border-1 border-primary"
-          id="month"
-          formControlName="month"
+            #month
+            class="form-select col-md-9 col-sm-9 rounded-2 px-2 py-1 border-1 border-primary"
+            id="month"
+            (change)="setMonth(month.value)"
+          >
+            <option>Select Month</option>
 
-        >
-          <option value="01">January</option>
-          <option value="02">February</option>
-          <option value="03">March</option>
-          <option value="04">April</option>
-          <option value="05">May</option>
-          <option value="06">June</option>
-          <option value="07">July</option>
-          <option value="08">August</option>
-          <option value="09">September</option>
-          <option value="10">October</option>
-          <option value="11">November</option>
-          <option value="12">December</option>
-        </select>
+            <option value="01">January</option>
+            <option value="02">February</option>
+            <option value="03">March</option>
+            <option value="04">April</option>
+            <option value="05">May</option>
+            <option value="06">June</option>
+            <option value="07">July</option>
+            <option value="08">August</option>
+            <option value="09">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+          </select>
         </section>
-
 
         <section class="col-md-4">
           <section>
             <label for="dateT" class="form-label col-md-3 col-sm-12"
-              >Year :</label
-            >
+              >Year
+            </label>
             <select
-      class="form-select col-md-9 col-sm-10 rounded-2 px-2 py-1 border-1 border-primary"
-      id="year"
-      formControlName="year"
-    >
-      <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-    </select>
-          </section>
-        </section>
+              #year
+              class="form-select col-md-9 col-sm-10 rounded-2 px-2 py-1 border-1 border-primary"
+              id="year"
+              (change)="setYear(year.value)"
+            >
+              <option>Select Year</option>
 
-        <section class="offset-md-2">
-          <!-- <small
-            [hidden]="FormValidationState"
-            *ngIf="SearchForm?.errors?.['checkDate']"
-            class="fs-6 text-danger alert-warning"
-            >(To date) can't be previous than (From Date)</small
-          > -->
-        </section>
-        <section class="offset-md-2">
-          <!-- <small
-            [hidden]="FormValidationState"
-            *ngIf="SearchForm?.errors?.['EmptyForm'] && SearchForm?.touched"
-            class="fs-6 text-danger alert-warning"
-            >Form Can't be Empty</small
-          > -->
-        </section>
-        <section class="offset-md-2">
-          <!-- <small
-            [hidden]="!FormValidationState"
-            class="fs-6 text-danger alert-warning"
-            >Enter Valid Data to Form</small
-          > -->
+              <option *ngFor="let year of years" [value]="year">
+                {{ year }}
+              </option>
+            </select>
+          </section>
         </section>
       </section>
       <section>
         <button
           type="button"
           class="btn btn-outline-primary offset-md-5 col-lg-2"
-
+          (click)="onSearch()"
         >
           Search
         </button>
@@ -92,55 +73,74 @@
     </form>
   </section>
 
-                               <!-- table -->
+  <!-- table -->
 
- <section class="m-md-3 row">
+  <section *ngIf="salaryPaginatedList.length > 0" class="m-md-3 row">
     <table class="table table-light table-striped table-hover">
       <thead>
         <tr>
-          <th scope="col">#</th>
-          <th scope="col">Employee</th>
-          <th scope="col">Department</th>
-          <th scope="col">Salary</th>
-          <th scope="col">Attendance Days</th>
-          <th scope="col">Absence Days</th>
-          <th scope="col">Bonus in Hours</th>
-          <th scope="col">penalty in Hours</th>
-          <th scope="col">Total Bonus</th>
-          <th scope="col">Total penalty</th>
-          <th scope="col">Total salary</th>
-          <th scope="col">Actions</th>
+          <th scope="col" class="text-center">#</th>
+          <th scope="col" class="text-center">Employee</th>
+          <th scope="col" class="text-center">Department</th>
+          <th scope="col" class="text-center">Salary</th>
+          <th scope="col" class="text-center">Attendance Days</th>
+          <th scope="col" class="text-center">Absence Days</th>
+          <th scope="col" class="text-center">Bonus in Hours</th>
+          <th scope="col" class="text-center">penalty in Hours</th>
+          <th scope="col" class="text-center">Total Bonus</th>
+          <th scope="col" class="text-center">Total penalty</th>
+          <th scope="col" class="text-center">Total salary</th>
+          <th scope="col" class="text-center">Actions</th>
         </tr>
       </thead>
-      <!-- <tbody *ngFor="let x of DataModel; let i = index">
+      <tbody *ngFor="let x of salaryPaginatedList; let i = index">
         <tr>
-          <th scope="row">{{ i + 1 }}</th>
-          <td>{{ x.dept_Name }}</td>
-          <td>{{ x.emp_Name }}</td>
-          <td>{{ x.arrivalTime | date : "shortTime" }}</td>
-          <td>{{ x.departureTime | date : "shortTime" }}</td>
-          <td>{{ x.attendaceDate | date }}</td>
-          <td>
-            <i
-              (click)="addAttendance(x.emp_ID, x.emp_Name)"
-              data-bs-toggle="modal"
-              data-bs-target="#AttendanceForm"
-              class="fs-5 bi bi-plus-circle-fill text-primary"
-            ></i>
-            <i
-              (click)="deleteAttendance(x.id)"
-              class="fs-5 bi bi-calendar-x-fill mx-2 text-danger"
-            ></i>
-            <i
-              data-bs-toggle="modal"
-              data-bs-target="#AttendanceForm"
-              (click)="editAttendance(x)"
-              class="fs-5 bi bi-pencil-square text-warning"
-            ></i>
+          <th scope="row" class="text-center">{{ i + 1 }}</th>
+          <td class="text-center">{{ x.empName }}</td>
+          <td class="text-center">{{ x.departmentName }}</td>
+          <td class="text-center">{{ x.salary }}</td>
+          <td class="text-center">{{ x.attendance }}</td>
+          <td class="text-center">{{ x.absence }}</td>
+          <td class="text-center">{{ x.specialSettingsBonus }}</td>
+          <td class="text-center">{{ x.specialSettingsPenality }}</td>
+          <td class="text-center">{{ x.totalBouns }}</td>
+          <td class="text-center">{{ x.totalPenality }}</td>
+          <td class="text-center">{{ x.totalSalary }}</td>
+          <td class="text-center">
+            <i class="bi bi-printer text-primary my-auto"></i>
           </td>
         </tr>
-      </tbody> -->
+      </tbody>
     </table>
   </section>
 
+  <!-- Pagination -->
+  <nav
+    *ngIf="salaryPaginatedList.length > 0"
+    aria-label="Page navigation example "
+  >
+    <ul class="pagination">
+      <li class="page-item">
+        <a class="page-link" (click)="previous()">Previous</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link">{{ pageNumber }}</a>
+      </li>
+      <li class="page-item"><a class="page-link" (click)="next()">Next</a></li>
+    </ul>
+  </nav>
+
+  <div
+    *ngIf="salaryPaginatedList.length == 0"
+    class="d-flex justify-content-center"
+  >
+    <div class="grey-circle">
+      <img src="./../../../assets/Images/images.png" />
+    </div>
+  </div>
+  <div *ngIf="salaryPaginatedList.length == 0">
+    <h1 class="text-center text-lg-center bg-danger text-light">
+      NO DATA FOUND
+    </h1>
+  </div>
 </main>
