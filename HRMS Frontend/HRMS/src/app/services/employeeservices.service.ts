@@ -27,11 +27,8 @@ export class EmployeeservicesService
   {
    return this.http.delete('https://localhost:7073/api/Employee/'+employeeid)
   }
-<<<<<<< HEAD
-=======
   editEmployee(employee:IEmployee)
   {
    return this.http.put('https://localhost:7073/api/Employee/'+employee.id,employee)
   }
->>>>>>> 212673c5ece2ccb80710cbc49d810ea9509e29e8
 }
