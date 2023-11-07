@@ -143,7 +143,7 @@ namespace HRMS.API.Controllers
         {
             if (Data.Id != null && Data.Id != 0)
             {
-                var result = generalSettingRepository.GetById(Data.Id);
+                var result = generalSettingRepository.GetById((int)Data.Id);
                 if(result != null)
                 {
                         result.Bonus = Data.Bonus;
