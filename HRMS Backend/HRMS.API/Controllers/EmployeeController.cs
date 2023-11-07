@@ -31,7 +31,7 @@ namespace HRMS.API.Controllers
             foreach (var employee in Employee)
             {
 		        var employeeDTO = new EmployeeDto()
-		        {
+		        {   
                     id=employee.Id,
 			        firstName = employee.FirstName,
 			        lastName = employee.LastName,
@@ -45,6 +45,7 @@ namespace HRMS.API.Controllers
 			        salary = employee.salary,
 			        ArrivalTime = employee.ArrivalTime,
 			        LeaveTime = employee.LeaveTime,
+                    DepartID = employee.DepartID
 		        };
                 employees.Add(employeeDTO);
 	        }
@@ -60,7 +61,6 @@ namespace HRMS.API.Controllers
 
             var employeeDTO = new EmployeeDto()
             {
-                id = Employee.Id,
                 firstName = Employee.FirstName,
                 lastName = Employee.LastName,
                 address = Employee.Address,
@@ -80,7 +80,7 @@ namespace HRMS.API.Controllers
 
 
         [HttpPost]
-        public ActionResult<EmployeeDto> Create(EmployeeDto employeeDto)
+        public ActionResult<EmployeeDto> Create( EmployeeDto employeeDto)
         {
             var employee = new Employee()
             {
@@ -96,11 +96,8 @@ namespace HRMS.API.Controllers
                 salary = employeeDto.salary,
                 ArrivalTime = employeeDto.ArrivalTime,
                 LeaveTime = employeeDto.LeaveTime,
+                DepartID= employeeDto.DepartID
             };
-
-            //علشان امشى حالى بس هى غلط
-            employee.DepartID = 1;
-
             _genaricrepository.Create(employee);
             return Ok(employeeDto);
         }
@@ -109,10 +106,8 @@ namespace HRMS.API.Controllers
         public IActionResult Edite(int id,EmployeeDto employeeDto)
         {
             var emp = _genaricrepository.GetById(id);
-
             if (emp == null)
                 return NotFound($"No Employee with this {emp.Id}");
-
             emp.FirstName = employeeDto.firstName;
             emp.Address = employeeDto.address;
             emp.Phone = employeeDto.Phone;
@@ -125,7 +120,6 @@ namespace HRMS.API.Controllers
             emp.ArrivalTime = employeeDto.ArrivalTime;
             emp.LeaveTime = employeeDto.LeaveTime;
             _genaricrepository.Edite(emp);
-
             return Ok();
 
         }

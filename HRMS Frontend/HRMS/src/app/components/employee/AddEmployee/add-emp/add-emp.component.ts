@@ -20,7 +20,7 @@ export class AddEmpComponent implements OnInit {
       firstName: new FormControl ('', Validators.required),
       lastName: new FormControl ('', Validators.required),
       address: new FormControl ('', Validators.required),
-      phone: new FormControl ('', [Validators.required, Validators.pattern("^[0-9]{11}$")]),
+      phone: new FormControl ('', [Validators.required,Validators.pattern("^[0-9]{11}$")]),
       gender: new FormControl ('', Validators.required),
       nationality: new FormControl ('', Validators.required),
       nationalId: new FormControl ('', [Validators.required,Validators.pattern("^[0-9]{14}$")]),

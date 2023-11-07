@@ -23,21 +23,15 @@ export class UserService {
     });
 
     Login(loginModel: LoginModel){
+
         return this.httpClient.post<AuthenticationModel>(`${this.baseURL}/login`, loginModel,{
             headers: new HttpHeaders({ "Content-Type": "application/json"})
         });
     }
 
     Register(registerModel: RegisterModel){
-        return this.httpClient.post("http://localhost:5190/api/User/Register", registerModel,{
+        return this.httpClient.post(`${this.baseURL}/Register`, registerModel,{
             headers: new HttpHeaders({ "Content-Type": "application/json", 'Authorization': `Bearer ${this.tokenGetter}`}),
-            responseType: "text"
-        });
-    }
-
-    TestCORS(){
-        return this.httpClient.get(`${this.baseURL}`, {
-            headers: this.headers(),
             responseType: "text"
         });
     }

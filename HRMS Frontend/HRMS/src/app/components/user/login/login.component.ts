@@ -21,6 +21,14 @@ export class LoginComponent implements OnDestroy{
         Password: new FormControl('', [Validators.required])
     });
 
+    get userName(){
+        return this.loginForm.controls.UserName;
+    }
+
+    get password(){
+        return this.loginForm.controls.Password;
+    }
+
     loginUserSubscription?: Subscription;
 
     message?: string;
@@ -28,7 +36,6 @@ export class LoginComponent implements OnDestroy{
 
     login(e: Event): void{
         e.preventDefault();
-
         if(this.loginForm.valid){
             let loginModel: LoginModel = this.loginForm.value as LoginModel;
             this.loginUserSubscription = this.userService.Login(loginModel).subscribe({
@@ -50,7 +57,7 @@ export class LoginComponent implements OnDestroy{
                         Name: err.name,
                         Message: err.message
                     }
-                    console.log(errorObj);
+                    console.log(err);
                 }
             });
         }
