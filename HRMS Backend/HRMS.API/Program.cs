@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using HRMS.Domain.Models;
 
 string MyAllowSpecificOrigins = "m";
 
@@ -53,6 +54,7 @@ builder.Services.AddSwaggerGen(opt =>
 builder.Services.AddDbContext<DBContext>(o=>o.UseSqlServer(builder.Configuration.GetConnectionString("DB")));
 builder.Services.AddIdentity<AppUser,IdentityRole>().AddEntityFrameworkStores<DBContext>();
 builder.Services.AddScoped(typeof(IGenaricrepository<>), typeof(GenaricRepository<>));
+builder.Services.AddScoped<IGeneralSettingRepository, GeneralSettingRepository>();
 builder.Services.AddAuthentication(options =>
 	{
 		options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
