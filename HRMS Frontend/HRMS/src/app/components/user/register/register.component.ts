@@ -25,6 +25,26 @@ export class RegisterComponent implements OnDestroy{
         Role: new FormControl('',[Validators.required]),
     });
 
+    get fullNameInput(){
+      return this.registerForm.controls.FullName;
+    }
+
+    get userNameInput(){
+      return this.registerForm.controls.UserName;
+    }
+
+    get emailInput(){
+      return this.registerForm.controls.Email;
+    }
+
+    get passwordInput(){
+      return this.registerForm.controls.Password;
+    }
+
+    get rolenput(){
+      return this.registerForm.controls.Role;
+    }
+
     registerUserSubscriper?: Subscription;
 
     errors?: string;
@@ -45,19 +65,6 @@ export class RegisterComponent implements OnDestroy{
                 }
             })
         }
-    }
-
-
-    testCORS(){
-        this.userService.TestCORS().subscribe({
-            next: (response) => {
-                console.log(response)
-            },
-
-            error: (err) => {
-                console.log("error");
-            }
-        })
     }
 
     ngOnDestroy(): void {

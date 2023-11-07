@@ -51,6 +51,34 @@ namespace HRMS.API.Controllers
             return Ok(employees);
         }
 
+        [HttpGet("{id:int}")]
+        public ActionResult<Employee> GetEmployeeByID(int id)
+        {
+            var Employee = _genaricrepository.GetById(id);
+            if (Employee is null)
+                return NotFound();
+
+            var employeeDTO = new EmployeeDto()
+            {
+                id = Employee.Id,
+                firstName = Employee.FirstName,
+                lastName = Employee.LastName,
+                address = Employee.Address,
+                Phone = Employee.Phone,
+                Gender = Employee.Gender,
+                Nationality = Employee.Nationality,
+                BirthDate = Employee.BirthDate,
+                NationalId = Employee.NationalId,
+                HireDate = Employee.HireDate,
+                salary = Employee.salary,
+                ArrivalTime = Employee.ArrivalTime,
+                LeaveTime = Employee.LeaveTime,
+            };
+
+            return Ok(employeeDTO);
+        }
+
+
         [HttpPost]
         public ActionResult<EmployeeDto> Create([FromForm] EmployeeDto employeeDto)
         {
@@ -74,11 +102,9 @@ namespace HRMS.API.Controllers
             return Ok(employeeDto);
         }
 
-        [HttpPut("{id}"),Authorize(Roles="programmerr")]
-        public IActionResult Edite(int id, [FromForm] EmployeeDto employeeDto)
+        [HttpPut("{id}")]
+        public IActionResult Edite(int id,EmployeeDto employeeDto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
             var emp = _genaricrepository.GetById(id);
             if (emp == null)
                 return NotFound($"No Employee with this {emp.Id}");
