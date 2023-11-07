@@ -5,10 +5,11 @@ import { IEmployee } from '../models/iemployee';
 @Injectable({
   providedIn: 'root'
 })
-export class EmployeeservicesService {
+export class EmployeeservicesService 
+{
   constructor(public http :HttpClient) { }
 
-  GetAllEmployees() :any
+  GetAllEmployees():any
   {
    return this.http.get("https://localhost:7073/api/Employee")
   }
@@ -21,6 +22,4 @@ export class EmployeeservicesService {
   {
    return this.http.delete('https://localhost:7073/api/Employee/'+employeeid)
   }
-
- 
 }
