@@ -1,11 +1,11 @@
 <div class="container my-5">
   <h2>Employees</h2>
 
-  <a routerLink="/employee/add" type="button" class="btn btn-outline-primary p-2">
+  <a routerLink="/employee/0" type="button" class="btn btn-outline-primary p-2">
     Add Employee</a
   >
 
-  <table class="table table-striped table-hover p-4 ">
+  <table class="table table-striped table-hover p-4">
     <thead>
       <tr class="text-primary">
         <th scope="col">Id</th>
@@ -32,7 +32,11 @@
         <td>{{ emp.birthDate }}</td>
         <td>{{ emp.hireDate }}</td>
         <td>
-          <i class="bi bi-pencil-fill text-warning p-2 "> </i>
+          <i
+            (click)="editEmployee(emp.id)"
+            class="bi bi-pencil-fill text-warning p-2"
+          >
+          </i>
           <!-- <i class="bi bi-person-plus text-primary p-2" ></i> -->
           <i
             (click)="deleteEmployee(emp.id)"

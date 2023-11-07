@@ -8,9 +8,14 @@ import { IEmployee } from '../models/iemployee';
 export class EmployeeservicesService {
   constructor(public http :HttpClient) { }
 
-  GetAllEmployees() :any
+  GetAllEmployees():any
   {
    return this.http.get("https://localhost:7073/api/Employee")
+  }
+
+  GetEmployee(id:number):any
+  {
+   return this.http.get("https://localhost:7073/api/Employee/"+id)
   }
 
   AddEmployee(AddEmployee:IEmployee):any
@@ -21,6 +26,8 @@ export class EmployeeservicesService {
   {
    return this.http.delete('https://localhost:7073/api/Employee/'+employeeid)
   }
-
- 
+  editEmployee(employee:IEmployee)
+  {
+   return this.http.put('https://localhost:7073/api/Employee/'+employee.id,employee)
+  }
 }

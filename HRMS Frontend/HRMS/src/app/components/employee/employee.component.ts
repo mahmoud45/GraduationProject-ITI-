@@ -1,6 +1,7 @@
 import { EmployeeservicesService } from './../../services/employeeservices.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { IEmployee } from 'src/app/models/iemployee';
 
 @Component({
@@ -13,7 +14,7 @@ export class EmployeeComponent implements OnInit {
   selectedEmployee: IEmployee | null = null;
   employees: IEmployee[] = []; 
   Employee:any;
-  constructor(private _Employeeservices:EmployeeservicesService) {}
+  constructor(private _Employeeservices:EmployeeservicesService,private router:Router) {}
   ngOnInit() : void {
       this._Employeeservices.GetAllEmployees().subscribe({
         next: (response:any)=>{
@@ -29,15 +30,19 @@ export class EmployeeComponent implements OnInit {
 
     if (userConfirmed)
      {
-this._Employeeservices.deleteEmployee(EmployeeId).subscribe(
-{
-  next: ()=>{
-    this.employees=this.employees.filter(
-      (Employee:any)=>Employee.id!=EmployeeId);
-  },
+    this._Employeeservices.deleteEmployee(EmployeeId).subscribe(
+    {
+      next: ()=>{
+        this.employees=this.employees.filter(
+          (Employee:any)=>Employee.id!=EmployeeId);
+      },
 
-})};
-};
+    })};
+  };
+  editEmployee(id:number)
+  {
+    this.router.navigate([`/employee/${id}`]);
+  };
 }
  
   

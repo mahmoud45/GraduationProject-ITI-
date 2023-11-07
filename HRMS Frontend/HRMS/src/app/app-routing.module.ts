@@ -11,7 +11,7 @@ import { AttendanceComponent } from './components/attendance/attendance.componen
 const routes: Routes = [
     {path: '', component: HomeComponent},
     {path:'employee',component:EmployeeComponent},
-    { path:'employee/add',component:AddEmpComponent},
+    {path:'employee/:id',component:AddEmpComponent},
     {path: 'login', component: LoginComponent},
     {path: 'register', component: RegisterComponent, data: {allowedRoles: ["HumanResource"]}, canActivate: [AuthGuard]},
     {path:'attendance',component: AttendanceComponent},
