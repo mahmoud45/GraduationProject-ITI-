@@ -8,27 +8,44 @@
                 <div class="mb-3">
                     <label for="FullName" class="form-label">FullName</label>
                     <input type="text" class="form-control" id="FullName" formControlName="FullName">
+                    <ng-container *ngIf="fullNameInput.touched">
+                      <span *ngIf="fullNameInput.hasError('required')" class="text-danger">Fullname is required</span>
+                      <span *ngIf="fullNameInput.hasError('minlength')" class="text-danger">Fullname length too short</span>
+                    </ng-container>
                 </div>
                 <div class="mb-3">
                     <label for="Username" class="form-label">Username</label>
                     <input type="text" class="form-control" id="Username" formControlName="UserName">
+                    <ng-container *ngIf="userNameInput.touched">
+                      <span *ngIf="userNameInput.hasError('required')" class="text-danger">Username is required</span>
+                      <span *ngIf="userNameInput.hasError('minlength')" class="text-danger">Username length too short</span>
+                    </ng-container>
                 </div>
                 <div class="mb-3">
                     <label for="Email" class="form-label">Email</label>
                     <input type="email" class="form-control" id="Email" formControlName="Email">
+                    <ng-container *ngIf="emailInput.touched">
+                      <span *ngIf="emailInput.hasError('required')" class="text-danger">Email is required</span>
+                      <span *ngIf="emailInput.hasError('email')" class="text-danger">Email is not valid</span>
+                    </ng-container>
                 </div>
                 <div class="mb-3">
                     <label for="Password" class="form-label">Password</label>
                     <input type="password" class="form-control" id="Password" formControlName="Password">
+                    <ng-container *ngIf="passwordInput.hasError('required') && passwordInput.touched">
+                      <span class="text-danger">Password is required</span>
+                    </ng-container>
                 </div>
-                <select formControlName="Role" class="form-select mb-3">
+                <select formControlName="Role" class="form-select">
                     <option value="" selected>--Select Role--</option>
                     <option value="User">User</option>
                     <option value="HumanResource">Human Resource</option>
                 </select>
-                <button type="submit" class="btn btn-success">Register</button>
+                <ng-container *ngIf="rolenput.touched">
+                  <span *ngIf="rolenput.hasError('required')" class="text-danger mb-2">Role is required</span>
+                </ng-container>
+                <button type="submit" class="btn btn-success d-block mt-3">Register</button>
             </form>
-            <button class="btn btn-primary" (click)="testCORS()">Test</button>
         </div>
     </div>
 </div>
