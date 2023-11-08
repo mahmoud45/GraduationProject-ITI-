@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { DepartmentComponent } from './components/department/department.component';
 import { DepartmentFormComponent } from './components/department/department-form/department-form.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 
 export function tokenGetter() {
@@ -37,6 +38,7 @@ declarations:
     AddEmpComponent,
     DepartmentComponent,
     DepartmentFormComponent,
+    NotFoundComponent,
 ],  
 imports: [
         BrowserModule,

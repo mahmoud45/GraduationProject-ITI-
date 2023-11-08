@@ -77,7 +77,7 @@ builder.Services.AddScoped(typeof(IGenaricrepository<>), typeof(GenaricRepositor
 //			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
 //        }; 
 //});
-//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.Load("HRMS.Application")));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.Load("HRMS.Application")));
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
