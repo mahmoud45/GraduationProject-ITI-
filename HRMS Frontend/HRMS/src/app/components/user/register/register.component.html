@@ -38,8 +38,7 @@
                 </div>
                 <select formControlName="Role" class="form-select">
                     <option value="" selected>--Select Role--</option>
-                    <option value="User">User</option>
-                    <option value="HumanResource">Human Resource</option>
+                    <option *ngFor="let role of roles" value="{{ role?.name }}">{{ role?.name }}</option>
                 </select>
                 <ng-container *ngIf="rolenput.touched">
                   <span *ngIf="rolenput.hasError('required')" class="text-danger mb-2">Role is required</span>

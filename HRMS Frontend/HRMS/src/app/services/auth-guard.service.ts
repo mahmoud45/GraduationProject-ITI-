@@ -1,7 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -20,18 +19,34 @@ export class AuthGuardService {
 
     hasRole(token: string, allowedRoles: string[]){
         const decodedToken = this.jwtHelper.decodeToken(token);
+        if(allowedRoles === undefined)
+          return true;
 
         for(let key in decodedToken){
             if(key.includes("role")){
                 return allowedRoles.some(role => decodedToken[key].includes(role));
             }
         }
-
         return false;
+    }
+
+    hasPermission(token: string, allowedPermissions: string[]){
+      const decodedToken = this.jwtHelper.decodeToken(token);
+
+      if(allowedPermissions === undefined)
+        return true;
+
+      for(let key in decodedToken){
+        if(key.includes("permission")){
+            return allowedPermissions.some(permission => decodedToken[key].includes(permission));
+        }
+      }
+      return false;
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Promise<boolean> {
         const roles = route.data['allowedRoles'];
+        const permissions = route.data['allowedPermissions'];
 
         const token = localStorage.getItem("jwt") ?? "";
 
@@ -39,7 +54,7 @@ export class AuthGuardService {
             return this.router.navigate(['login']);
         }
 
-        if(this.hasRole(token, roles)){
+        if(this.hasRole(token, roles) && this.hasPermission(token, permissions)){
             return true;
         }
 
