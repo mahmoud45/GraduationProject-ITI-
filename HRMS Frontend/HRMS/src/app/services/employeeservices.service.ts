@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IEmployee } from '../models/iemployee';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ import { IEmployee } from '../models/iemployee';
 export class EmployeeservicesService {
   constructor(public http :HttpClient) { }
 
-  GetAllEmployees():any
+  GetAllEmployees(): Observable<any>
   {
    return this.http.get("https://localhost:7073/api/Employee")
   }

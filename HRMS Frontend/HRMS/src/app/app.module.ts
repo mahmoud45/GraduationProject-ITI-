@@ -15,6 +15,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
+import { GeneralSettingComponent } from './components/general-setting/general-setting.component';
 
 
 export function tokenGetter() {
@@ -33,6 +34,7 @@ declarations:
     SalaryComponent,
     EmployeeComponent,
     AddEmpComponent,
+    GeneralSettingComponent,
 ],
 imports: [
         BrowserModule,
