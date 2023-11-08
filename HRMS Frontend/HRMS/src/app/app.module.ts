@@ -34,25 +34,31 @@ declarations:
     SalaryComponent,
     EmployeeComponent,
     AddEmpComponent,
-    GeneralSettingComponent
+    GeneralSettingComponent,
+    DepartmentComponent,
+    DepartmentFormComponent,
+    VacationsComponent,
+     RolesComponent,
 ],  
 imports: [
-  BrowserModule,
-  AppRoutingModule,
-  ReactiveFormsModule,
-  HttpClientModule,
-  FormsModule,
-  MatSlideToggleModule,
-  JwtModule.forRoot({
-      config: {
-          tokenGetter: tokenGetter,
-          allowedDomains: ['*'],
-          disallowedRoutes: [],
-      },
-  }),
-],
-providers: [],
-bootstrap: [AppComponent],
+        BrowserModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        FormsModule,
+        MatSlideToggleModule,
+        FormsModule,
+        JwtModule.forRoot({
+            config: {
+                tokenGetter: tokenGetter,
+                allowedDomains: ['*'],
+                disallowedRoutes: [],
+            },
+        }),
+    ],
+
+providers: [RoleService],
+bootstrap: [AppComponent,RolesComponent],
 })
 export class AppModule { }
 

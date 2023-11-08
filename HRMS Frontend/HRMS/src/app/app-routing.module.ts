@@ -16,8 +16,11 @@ const routes: Routes = [
     {path: 'login', component: LoginComponent},
     {path: 'register', component: RegisterComponent, data: {allowedRoles: ["HumanResource"]}, canActivate: [AuthGuard]},
     {path:'attendance',component: AttendanceComponent},
-    {path:'GeneralSettings',component:GeneralSettingComponent}
-]
+    {path:'vacations',component: VacationsComponent},
+    {path:'departmentForm',component: DepartmentFormComponent},
+    {path:'department',component: DepartmentComponent},
+    {path:'GeneralSettings',component:GeneralSettingComponent},
+];
 
 @NgModule({
     imports: [RouterModule.forRoot(routes)],
