@@ -10,6 +10,8 @@ using HRMS.Domain.Models;
 using HRMS.Application.Repository;
 using HRMS.Application.Services.AttendanceServices;
 using HRMS.Application.Models.AttendancesDTO;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Net;
 
 namespace HRMS.API.Controllers
 {
@@ -26,23 +28,76 @@ namespace HRMS.API.Controllers
             attendanceService = new AttendanceService();
 		}
 
-        // GET: api/Attendance
-        [HttpGet]
-        public ActionResult<List<AttendanceDTO>> GetAttendances()
+		// GET: api/Attendance
+		[Route("/FDattendance", Name = "GetAttendancesByDates")]
+		[HttpGet]
+		public ActionResult<List<AttendanceDTO>> GetAttendancesByDates()
         {
-            return attendanceService.GetListAttendanceDTO(attendanceRepository.getAllAttendances());
-        }
+			Request.Headers.TryGetValue("Pnum", out var PageNumber);
+			Request.Headers.TryGetValue("FDate", out var FromDate);
+			Request.Headers.TryGetValue("TDate", out var ToDate);
+
+			List<AttendanceDTO> list = attendanceService.GetListAttendanceDTO(attendanceRepository.getAllAttendancesByDates(
+				int.Parse(PageNumber), DateTime.Parse(FromDate), DateTime.Parse(ToDate)));
+
+
+			//List<AttendanceDTO> list = attendanceService.GetListAttendanceDTO(attendanceRepository.getAllAttendances(
+			//	1, new DateTime(2020,1,20), DateTime.Now.AddDays(10)));
+
+			HttpContext.Response.Headers.Add("next",list.Count>10?"true":"false");
+
+			//Response.Headers.Add("Access-Control-Expose-Headers", "next,name");
+
+			return list.Take(10).ToList();
+		}
+
+		[Route("/attendance", Name = "GetAttendances")]
+		[HttpGet]
+		public ActionResult<List<AttendanceDTO>> GetAttendances()
+		{
+			Request.Headers.TryGetValue("Pnum", out var PageNumber);
+
+			List<AttendanceDTO> list = attendanceService.GetListAttendanceDTO(attendanceRepository.getAllAttendances(
+				int.Parse(PageNumber)));
+
+			HttpContext.Response.Headers.Add("next", list.Count > 10 ? "true" : "false");
+
+			return list.Take(10).ToList();
+		}
+
+		[Route("/FDsearch/{name:alpha}", Name = "GetAttendancesByNameByDates")]
+		[HttpGet]
+		public ActionResult<List<AttendanceDTO>> GetAttendancesByNameByDates(string name)
+		{
+			Request.Headers.TryGetValue("Pnum", out var PageNumber);
+			Request.Headers.TryGetValue("FDate", out var FromDate);
+			Request.Headers.TryGetValue("TDate", out var ToDate);
+
+			List<AttendanceDTO> list = attendanceService.GetListAttendanceDTO(attendanceRepository.getAttendancesByNameByDates
+				(name,int.Parse(PageNumber), DateTime.Parse(FromDate), DateTime.Parse(ToDate)));
+
+			HttpContext.Response.Headers.Add("next", list.Count > 10 ? "true" : "false");
+			return list.Take(10).ToList();
+		}
+
 		[Route("/search/{name:alpha}", Name = "GetAttendancesByName")]
 		[HttpGet]
 		public ActionResult<List<AttendanceDTO>> GetAttendancesByName(string name)
 		{
-			return attendanceService.GetListAttendanceDTO(attendanceRepository.getAttendancesByName(name));
+			Request.Headers.TryGetValue("Pnum", out var PageNumber);
+
+			List<AttendanceDTO> list = attendanceService.GetListAttendanceDTO(attendanceRepository.getAttendancesByName
+				(name, int.Parse(PageNumber)));
+
+			HttpContext.Response.Headers.Add("next", list.Count > 10 ? "true" : "false");
+			return list.Take(10).ToList();
 		}
+
 		[Route("/emp/{emp_name:alpha}", Name = "GetAttendancesByEmployeeName")]
         [HttpGet]
         public ActionResult<List<AttendanceDTO>> GetAttendancesByEmployeeName(string emp_name)
         {
-            return attendanceService.GetListAttendanceDTO(attendanceRepository.getAttendancesByEmployeeName(emp_name));
+			return attendanceService.GetListAttendanceDTO(attendanceRepository.getAttendancesByEmployeeName(emp_name));
         }
         [Route("/dept/{dept_name:alpha}", Name = "GetAttendancesByDepartmentName")]
 		[HttpGet]

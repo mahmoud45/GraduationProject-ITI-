@@ -1,7 +1,7 @@
 import { IAttendanceModel } from './../../models/iattendance-model';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { LoginAPIService } from 'src/app/services/login-api.service';
+import { AttendanceAPIService } from 'src/app/services/attendance-api.service';
 import { emptyForm } from 'src/app/validators/AttendanceForm_Empty';
 import { checkDates } from 'src/app/validators/AttendanceForm_checkDates';
 
@@ -10,11 +10,16 @@ import { checkDates } from 'src/app/validators/AttendanceForm_checkDates';
   templateUrl: './attendance.component.html',
   styleUrls: ['./attendance.component.css']
 })
-export class AttendanceComponent  {
+export class AttendanceComponent implements OnInit {
+
+  PageNumber:number=0;
+  next:boolean=false;
+  AllEmployees:{id:number,firstName:string,lastName:string}[]=[];
 
   FormValidationState:boolean=false;
   SearchForm: FormGroup;
   attendanceForm=new FormGroup({
+    empID:new FormControl(0,Validators.required),
     arrivalTime: new FormControl("",Validators.required),
     departureTime: new FormControl("",Validators.required),
     attendanceDate: new FormControl("",Validators.required)
@@ -23,7 +28,7 @@ export class AttendanceComponent  {
   DataModel:IAttendanceModel[]=[];
   AttendanceModel:IAttendanceModel=this.initializeAttendanceModel();
 
-  constructor(private api : LoginAPIService,private fb: FormBuilder){
+  constructor(private api : AttendanceAPIService,private fb: FormBuilder){
     this.SearchForm = this.fb.group(({
       name: new FormControl(""),
       dateF: new FormControl(""),
@@ -32,75 +37,119 @@ export class AttendanceComponent  {
       validators: [checkDates(),emptyForm()]
     });
   }
+  ngOnInit(): void {
+    this.api.getEmployees().subscribe({
+        next:(response:any)=>{
+          this.AllEmployees = response;        
+        },
+        error:()=>{
+          window.alert("error in loading employees data")
+        },
+        complete:()=>{}
+      });
+  }
   
   getDataSubmit(e:Event){
     e.preventDefault()
-    if(this.SearchForm.invalid)
-      return;
-    
+    this.PageNumber=0;
     this.getData()
   }
   getData(){
-
     if(this.SearchForm.invalid){
       this.FormValidationState = true;
       return;
     }
     this.FormValidationState=false;
 
+    console.log(this.SearchForm.get("dateF")?.value);
+    console.log(this.SearchForm.get("dateT")?.value);
+    
+
     if(this.SearchForm.get("name")?.value){
-      this.api.getAllAttendanceByName(this.SearchForm.get("name")?.value).subscribe({
+      if (this.SearchForm.get("dateF")?.value && this.SearchForm.get("dateT")?.value) {
+        this.api.getAllAttendanceByNameByDates(this.SearchForm.get("name")?.value,
+        new Date(this.SearchForm.get("dateF")?.value),
+        new Date(this.SearchForm.get("dateT")?.value),this.PageNumber).subscribe({
             next:(response:any)=>{
-              this.DataModel = response;        
+              this.DataModel = response.body;
+              this.next= response.headers.get("next")==="true"?true:false;        
             },
-            error:()=>{},
+            error:()=>{
+              window.alert("error in retrieving data")
+            },
             complete:()=>{
-              if(this.SearchForm.get("dateF")?.value&&this.SearchForm.get("dateT")?.value){
-                this.filterDataByDate()
-              } 
+            }
+          });  
+      }
+      else{
+        this.api.getAllAttendanceByName(this.SearchForm.get("name")?.value,this.PageNumber).subscribe({
+            next:(response:any)=>{
+              this.DataModel = response.body;
+              this.next= response.headers.get("next")==="true"?true:false;        
+            },
+            error:()=>{
+              window.alert("error in retrieving data")
+            },
+            complete:()=>{
             }
           });
+      }
     }
-    else{
-      this.api.getAllAttendance().subscribe({
-        next:(response:any)=>{
-          this.DataModel = response;                  
-        },
-        error:()=>{},
-        complete:()=>{
-          if(this.SearchForm.get("dateF")?.value&&this.SearchForm.get("dateT")?.value){
-            this.filterDataByDate()
-          }
-        }
-      });
+    else{  
+      if (this.SearchForm.get("dateF")?.value && this.SearchForm.get("dateT")?.value) {
+      
+        this.api.getAllAttendanceByDates(new Date(this.SearchForm.get("dateF")?.value),
+        new Date(this.SearchForm.get("dateT")?.value),this.PageNumber).subscribe({
+            next:(response:any)=>{
+              this.DataModel = response.body;     
+              this.next= response.headers.get("next")==="true"?true:false;        
+            },
+            error:()=>{
+              window.alert("error in retrieving data")
+            },
+            complete:()=>{
+            }
+        });
+      }
+      else{
+        this.api.getAllAttendance(this.PageNumber).subscribe({
+            next:(response:any)=>{
+              this.DataModel = response.body;     
+              this.next= response.headers.get("next")==="true"?true:false;        
+            },
+            error:()=>{
+              window.alert("error in retrieving data")
+            },
+            complete:()=>{
+            }
+        });
+      }
     }
   }
 
-  filterDataByDate(){
-    const data:IAttendanceModel[] = this.DataModel;
-    this.DataModel=[];
-    for (const key of data) {
-      if (new Date(key.attendanceDate).toISOString().split('T')[0]
-      >=new Date(this.SearchForm.get("dateF")?.value).toISOString().split('T')[0]
-      && new Date(key.attendanceDate).toISOString().split('T')[0]
-      <=new Date(this.SearchForm.get("dateT")?.value).toISOString().split('T')[0]) 
-      {
-        this.DataModel.push(key)
-      }
-    } 
-  }
-  addAttendance(emp_ID:number,emp_name:string){
+  // filterDataByDate(){
+  //   const data:IAttendanceModel[] = this.DataModel;
+  //   this.DataModel=[];
+  //   for (const key of data) {
+  //     if (new Date(key.attendanceDate).toISOString().split('T')[0]
+  //     >=new Date(this.SearchForm.get("dateF")?.value).toISOString().split('T')[0]
+  //     && new Date(key.attendanceDate).toISOString().split('T')[0]
+  //     <=new Date(this.SearchForm.get("dateT")?.value).toISOString().split('T')[0]) 
+  //     {
+  //       this.DataModel.push(key)
+  //     }
+  //   } 
+  // }
+  addAttendance(){
+
     this.AttendanceModel=this.initializeAttendanceModel();
 
     this.attendanceForm.get("arrivalTime")?.setValue("");
     this.attendanceForm.get("departureTime")?.setValue("");
     this.attendanceForm.get("attendanceDate")?.setValue("");
-
-    this.AttendanceModel.emp_ID=emp_ID;
-    this.AttendanceModel.emp_Name=emp_name;
+    
+    this.attendanceForm.markAsUntouched();
   }
-
-
   editAttendance(DTOModel:IAttendanceModel){
     this.AttendanceModel=DTOModel;
 
@@ -110,6 +159,7 @@ export class AttendanceComponent  {
     this.attendanceForm.get("arrivalTime")?.setValue(arrivalTime.substring(0,arrivalTime.lastIndexOf(':')));
     this.attendanceForm.get("departureTime")?.setValue(departureTime.substring(0,departureTime.lastIndexOf(':')));
     this.attendanceForm.get("attendanceDate")?.setValue(this.AttendanceModel.attendanceDate.toString().split('T')[0]);
+    this.attendanceForm.get("empID")?.setValue(this.AllEmployees.find(x=>x.id==this.AttendanceModel.emp_ID)?.id??0 )
   }
   deleteAttendance(attendanceID:any){
     const userConfirmed = window.confirm('Do you really want to delete this?');
@@ -148,6 +198,9 @@ export class AttendanceComponent  {
     if(this.attendanceForm.invalid)
       return;
 
+    let empID:any =this.attendanceForm.get("empID")?.value;
+    this.AttendanceModel.emp_ID= parseInt(empID);
+    
     this.AttendanceModel.arrivalTime = this.convertTimeToDate(this.attendanceForm.get('arrivalTime')?.value); 
     this.AttendanceModel.departureTime = this.convertTimeToDate(this.attendanceForm.get('departureTime')?.value)
     let date:any = this.attendanceForm.get('attendanceDate')?.value;
@@ -184,5 +237,9 @@ export class AttendanceComponent  {
     date.setUTCHours(parseInt(time?.split(":")[0]));
     date.setUTCMinutes(parseInt(time.split(":")[1]));
     return date;
+  }
+  getOtherPage(PNumber:number){
+    PNumber>0 ? this.PageNumber++ : this.PageNumber--;
+    this.getData()
   }
 }

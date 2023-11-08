@@ -56,28 +56,28 @@ builder.Services.AddIdentity<AppUser,IdentityRole>().AddEntityFrameworkStores<DB
 
 builder.Services.AddScoped(typeof(IGenaricrepository<>), typeof(GenaricRepository<>));
 
-builder.Services.AddAuthentication(options =>
-	{
-		options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-		options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-		options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+//builder.Services.AddAuthentication(options =>
+//	{
+//		options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//		options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//		options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 
-	}).AddJwtBearer(options => {
-		options.SaveToken = true;
-		options.RequireHttpsMetadata = false;
-		options.TokenValidationParameters = new TokenValidationParameters()
-		{
-			ValidateIssuer = true,
-			ValidIssuer = builder.Configuration["JWT:Issuer"],
+//	}).AddJwtBearer(options => {
+//		options.SaveToken = true;
+//		options.RequireHttpsMetadata = false;
+//		options.TokenValidationParameters = new TokenValidationParameters()
+//		{
+//			ValidateIssuer = true,
+//			ValidIssuer = builder.Configuration["JWT:Issuer"],
 
-			ValidateAudience = true,
-			ValidAudience = builder.Configuration["JWT:Audience"],
+//			ValidateAudience = true,
+//			ValidAudience = builder.Configuration["JWT:Audience"],
 
-			ValidateIssuerSigningKey = true,
-			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
-        }; 
-});
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.Load("HRMS.Application")));
+//			ValidateIssuerSigningKey = true,
+//			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
+//        }; 
+//});
+//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.Load("HRMS.Application")));
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
@@ -93,7 +93,7 @@ builder.Services.AddCors(options =>
 	options.AddPolicy(MyAllowSpecificOrigins,
 	builder =>
 	{
-		builder.AllowAnyOrigin();
+		builder.AllowAnyOrigin().WithExposedHeaders("next"); ;
 		builder.AllowAnyMethod();
 		builder.AllowAnyHeader();
 	});
@@ -109,7 +109,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+	
 app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthentication();
@@ -122,7 +122,7 @@ using (var serviceScope = app.Services.CreateScope())
     var dbContext = serviceScope.ServiceProvider.GetRequiredService<DBContext>();
     var serviceProvider = serviceScope.ServiceProvider;
     
-    SeedContext.Seed(dbContext, serviceProvider);
+    //SeedContext.Seed(dbContext, serviceProvider);
 }
 app.MapControllers();
 
