@@ -11,7 +11,7 @@ namespace HRMS.Domain.Models
     public class GeneralSettings :BaseEntity
     {
         public int Bonus { get; set; }
-        public int Penality { get; set; }
+        public int Discount { get; set; }
         public string VacationDay1 { get; set; }
         public string VacationDay2 { get; set; }
 		public virtual Employee? Employee { get; set; }

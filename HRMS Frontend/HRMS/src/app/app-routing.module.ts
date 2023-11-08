@@ -23,11 +23,12 @@ const routes: Routes = [
     {path:'attendance',component: AttendanceComponent},
 
     {path:'vacations',component: VacationsComponent},
-];
+
 
     {path:'departmentForm',component: DepartmentFormComponent},
     {path:'department',component: DepartmentComponent},
-]
+];
+
 
 
 @NgModule({
