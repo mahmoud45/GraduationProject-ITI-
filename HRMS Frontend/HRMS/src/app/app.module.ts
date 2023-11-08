@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+
 import { HttpClientModule } from '@angular/common/http';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -14,6 +15,13 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { RegisterComponent } from './components/user/register/register.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SalaryComponent } from './components/salary/salary.component';
+import { VacationsComponent } from './components/vacations/vacations.component';
+import { RoleService } from './services/role.service';
+import { RolesComponent } from './components/roles/roles.component';
+
+
+
+
 
 export function tokenGetter() {
     return localStorage.getItem("access_token");
@@ -28,7 +36,11 @@ declarations: [
         HomeComponent,
         RegisterComponent,
         NavbarComponent,
-        SalaryComponent
+        SalaryComponent,
+       
+
+        VacationsComponent,
+        RolesComponent,
     ],
 imports: [
         BrowserModule,
@@ -36,16 +48,22 @@ imports: [
         ReactiveFormsModule,
         HttpClientModule,
         MatSlideToggleModule,
+        FormsModule,
+
         JwtModule.forRoot({
             config: {
                 tokenGetter: tokenGetter,
                 allowedDomains: ['*'],
                 disallowedRoutes: [],
             },
+
         }),
+
+
+
     ],
-providers: [],
-bootstrap: [AppComponent]
+providers: [RoleService],
+bootstrap: [AppComponent,RolesComponent],
 
 })
 export class AppModule { }
