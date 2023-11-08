@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpResponse, HttpResponseBase } from '@angular/common/http';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -13,8 +13,24 @@ import { UserService } from 'src/app/services/user-service.service';
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnDestroy{
-    constructor(private userService: UserService, private router: Router) {}
+export class RegisterComponent implements OnInit, OnDestroy{
+  constructor(private userService: UserService, private router: Router) {}
+
+  userRolesSubscriper?: Subscription;
+
+  roles: {id: string, name:string}[] = [];
+
+  ngOnInit(): void {
+    this.userRolesSubscriper = this.userService.GetRoles().subscribe({
+      next: (response) => {
+        Object.assign(this.roles, response);
+      },
+
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
 
 
     registerForm = new FormGroup({
@@ -69,5 +85,6 @@ export class RegisterComponent implements OnDestroy{
 
     ngOnDestroy(): void {
         this.registerUserSubscriper?.unsubscribe();
+        this.userRolesSubscriper?.unsubscribe();
     }
 }
