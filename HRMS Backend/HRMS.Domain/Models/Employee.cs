@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace HRMS.Domain.Models
 {
     public class Employee : BaseEntity
-    {
+    {   
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }
@@ -27,7 +27,7 @@ namespace HRMS.Domain.Models
         public bool IsDeleted { get; set; }
 
         [ForeignKey("Department")]
-        public int? DepartID { get; set; } = null;
+        public int? DepartID { get; set; }
         public virtual Department? Department { get; set; }
 		[ForeignKey("SpecialSettings")]
 		public int? SpecialSetting { get; set; }

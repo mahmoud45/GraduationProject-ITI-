@@ -1,9 +1,11 @@
+import { DepartmentService } from './../../../../services/department.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { EmployeeservicesService } from './../../../../services/employeeservices.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { empAge, hireDate } from 'src/app/validators/EmployeeValidators';
 import { IEmployee } from 'src/app/models/iemployee';
+import { IDepartment } from 'src/app/models/IDepartment';
 
 @Component({
   selector: 'app-add-emp',
@@ -13,14 +15,15 @@ import { IEmployee } from 'src/app/models/iemployee';
 export class AddEmpComponent implements OnInit {
   empval: FormGroup;
   submitted = false;
+  allDepartments:IDepartment[]=[];
 
   constructor(private fb: FormBuilder, private employeeServices: EmployeeservicesService,private router:Router,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,private departmentService: DepartmentService) {
     this.empval = this.fb.group({
       firstName: new FormControl ('', Validators.required),
       lastName: new FormControl ('', Validators.required),
       address: new FormControl ('', Validators.required),
-      phone: new FormControl ('', [Validators.required, Validators.pattern("^[0-9]{11}$")]),
+      phone: new FormControl ('', [Validators.required,Validators.pattern("^[0-9]{11}$")]),
       gender: new FormControl ('', Validators.required),
       nationality: new FormControl ('', Validators.required),
       nationalId: new FormControl ('', [Validators.required,Validators.pattern("^[0-9]{14}$")]),
@@ -28,7 +31,16 @@ export class AddEmpComponent implements OnInit {
       birthDate: new FormControl ('', [Validators.required,empAge()]),
       hireDate: new FormControl ('', [Validators.required,hireDate()]),
       arrivalTime: new FormControl ('', Validators.required),
-      leaveTime: new FormControl ('', Validators.required)
+      leaveTime: new FormControl ('', Validators.required),
+      departID: new FormControl ('', Validators.required)
+    });
+    this.departmentService.GetAllDepartments().subscribe({
+      next: (response:any) => {
+        this.allDepartments=response;        
+      },
+      error: () => {
+        window.alert('Error in getting departments');
+      }
     });
   }
   ngOnInit(): void {
@@ -36,6 +48,7 @@ export class AddEmpComponent implements OnInit {
       this.employeeServices.GetEmployee(parseInt(this.route.snapshot.url[1].path)).subscribe({
         next: (response:any) => {
           let emp:IEmployee=response;
+
           this.empval.get("firstName")?.setValue(emp.firstName)
           this.empval.get("lastName")?.setValue(emp.lastName)
           this.empval.get("address")?.setValue(emp.address)
@@ -48,6 +61,7 @@ export class AddEmpComponent implements OnInit {
           this.empval.get("hireDate")?.setValue(emp.hireDate.toString().split("T")[0])
           this.empval.get("arrivalTime")?.setValue(emp.arrivalTime.toString().split("T")[1])
           this.empval.get("leaveTime")?.setValue(emp.leaveTime.toString().split("T")[1])          
+          this.empval.get("departID")?.setValue(emp.departID)          
         },
         error: () => {
           console.error();

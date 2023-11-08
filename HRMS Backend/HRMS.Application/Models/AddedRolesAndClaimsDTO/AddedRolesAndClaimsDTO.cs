@@ -9,6 +9,6 @@ namespace HRMS.Application.Models.AddedRolesAndClaimsDTO
     public class AddedRolesAndClaimsDTO
     {
         public string RoleName { get; set; }
-        public List<ClaimPermissionsDTO> Permissions { get; set; }
+        public List<ClaimPermissionsDTO> Claims { get; set; }
     }
 }
