@@ -1,4 +1,6 @@
 
+import { GeneralSettingComponent } from './components/general-setting/general-setting.component';
+
 import { HttpClientModule } from '@angular/common/http';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -45,14 +47,13 @@ declarations:
     EmployeeComponent,
     AddEmpComponent,
 
-
+    GeneralSettingComponent
     DepartmentComponent,
     DepartmentFormComponent,
     VacationsComponent,
      RolesComponent,
+],  
 
-    GeneralSettingComponent,
-],
 
 imports: [
         BrowserModule,
@@ -61,7 +62,6 @@ imports: [
         HttpClientModule,
         FormsModule,
         MatSlideToggleModule,
-        FormsModule,
         JwtModule.forRoot({
             config: {
                 tokenGetter: tokenGetter,
@@ -73,6 +73,7 @@ imports: [
 
 providers: [RoleService],
 bootstrap: [AppComponent,RolesComponent],
+
 
 })
 export class AppModule { }

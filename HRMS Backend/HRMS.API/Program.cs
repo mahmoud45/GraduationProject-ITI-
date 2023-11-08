@@ -56,6 +56,13 @@ builder.Services.AddDbContext<DBContext>(o=>o.UseSqlServer(builder.Configuration
 builder.Services.AddIdentity<AppUser,IdentityRole>().AddEntityFrameworkStores<DBContext>();
 
 builder.Services.AddScoped(typeof(IGenaricrepository<>), typeof(GenaricRepository<>));
+builder.Services.AddScoped<IGeneralSettingRepository, GeneralSettingRepository>();
+builder.Services.AddAuthentication(options =>
+	{
+		options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+		options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+		options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+	});
 
 builder.Services.AddAuthentication(options =>
 	{
@@ -81,48 +88,59 @@ builder.Services.AddAuthentication(options =>
 	});
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.Load("HRMS.Application")));
 
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+	builder.Services.AddScoped<IUserService, UserService>();
+		builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+
 
 builder.Services.AddScoped<ISeasonalVacationRepository, SeasonalVacationRepository>();
 builder.Services.AddScoped<IGeneralSettingRepository, GeneralSettingRepository>();
+
 
 
 builder.Services.AddScoped<ISalaryRepository,SalaryRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 
-builder.Services.AddCors(options =>
-{
-	options.AddPolicy(MyAllowSpecificOrigins,
-	builder =>
-	{
-		builder.AllowAnyOrigin().WithExposedHeaders("next"); ;
-		builder.AllowAnyMethod();
-		builder.AllowAnyHeader();
-	});
-});
+		builder.Services.AddCors(options =>
+		{
+			options.AddPolicy(MyAllowSpecificOrigins,
+			builder =>
+			{
+				builder.AllowAnyOrigin().WithExposedHeaders("next"); ;
+				builder.AllowAnyMethod();
+				builder.AllowAnyHeader();
+			});
+		});
 
-var app = builder.Build();
+		var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-	app.UseSwagger();
-	app.UseSwaggerUI();
-}
+		// Configure the HTTP request pipeline.
+		if (app.Environment.IsDevelopment())
+		{
+			app.UseSwagger();
+			app.UseSwaggerUI();
+		}
 
-app.UseHttpsRedirection();
-	
-app.UseCors(MyAllowSpecificOrigins);
+		app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseAuthorization();
+		app.UseCors(MyAllowSpecificOrigins);
 
+		app.UseAuthentication();
+		app.UseAuthorization();
+
+		app.UseCors(MyAllowSpecificOrigins);
+		using (var serviceScope = app.Services.CreateScope())
+		{
 app.UseCors(MyAllowSpecificOrigins);
 /*using (var serviceScope = app.Services.CreateScope())
 {
 
+			var dbContext = serviceScope.ServiceProvider.GetRequiredService<DBContext>();
+			var serviceProvider = serviceScope.ServiceProvider;
+
+			//SeedContext.Seed(dbContext, serviceProvider);
+		}
+		app.MapControllers();
     var dbContext = serviceScope.ServiceProvider.GetRequiredService<DBContext>();
     var serviceProvider = serviceScope.ServiceProvider;
     
@@ -130,6 +148,8 @@ app.UseCors(MyAllowSpecificOrigins);
 }*/
 app.MapControllers();
 
-SeedDataBase.SeedAdminAndRoles(app).Wait();
+		SeedDataBase.SeedAdminAndRoles(app).Wait();
 
-app.Run();
+		app.Run();
+
+	

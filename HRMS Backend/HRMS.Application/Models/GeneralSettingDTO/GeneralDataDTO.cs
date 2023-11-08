@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace HRMS.Application.Models.GeneralSettingDTO
 {
+
     public class GeneralDataDTO : BaseEntity
+
     {
         [Required]
         public int Bonus { get; set; }

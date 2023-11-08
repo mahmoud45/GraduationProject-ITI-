@@ -4,6 +4,7 @@ export function uniqueValueValidator(control: AbstractControl) {
     const formGroup = control.parent;
     if (formGroup) {
       const uniqueValue = control.value;
+
       if(uniqueValue==='null'){
         let otherControl = formGroup.get('vacationDay1Control');
         if(otherControl === control)
@@ -17,3 +18,4 @@ export function uniqueValueValidator(control: AbstractControl) {
     }
     return null;
   }
+
