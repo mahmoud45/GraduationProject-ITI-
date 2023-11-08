@@ -8,20 +8,29 @@ import { LoginComponent } from './components/user/login/login.component';
 import { RegisterComponent } from './components/user/register/register.component';
 import { AuthGuard } from './services/auth-guard.service';
 import { AttendanceComponent } from './components/attendance/attendance.component';
+
+import { VacationsComponent } from './components/vacations/vacations.component';
+
 import { DepartmentComponent } from './components/department/department.component';
 import { GeneralSettingComponent } from './components/general-setting/general-setting.component';
+
 
 const routes: Routes = [
     {path: '', component: HomeComponent},
     {path:'employee',component:EmployeeComponent},
     {path:'employee/:id',component:AddEmpComponent},
     {path: 'login', component: LoginComponent},
-    {path: 'register', component: RegisterComponent, data: {allowedRoles: ["HumanResource"]}, canActivate: [AuthGuard]},
+    {path: 'register', component: RegisterComponent, data: {allowedRoles: ["HumanResource"], allowedPermissions: ["generalsetting.View"]}, canActivate: [AuthGuard]},
     {path:'attendance',component: AttendanceComponent},
+
+    {path:'vacations',component: VacationsComponent},
+];
+
     {path:'departmentForm',component: DepartmentFormComponent},
     {path:'department',component: DepartmentComponent},
     {path:'GeneralSettings',component:GeneralSettingComponent}
 ]
+
 
 @NgModule({
     imports: [RouterModule.forRoot(routes)],

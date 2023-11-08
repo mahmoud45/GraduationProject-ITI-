@@ -1,4 +1,5 @@
 ﻿using HRMS.Application.Models.UserDTOModels;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace HRMS.Application.Services.UsereService
     {
         Task<string> RegisterAsync(RegisterDTO registerDTO);
         Task<AuthenticationDTO> LoginAsync(LoginDTO loginDTO);
+        Task<List<IdentityRole>> GetRoles();
     }
 }

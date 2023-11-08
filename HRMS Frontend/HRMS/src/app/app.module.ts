@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { GeneralSettingComponent } from './components/general-setting/general-setting.component';
+=======
+
+>>>>>>> 487cba80bc42cb2f885312b522dec72fdb68725a
 import { HttpClientModule } from '@angular/common/http';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -7,10 +11,13 @@ import { JwtModule} from '@auth0/angular-jwt';
 import { RegisterComponent } from './components/user/register/register.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SalaryComponent } from './components/salary/salary.component';
+import { VacationsComponent } from './components/vacations/vacations.component';
+import { RoleService } from './services/role.service';
+import { RolesComponent } from './components/roles/roles.component';
 import { AddEmpComponent } from './components/employee/AddEmployee/add-emp/add-emp.component';
 import { EmployeeComponent } from './components/employee/employee.component';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './components/login/login.component';
+import { LoginComponent } from './components/user/login/login.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -25,6 +32,7 @@ export function tokenGetter() {
 }
 
 @NgModule({
+
 declarations:
 [
     AppComponent,
@@ -37,13 +45,23 @@ declarations:
     EmployeeComponent,
     AddEmpComponent,
 <<<<<<< HEAD
+<<<<<<< HEAD
     DepartmentComponent,
     DepartmentFormComponent,
 =======
     GeneralSettingComponent
 >>>>>>> khaled
+=======
+
+    DepartmentComponent,
+    DepartmentFormComponent,
+    VacationsComponent,
+     RolesComponent,
+>>>>>>> 487cba80bc42cb2f885312b522dec72fdb68725a
 ],  
+
 imports: [
+<<<<<<< HEAD
   BrowserModule,
   AppRoutingModule,
   ReactiveFormsModule,
@@ -60,6 +78,27 @@ imports: [
 ],
 providers: [],
 bootstrap: [AppComponent],
+=======
+        BrowserModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        FormsModule,
+        MatSlideToggleModule,
+        FormsModule,
+        JwtModule.forRoot({
+            config: {
+                tokenGetter: tokenGetter,
+                allowedDomains: ['*'],
+                disallowedRoutes: [],
+            },
+        }),
+    ],
+
+providers: [RoleService],
+bootstrap: [AppComponent,RolesComponent],
+
+>>>>>>> 487cba80bc42cb2f885312b522dec72fdb68725a
 })
 export class AppModule { }
 

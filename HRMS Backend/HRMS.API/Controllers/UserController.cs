@@ -4,6 +4,8 @@ using HRMS.Domain.Data.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using HRMS.Application;
+using Microsoft.AspNetCore.Identity;
 
 namespace HRMS.API.Controllers
 {
@@ -48,6 +50,7 @@ namespace HRMS.API.Controllers
             try
             {
                 response = await _userService.LoginAsync(loginDTO);
+                var v = User.Claims.ToList();
                 return Ok(response);
             }catch
             {
@@ -57,10 +60,11 @@ namespace HRMS.API.Controllers
             return BadRequest(response);
         }
 
-        [HttpGet, Authorize(Roles = "accountant")]
-        public string test()
+        [HttpGet("Roles"), Authorize(Roles = "HumanResource", Policy = "permission:generalsetting.View")]
+        public async Task<ActionResult> GetRoles()
         {
-            return "secured text";
+            var roles = await _userService.GetRoles();
+            return Ok(roles.Select(r => new { Id = r.Id, Name = r.Name }));
         }
     }
 }

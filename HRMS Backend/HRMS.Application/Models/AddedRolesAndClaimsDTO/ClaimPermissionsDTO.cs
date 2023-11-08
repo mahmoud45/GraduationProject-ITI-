@@ -9,6 +9,6 @@ namespace HRMS.Application.Models.AddedRolesAndClaimsDTO
     public class ClaimPermissionsDTO
     {
         public string? PageName { get; set; }
-        public bool? Permissions { get; set; }
+        public string? Permission { get; set; }
     }
 }

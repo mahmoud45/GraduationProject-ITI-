@@ -35,4 +35,10 @@ export class UserService {
             responseType: "text"
         });
     }
+
+    GetRoles(){
+      return this.httpClient.get(`${this.baseURL}/Roles`,{
+        headers: new HttpHeaders({ "Content-Type": "application/json", 'Authorization': `Bearer ${this.tokenGetter}`}),
+      });
+    }
 }
