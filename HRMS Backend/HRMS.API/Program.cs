@@ -55,77 +55,80 @@ builder.Services.AddDbContext<DBContext>(o=>o.UseSqlServer(builder.Configuration
 builder.Services.AddIdentity<AppUser,IdentityRole>().AddEntityFrameworkStores<DBContext>();
 
 builder.Services.AddScoped(typeof(IGenaricrepository<>), typeof(GenaricRepository<>));
-
-//builder.Services.AddAuthentication(options =>
-//	{
-//		options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//		options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//		options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-
-//	}).AddJwtBearer(options => {
-//		options.SaveToken = true;
-//		options.RequireHttpsMetadata = false;
-//		options.TokenValidationParameters = new TokenValidationParameters()
-//		{
-//			ValidateIssuer = true,
-//			ValidIssuer = builder.Configuration["JWT:Issuer"],
-
-//			ValidateAudience = true,
-//			ValidAudience = builder.Configuration["JWT:Audience"],
-
-//			ValidateIssuerSigningKey = true,
-//			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
-//        }; 
-//});
-//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.Load("HRMS.Application")));
-
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
-
-builder.Services.AddScoped<ISeasonalVacationRepository, SeasonalVacationRepository>();
-
-
-builder.Services.AddScoped<ISalaryRepository,SalaryRepository>();
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-builder.Services.AddCors(options =>
-{
-	options.AddPolicy(MyAllowSpecificOrigins,
-	builder =>
+builder.Services.AddScoped<IGeneralSettingRepository, GeneralSettingRepository>();
+builder.Services.AddAuthentication(options =>
 	{
-		builder.AllowAnyOrigin().WithExposedHeaders("next"); ;
-		builder.AllowAnyMethod();
-		builder.AllowAnyHeader();
+		options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+		options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+		options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 	});
-});
 
-var app = builder.Build();
+	//	}).AddJwtBearer(options => {
+	//		options.SaveToken = true;
+	//		options.RequireHttpsMetadata = false;
+	//		options.TokenValidationParameters = new TokenValidationParameters()
+	//		{
+	//			ValidateIssuer = true,
+	//			ValidIssuer = builder.Configuration["JWT:Issuer"],
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-	app.UseSwagger();
-	app.UseSwaggerUI();
-}
+	//			ValidateAudience = true,
+	//			ValidAudience = builder.Configuration["JWT:Audience"],
 
-app.UseHttpsRedirection();
+	//			ValidateIssuerSigningKey = true,
+	//			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
+	//        }; 
+	//});
+	//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.Load("HRMS.Application")));
+
+	builder.Services.AddScoped<IUserService, UserService>();
+		builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+
+		builder.Services.AddScoped<ISeasonalVacationRepository, SeasonalVacationRepository>();
+
+
+		builder.Services.AddScoped<ISalaryRepository, SalaryRepository>();
+		builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+		builder.Services.AddCors(options =>
+		{
+			options.AddPolicy(MyAllowSpecificOrigins,
+			builder =>
+			{
+				builder.AllowAnyOrigin().WithExposedHeaders("next"); ;
+				builder.AllowAnyMethod();
+				builder.AllowAnyHeader();
+			});
+		});
+
+		var app = builder.Build();
+
+		// Configure the HTTP request pipeline.
+		if (app.Environment.IsDevelopment())
+		{
+			app.UseSwagger();
+			app.UseSwaggerUI();
+		}
+
+		app.UseHttpsRedirection();
+
+		app.UseCors(MyAllowSpecificOrigins);
+
+		app.UseAuthentication();
+		app.UseAuthorization();
+
+		app.UseCors(MyAllowSpecificOrigins);
+		using (var serviceScope = app.Services.CreateScope())
+		{
+
+			var dbContext = serviceScope.ServiceProvider.GetRequiredService<DBContext>();
+			var serviceProvider = serviceScope.ServiceProvider;
+
+			//SeedContext.Seed(dbContext, serviceProvider);
+		}
+		app.MapControllers();
+
+		SeedDataBase.SeedAdminAndRoles(app).Wait();
+
+		app.Run();
+
 	
-app.UseCors(MyAllowSpecificOrigins);
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.UseCors(MyAllowSpecificOrigins);
-using (var serviceScope = app.Services.CreateScope())
-{
-
-    var dbContext = serviceScope.ServiceProvider.GetRequiredService<DBContext>();
-    var serviceProvider = serviceScope.ServiceProvider;
-    
-    //SeedContext.Seed(dbContext, serviceProvider);
-}
-app.MapControllers();
-
-SeedDataBase.SeedAdminAndRoles(app).Wait();
-
-app.Run();

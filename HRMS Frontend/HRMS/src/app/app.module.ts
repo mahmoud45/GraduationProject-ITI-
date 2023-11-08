@@ -1,3 +1,4 @@
+import { GeneralSettingComponent } from './components/general-setting/general-setting.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -35,26 +36,30 @@ declarations:
     SalaryComponent,
     EmployeeComponent,
     AddEmpComponent,
+<<<<<<< HEAD
     DepartmentComponent,
     DepartmentFormComponent,
+=======
+    GeneralSettingComponent
+>>>>>>> khaled
 ],  
 imports: [
-        BrowserModule,
-        AppRoutingModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        FormsModule,
-        MatSlideToggleModule,
-        JwtModule.forRoot({
-            config: {
-                tokenGetter: tokenGetter,
-                allowedDomains: ['*'],
-                disallowedRoutes: [],
-            },
-        }),
-    ],
+  BrowserModule,
+  AppRoutingModule,
+  ReactiveFormsModule,
+  HttpClientModule,
+  FormsModule,
+  MatSlideToggleModule,
+  JwtModule.forRoot({
+      config: {
+          tokenGetter: tokenGetter,
+          allowedDomains: ['*'],
+          disallowedRoutes: [],
+      },
+  }),
+],
 providers: [],
-bootstrap: [AppComponent]
+bootstrap: [AppComponent],
 })
 export class AppModule { }
 

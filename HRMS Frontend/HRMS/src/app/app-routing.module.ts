@@ -9,6 +9,7 @@ import { RegisterComponent } from './components/user/register/register.component
 import { AuthGuard } from './services/auth-guard.service';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { DepartmentComponent } from './components/department/department.component';
+import { GeneralSettingComponent } from './components/general-setting/general-setting.component';
 
 const routes: Routes = [
     {path: '', component: HomeComponent},
@@ -19,6 +20,7 @@ const routes: Routes = [
     {path:'attendance',component: AttendanceComponent},
     {path:'departmentForm',component: DepartmentFormComponent},
     {path:'department',component: DepartmentComponent},
+    {path:'GeneralSettings',component:GeneralSettingComponent}
 ]
 
 @NgModule({
