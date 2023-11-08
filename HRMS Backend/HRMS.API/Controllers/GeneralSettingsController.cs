@@ -4,11 +4,13 @@ using HRMS.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using HRMS.Application.Models.GeneralSettingDTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HRMS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(policy: "Permission:GeneralSettings.View,GeneralSettings.Create,GeneralSettings.Edit")]
     public class GeneralSettingsController : ControllerBase
     {
         IGeneralSettingRepository generalSettingRepository;
@@ -20,7 +22,8 @@ namespace HRMS.API.Controllers
 
         }
         [HttpGet]
-        public ActionResult index()
+        [Authorize(policy: "Permission:GeneralSettings.View")]
+        public ActionResult GeneralSettings()
         {
             int? id = generalSettingRepository.GetGeneralSettingingID();
             Console.WriteLine(id);
@@ -46,6 +49,7 @@ namespace HRMS.API.Controllers
         }
         [HttpGet]
         [Route("/GeneralSetting/getbyempid/{empID:int}")]
+        [Authorize(policy: "Permission:GeneralSettings.View")]
         public ActionResult GetSettingByEmpID(int empID)
         {
             if (empID != 0)
@@ -78,6 +82,7 @@ namespace HRMS.API.Controllers
         }
         [HttpGet]
         [Route("/GeneralSetting/getbyid/{id:int}")]
+        [Authorize(policy: "Permission:GeneralSettings.View")]
         public ActionResult GetSettingByID(int id)
         {
             if (id != 0)
@@ -100,6 +105,7 @@ namespace HRMS.API.Controllers
         }
         [HttpPost]
         [Route("/General/SaveNew")]
+        [Authorize(policy: "Permission:GeneralSettings.Create")]
         public async Task <ActionResult> AddGeneralSettings( GeneralDataDTO Data )
         {
             GeneralSettings exist;
@@ -139,6 +145,7 @@ namespace HRMS.API.Controllers
 
         [HttpPut]
         [Route("/Setting/EditGeneral")]
+        [Authorize(policy: "Permission:GeneralSettings.Edit")]
         public async Task<ActionResult> EditGeneralSettings(GeneralDataDTO Data)
         {
             if (Data.Id != null && Data.Id != 0)

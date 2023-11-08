@@ -57,7 +57,7 @@ namespace HRMS.API.Controllers
             return BadRequest(response);
         }
 
-        [HttpGet, Authorize(Roles = "HumanResource")]
+        [HttpGet, Authorize(Roles = "accountant")]
         public string test()
         {
             return "secured text";

@@ -40,6 +40,7 @@ namespace HRMS.Application.Context
                 await userManager.CreateAsync(Hr_Admin, Hr_Admin.PasswordHash);
 
                 await userManager.AddToRoleAsync(Hr_Admin, Authorization.Roles.HumanResource.ToString());
+                await userManager.AddToRoleAsync(Hr_Admin, Authorization.Roles.User.ToString());
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using HRMS.Application.Repository;
+﻿using HRMS.Application.Models.SeasonalVacationDto;
+using HRMS.Application.Repository;
 using HRMS.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,26 +10,112 @@ namespace HRMS.API.Controllers
     [ApiController]
     public class SeasonalVacationController : ControllerBase
     {
-        IGenaricrepository<SeasonalVacation> genaricrepository;
-        public SeasonalVacationController(IGenaricrepository<SeasonalVacation> genaricrepository)
-        {
-            this.genaricrepository = genaricrepository;
-        }
+        private readonly ISeasonalVacationRepository _seasonalVacationRepository;
 
-        [HttpGet]
-        public ActionResult Index()
+        public SeasonalVacationController(ISeasonalVacationRepository seasonalVacationRepository)
         {
-           var data= genaricrepository.GetAllAsync();
-            return Ok(data);
+            _seasonalVacationRepository = seasonalVacationRepository;
         }
 
         [HttpPost]
-        [Route("/SeasonVacation/addNew")]
-        public ActionResult AddNewVacation(SeasonalVacation vacation)
+        public IActionResult Create([FromBody] SeasonalVacationDto seasonalVacationDto)
         {
+            // Check if the model state is valid
+            if (ModelState.IsValid)
+            {
+                // Create the seasonal vacation
+                _seasonalVacationRepository.Create(seasonalVacationDto);
+                return Ok(seasonalVacationDto);
+            }
+            else
+            {
+                // Return a bad request with model state errors
+                return BadRequest(ModelState);
+            }
+        }
 
+        [HttpGet]
+        public IActionResult Get()
+        {
+            // Get all seasonal vacations
+            var seasonalVacations = _seasonalVacationRepository.GetAll();
+            return Ok(seasonalVacations);
+        }
 
-            return NoContent();
+        [HttpGet("{id}", Name = "GetSeasonalVacationById")]
+        public IActionResult GetById(int id)
+        {
+            // Get a seasonal vacation by ID
+            var seasonalVacation = _seasonalVacationRepository.GetById(id);
+
+            if (seasonalVacation == null)
+            {
+                // Seasonal vacation not found
+                return NotFound();
+            }
+
+            return Ok(seasonalVacation);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, [FromBody] SeasonalVacationDto seasonalVacationDto)
+        {
+            // Check if the model state is valid
+            if (ModelState.IsValid)
+            {
+                // Get the existing seasonal vacation
+                var existingSeasonalVacation = _seasonalVacationRepository.GetById(id);
+
+                if (existingSeasonalVacation == null)
+                {
+                    // Seasonal vacation not found
+                    return NotFound("Seasonal vacation not found");
+                }
+
+                // Update the seasonal vacation
+                existingSeasonalVacation.Name = seasonalVacationDto.Name;
+                existingSeasonalVacation.VacationDate = seasonalVacationDto.VacationDate;
+
+                if (_seasonalVacationRepository.Update(id, seasonalVacationDto))
+                {
+                    // Seasonal vacation updated successfully
+                    return Ok("Seasonal vacation updated successfully");
+                }
+                else
+                {
+                    // Failed to save changes
+                    return BadRequest("Failed to save the changes");
+                }
+            }
+            else
+            {
+                // Return a bad request with model state errors
+                return BadRequest(ModelState);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            // Get the seasonal vacation by ID
+            var seasonalVacation = _seasonalVacationRepository.GetById(id);
+
+            if (seasonalVacation == null)
+            {
+                // Seasonal vacation not found
+                return NotFound("There is no ID like you want");
+            }
+
+            if (_seasonalVacationRepository.Delete(id))
+            {
+                // Seasonal vacation deleted successfully
+                return Ok("The seasonal vacation deleted successfully");
+            }
+            else
+            {
+                // Failed to delete the seasonal vacation
+                return BadRequest("Failed to delete the seasonal vacation");
+            }
         }
     }
 }

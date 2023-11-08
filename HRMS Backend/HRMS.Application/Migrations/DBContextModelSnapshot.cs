@@ -120,7 +120,7 @@ namespace HRMS.Application.Migrations
 
                     b.HasIndex("SeasonalVacationID");
 
-                    b.ToTable("Attendances");
+                    b.ToTable("Attendances", (string)null);
                 });
 
             modelBuilder.Entity("HRMS.Domain.Models.Department", b =>
@@ -137,7 +137,7 @@ namespace HRMS.Application.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Departments", (string)null);
                 });
 
             modelBuilder.Entity("HRMS.Domain.Models.Employee", b =>
@@ -194,11 +194,11 @@ namespace HRMS.Application.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Salary")
-                        .HasColumnType("money");
-
                     b.Property<int?>("SpecialSetting")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("salary")
+                        .HasColumnType("money");
 
                     b.HasKey("Id");
 
@@ -208,7 +208,7 @@ namespace HRMS.Application.Migrations
                         .IsUnique()
                         .HasFilter("[SpecialSetting] IS NOT NULL");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("HRMS.Domain.Models.GeneralSettings", b =>
@@ -235,7 +235,7 @@ namespace HRMS.Application.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GeneralSettings");
+                    b.ToTable("GeneralSettings", (string)null);
                 });
 
             modelBuilder.Entity("HRMS.Domain.Models.SeasonalVacation", b =>
@@ -255,7 +255,7 @@ namespace HRMS.Application.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SeasonalVacations");
+                    b.ToTable("SeasonalVacations", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
