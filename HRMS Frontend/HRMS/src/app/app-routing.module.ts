@@ -15,7 +15,7 @@ const routes: Routes = [
     {path: 'login', component: LoginComponent},
     {path: 'register', component: RegisterComponent, data: {allowedRoles: ["HumanResource"], allowedPermissions: ["generalsetting.View"]}, canActivate: [AuthGuard]},
     {path:'attendance',component: AttendanceComponent},
-]
+];
 
 @NgModule({
     imports: [RouterModule.forRoot(routes)],
