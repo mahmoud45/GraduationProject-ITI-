@@ -1,4 +1,6 @@
-﻿using HRMS.Domain.Base;
+﻿using HRMS.Application.Models.GeneralSettingDTO;
+using HRMS.Domain.Base;
+using HRMS.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,11 +18,13 @@ namespace HRMS.Application.Repository
         {
             _dBContext = dBContext;
         }
-        public T GetById(int id)
-           => _dBContext.Set<T>().Find(id);
+        public T GetById(int Id)
+           => _dBContext.Set<T>().Find(Id);
+
         public async Task<IEnumerable<T>> GetAllAsync()
 
          => await _dBContext.Set<T>().ToListAsync();
+
         public void Create(T entity)
         {
             _dBContext.Set<T>().Add(entity);

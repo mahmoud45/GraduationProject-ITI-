@@ -31,8 +31,8 @@ namespace HRMS.API.Controllers
             foreach (var employee in Employee)
             {
 		        var employeeDTO = new EmployeeDto()
-		        {   
-                    id=employee.Id,
+		        {
+                    Id = employee.Id,
 			        firstName = employee.FirstName,
 			        lastName = employee.LastName,
 			        address = employee.Address,

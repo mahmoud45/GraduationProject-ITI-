@@ -1,6 +1,7 @@
 ﻿using HRMS.Application.Models.UserDTOModels;
 using HRMS.Domain.Data.Constants;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -16,10 +17,12 @@ namespace HRMS.Application.Services.UsereService
     public class UserService : IUserService
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration config;
-        public UserService(UserManager<AppUser> userManager, IConfiguration config)
+        public UserService(UserManager<AppUser> userManager, IConfiguration config, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
             this.config = config;
         }
         public async Task<string> RegisterAsync(RegisterDTO registerDTO)
@@ -52,22 +55,18 @@ namespace HRMS.Application.Services.UsereService
             //should be drop down list in angular
             if (!string.IsNullOrEmpty(registerDTO.Role))
             {
-                var roleExists = Enum.GetNames(typeof(Authorization.Roles)).Any(r => r.ToLower() == registerDTO.Role.ToLower());
+                var roleExists = await _roleManager.RoleExistsAsync(registerDTO.Role);
                 if(roleExists)
                 {
-                    var role = Enum.GetValues(typeof(Authorization.Roles))
-                        .Cast<Authorization.Roles>()
-                        .Where(r => r.ToString().ToLower() == registerDTO.Role.ToLower())
-                        .FirstOrDefault();
 
                     result = await _userManager.CreateAsync(user, registerDTO.Password);
 
                     if (result.Succeeded)
                     {
-                        var addToRole = await _userManager.AddToRoleAsync(user, role.ToString());
+                        var addToRole = await _userManager.AddToRoleAsync(user, registerDTO.Role);
 
                         if(addToRole.Succeeded)
-                            return $"User with name '{user.FullName}' registered successfully and assigned to role {role}";
+                            return $"User with name '{user.FullName}' registered successfully and assigned to role {registerDTO.Role}";
                     }
                 }
                 else
@@ -138,6 +137,9 @@ namespace HRMS.Application.Services.UsereService
         {
             var userRoles = await _userManager.GetRolesAsync(user);
 
+            IdentityRole identityRole;
+            IList<Claim> roleClaims;
+
             List<Claim> claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name, user.UserName),
@@ -149,6 +151,14 @@ namespace HRMS.Application.Services.UsereService
             foreach(var role in userRoles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
+
+                identityRole = await _roleManager.FindByNameAsync(role);
+                roleClaims = await _roleManager.GetClaimsAsync(identityRole);
+
+                foreach(var claim in roleClaims)
+                {
+                    claims.Add(new Claim("permissions", claim.Type + "." + claim.Value));
+                }
             }
 
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:Key"]));
@@ -164,6 +174,13 @@ namespace HRMS.Application.Services.UsereService
                 );
 
             return token;
+        }
+
+        public async Task<List<IdentityRole>> GetRoles()
+        {
+            var roles = await _roleManager.Roles.ToListAsync();
+
+            return roles;
         }
     }
 }

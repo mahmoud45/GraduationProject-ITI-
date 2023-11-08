@@ -6,18 +6,25 @@ import { JwtModule} from '@auth0/angular-jwt';
 import { RegisterComponent } from './components/user/register/register.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SalaryComponent } from './components/salary/salary.component';
+import { VacationsComponent } from './components/vacations/vacations.component';
+import { RoleService } from './services/role.service';
+import { RolesComponent } from './components/roles/roles.component';
 import { AddEmpComponent } from './components/employee/AddEmployee/add-emp/add-emp.component';
 import { EmployeeComponent } from './components/employee/employee.component';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './components/login/login.component';
+import { LoginComponent } from './components/user/login/login.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
+
 import { DepartmentComponent } from './components/department/department.component';
 import { DepartmentFormComponent } from './components/department/department-form/department-form.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+
+import { GeneralSettingComponent } from './components/general-setting/general-setting.component';
+
 
 
 export function tokenGetter() {
@@ -25,6 +32,7 @@ export function tokenGetter() {
 }
 
 @NgModule({
+
 declarations:
 [
     AppComponent,
@@ -36,10 +44,15 @@ declarations:
     SalaryComponent,
     EmployeeComponent,
     AddEmpComponent,
+    GeneralSettingComponent,
     DepartmentComponent,
     DepartmentFormComponent,
     NotFoundComponent,
+    VacationsComponent,
+     RolesComponent,
 ],  
+
+
 imports: [
         BrowserModule,
         AppRoutingModule,
@@ -55,8 +68,11 @@ imports: [
             },
         }),
     ],
-providers: [],
-bootstrap: [AppComponent]
+
+providers: [RoleService],
+bootstrap: [AppComponent,RolesComponent],
+
+
 })
 export class AppModule { }
 

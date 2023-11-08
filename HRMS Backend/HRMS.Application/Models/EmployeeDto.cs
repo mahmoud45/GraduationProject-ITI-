@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HRMS.Domain.Base;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HRMS.Application.Models
 {
-    public class EmployeeDto
+    public class EmployeeDto:BaseEntity
     {
         public int? id { get; set; }
         [Required(ErrorMessage = "field is requird")]
