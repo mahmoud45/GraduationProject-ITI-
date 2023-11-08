@@ -91,7 +91,10 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.
 	builder.Services.AddScoped<IUserService, UserService>();
 		builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
 
-		builder.Services.AddScoped<ISeasonalVacationRepository, SeasonalVacationRepository>();
+
+builder.Services.AddScoped<ISeasonalVacationRepository, SeasonalVacationRepository>();
+builder.Services.AddScoped<IGeneralSettingRepository, GeneralSettingRepository>();
+
 
 
 builder.Services.AddScoped<ISalaryRepository,SalaryRepository>();

@@ -1,8 +1,6 @@
-<<<<<<< HEAD
-import { GeneralSettingComponent } from './components/general-setting/general-setting.component';
-=======
 
->>>>>>> 487cba80bc42cb2f885312b522dec72fdb68725a
+import { GeneralSettingComponent } from './components/general-setting/general-setting.component';
+
 import { HttpClientModule } from '@angular/common/http';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -23,8 +21,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
+
 import { DepartmentComponent } from './components/department/department.component';
 import { DepartmentFormComponent } from './components/department/department-form/department-form.component';
+
+import { GeneralSettingComponent } from './components/general-setting/general-setting.component';
+
 
 
 export function tokenGetter() {
@@ -44,48 +46,22 @@ declarations:
     SalaryComponent,
     EmployeeComponent,
     AddEmpComponent,
-<<<<<<< HEAD
-<<<<<<< HEAD
-    DepartmentComponent,
-    DepartmentFormComponent,
-=======
-    GeneralSettingComponent
->>>>>>> khaled
-=======
 
+    GeneralSettingComponent
     DepartmentComponent,
     DepartmentFormComponent,
     VacationsComponent,
      RolesComponent,
->>>>>>> 487cba80bc42cb2f885312b522dec72fdb68725a
 ],  
 
+
 imports: [
-<<<<<<< HEAD
-  BrowserModule,
-  AppRoutingModule,
-  ReactiveFormsModule,
-  HttpClientModule,
-  FormsModule,
-  MatSlideToggleModule,
-  JwtModule.forRoot({
-      config: {
-          tokenGetter: tokenGetter,
-          allowedDomains: ['*'],
-          disallowedRoutes: [],
-      },
-  }),
-],
-providers: [],
-bootstrap: [AppComponent],
-=======
         BrowserModule,
         AppRoutingModule,
         ReactiveFormsModule,
         HttpClientModule,
         FormsModule,
         MatSlideToggleModule,
-        FormsModule,
         JwtModule.forRoot({
             config: {
                 tokenGetter: tokenGetter,
@@ -98,7 +74,7 @@ bootstrap: [AppComponent],
 providers: [RoleService],
 bootstrap: [AppComponent,RolesComponent],
 
->>>>>>> 487cba80bc42cb2f885312b522dec72fdb68725a
+
 })
 export class AppModule { }
 

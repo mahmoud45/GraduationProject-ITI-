@@ -24,13 +24,13 @@ const routes: Routes = [
     {path:'attendance',component: AttendanceComponent},
 
     {path:'vacations',component: VacationsComponent},
-];
+
 
     {path:'departmentForm',component: DepartmentFormComponent},
     {path:'department',component: DepartmentComponent},
-    {path:'GeneralSettings',component:GeneralSettingComponent}
-]
 
+    {path:'GeneralSettings',component:GeneralSettingComponent}
+];
 
 @NgModule({
     imports: [RouterModule.forRoot(routes)],

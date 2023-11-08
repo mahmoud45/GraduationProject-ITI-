@@ -86,7 +86,9 @@ namespace HRMS.API.Controllers
         public ActionResult GetSettingByID(int id)
         {
             if (id != 0)
-            {           
+
+            {
+
                 var settingData = generalSettingRepository.GetById(id);
                 if (settingData != null)
                 {
@@ -100,21 +102,24 @@ namespace HRMS.API.Controllers
                     };
                     return Ok(general);
                 }
-             }
-                   return NotFound("this id is not available");
+
+            }
+            return NotFound("this id is not available");
+
         }
         [HttpPost]
         [Route("/General/SaveNew")]
         [Authorize(policy: "Permission:GeneralSettings.Create")]
-        public async Task <ActionResult> AddGeneralSettings( GeneralDataDTO Data )
+
+        public async Task<ActionResult> AddGeneralSettings(GeneralDataDTO Data)
         {
             GeneralSettings exist;
-            bool old= true;
-                exist = generalSettingRepository.IsExist(Data);
+            bool old = true;
+            exist = generalSettingRepository.IsExist(Data);
             //check if not exist ===> create 
             if (exist == null)
             {
-                old= false;
+                old = false;
                 exist.Bonus = Data.Bonus;
                 exist.Discount = Data.Discount;
                 exist.VacationDay1 = Data.VacationDay1;
@@ -123,23 +128,35 @@ namespace HRMS.API.Controllers
                 exist = generalSettingRepository.IsExist(Data);
             }
             //pass to employee
-                if (Data.EmployeeID != 0)
+
+            if (Data.EmployeeID != 0)
+            {
+                var empData = genaricrepository2.GetById(Data.EmployeeID);
+                empData.SpecialSetting = exist.Id;
+                genaricrepository2.Edite(empData);
+            }
+            else
+            {
+                IEnumerable<Employee> employees = await genaricrepository2.GetAllAsync();
+                foreach (var employee in employees)
                 {
-                    var empData = genaricrepository2.GetById(Data.EmployeeID);
-                    empData.SpecialSetting = exist.Id;
-                    genaricrepository2.Edite(empData);
+                    employee.SpecialSetting = exist.Id;
+                    genaricrepository2.Edite(employee);
                 }
-                else
+            }
+            if (!old)
+            {
+                GeneralDataDTO data = new GeneralDataDTO()
                 {
-                    IEnumerable<Employee> employees = await genaricrepository2.GetAllAsync();
-                    foreach (var employee in employees)
-                    {
-                        employee.SpecialSetting = exist.Id;
-                        genaricrepository2.Edite(employee);
-                    }
-                }
-                if(!old)
-                return CreatedAtAction ("GetSettingByID", new {id = exist.Id }, exist);
+                    Id = exist.Id,
+                    Bonus = exist.Bonus,
+                    Discount = exist.Discount,
+                    VacationDay1 = exist.VacationDay1,
+                    VacationDay2 = exist.VacationDay2,
+                };
+                return CreatedAtAction("GetSettingByID", new { id = data.Id }, data);
+            }
+
             return Content("Not Created But Passed to Employee(s) ,cause There's Setting With The Same Data You Entered ");
         }
 
@@ -151,19 +168,20 @@ namespace HRMS.API.Controllers
             if (Data.Id != null && Data.Id != 0)
             {
                 var result = generalSettingRepository.GetById((int)Data.Id);
-                if(result != null)
+
+                if (result != null)
                 {
-                        result.Bonus = Data.Bonus;
-                        result.VacationDay1 = Data.VacationDay1;
-                        result.VacationDay2 = Data.VacationDay2;
-                        result.Discount = Data.Discount;
+                    result.Bonus = Data.Bonus;
+                    result.VacationDay1 = Data.VacationDay1;
+                    result.VacationDay2 = Data.VacationDay2;
+                    result.Discount = Data.Discount;
                     generalSettingRepository.Edite(result);
-                return NoContent();
+                    return NoContent();
                 }
             }
-                return BadRequest("id is incorrect");
-           
-            
+            return BadRequest("id is incorrect");
+
+
         }
     }
 }
