@@ -73,11 +73,11 @@ namespace HRMS.API.Controllers
                 salary = Employee.salary,
                 ArrivalTime = Employee.ArrivalTime,
                 LeaveTime = Employee.LeaveTime,
+                DepartID= Employee.DepartID
             };
 
             return Ok(employeeDTO);
         }
-
 
         [HttpPost]
         public ActionResult<EmployeeDto> Create( EmployeeDto employeeDto)
@@ -119,7 +119,9 @@ namespace HRMS.API.Controllers
             emp.salary = employeeDto.salary;
             emp.ArrivalTime = employeeDto.ArrivalTime;
             emp.LeaveTime = employeeDto.LeaveTime;
-            _genaricrepository.Edite(emp);
+            emp.DepartID = employeeDto.DepartID;
+
+			_genaricrepository.Edite(emp);
             return Ok();
 
         }

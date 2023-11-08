@@ -1,3 +1,4 @@
+import { DepartmentFormComponent } from './components/department/department-form/department-form.component';
 import { NgModule, Component } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AddEmpComponent } from './components/employee/AddEmployee/add-emp/add-emp.component';
@@ -7,6 +8,7 @@ import { LoginComponent } from './components/user/login/login.component';
 import { RegisterComponent } from './components/user/register/register.component';
 import { AuthGuard } from './services/auth-guard.service';
 import { AttendanceComponent } from './components/attendance/attendance.component';
+import { DepartmentComponent } from './components/department/department.component';
 
 const routes: Routes = [
     {path: '', component: HomeComponent},
@@ -15,6 +17,8 @@ const routes: Routes = [
     {path: 'login', component: LoginComponent},
     {path: 'register', component: RegisterComponent, data: {allowedRoles: ["HumanResource"]}, canActivate: [AuthGuard]},
     {path:'attendance',component: AttendanceComponent},
+    {path:'departmentForm',component: DepartmentFormComponent},
+    {path:'department',component: DepartmentComponent},
 ]
 
 @NgModule({

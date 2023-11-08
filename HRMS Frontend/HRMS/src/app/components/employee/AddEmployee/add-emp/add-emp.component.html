@@ -1,4 +1,27 @@
 <form [formGroup]="empval" class="container mt-5" (ngSubmit)="onsubmitform()">
+  <div class="form-group">
+    <label for="department" class="form-label"> Department</label>
+    <select
+      id="department"
+      formControlName="departID"
+      class="form-select"
+      name="departID"
+    >
+      <option *ngFor="let x of allDepartments" value="{{ x.id }}">
+        {{ x.name }}
+      </option>
+    </select>
+  </div>
+  <div>
+    <small
+      class="text-danger"
+      *ngIf="
+        empval.get('departID')?.hasError('required') &&
+        (empval.get('departID')?.touched || submitted)
+      "
+      >you must select department
+    </small>
+  </div>
   <!-- First Name -->
   <div class="form-group mb-3">
     <label for="firstName">First Name</label>

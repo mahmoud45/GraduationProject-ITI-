@@ -13,6 +13,7 @@ export interface IEmployee {
     hireDate:Date,
     arrivalTime:Date,
     leaveTime:Date,
+    departID:number
 }
 
 

@@ -25,8 +25,14 @@ namespace HRMS.API.Controllers
           var  dept =await _genaricrepository.GetAllAsync();
             return Ok(dept);
         }
+		[HttpGet("{id:int}")]
+		public ActionResult<Department> getDepartmentByID(int id)
+		{
+			var dept =  _genaricrepository.GetById(id);
+			return Ok(dept);
+		}
 
-        [HttpPost]
+		[HttpPost]
         public ActionResult<EmployeeDto> Create(DepartmentDto departmentDto)
         {
             var dept = new Department()

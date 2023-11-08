@@ -15,6 +15,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
+import { DepartmentComponent } from './components/department/department.component';
+import { DepartmentFormComponent } from './components/department/department-form/department-form.component';
 
 
 export function tokenGetter() {
@@ -33,6 +35,8 @@ declarations:
     SalaryComponent,
     EmployeeComponent,
     AddEmpComponent,
+    DepartmentComponent,
+    DepartmentFormComponent,
 ],  
 imports: [
         BrowserModule,

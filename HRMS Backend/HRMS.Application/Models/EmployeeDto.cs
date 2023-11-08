@@ -36,7 +36,8 @@ namespace HRMS.Application.Models
         [DataType(DataType.Time)]
         public DateTime LeaveTime { get; set; }
         public int? DepartID { get; set; }
+        public string? dept_name { get; set; }
 
-    }
+	}
 }
 
