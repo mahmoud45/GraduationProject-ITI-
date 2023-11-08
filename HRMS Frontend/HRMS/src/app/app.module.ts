@@ -1,3 +1,4 @@
+
 import { HttpClientModule } from '@angular/common/http';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -6,6 +7,9 @@ import { JwtModule} from '@auth0/angular-jwt';
 import { RegisterComponent } from './components/user/register/register.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SalaryComponent } from './components/salary/salary.component';
+import { VacationsComponent } from './components/vacations/vacations.component';
+import { RoleService } from './services/role.service';
+import { RolesComponent } from './components/roles/roles.component';
 import { AddEmpComponent } from './components/employee/AddEmployee/add-emp/add-emp.component';
 import { EmployeeComponent } from './components/employee/employee.component';
 import { AppComponent } from './app.component';
@@ -24,6 +28,7 @@ export function tokenGetter() {
 }
 
 @NgModule({
+
 declarations:
 [
     AppComponent,
@@ -37,7 +42,10 @@ declarations:
     AddEmpComponent,
     DepartmentComponent,
     DepartmentFormComponent,
+    VacationsComponent,
+     RolesComponent,
 ],  
+
 imports: [
         BrowserModule,
         AppRoutingModule,
@@ -45,6 +53,7 @@ imports: [
         HttpClientModule,
         FormsModule,
         MatSlideToggleModule,
+        FormsModule,
         JwtModule.forRoot({
             config: {
                 tokenGetter: tokenGetter,
@@ -53,8 +62,10 @@ imports: [
             },
         }),
     ],
-providers: [],
-bootstrap: [AppComponent]
+
+providers: [RoleService],
+bootstrap: [AppComponent,RolesComponent],
+
 })
 export class AppModule { }
 
