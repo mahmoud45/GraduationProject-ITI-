@@ -3,7 +3,7 @@
     <div class="row justify-content-center ">
         <div class="col-6 justify-content-center ">
 
-            <form (submit)="login($event)">
+            <form [formGroup]="loginForm" (submit)="login($event)">
 
                 <div *ngIf="message" class="bg-danger d-flex justify-content-center ">
                     <p>{{ message }}</p>
