@@ -41,16 +41,16 @@ export class GeneralSettingComponent implements OnInit {
 
   ngOnInit(): void {
     this.empService.GetAllEmployees().subscribe({
-      next : (value)=>{
+      next : (value:any)=>{
         if(value!=null)
         this.employees=value;
       },
 
-      error :(err)=> {
+      error :()=> {
 
       },
       complete :()=>{
-        console.log(this.employees);
+        // console.log(this.employees);
       }
     })
     this.service.getGeneralSettings().subscribe({
@@ -115,6 +115,7 @@ export class GeneralSettingComponent implements OnInit {
           this.generalDataForm.controls['discountControl'].setValue(1);
           this.generalDataForm.controls['vacationDay1Control'].setValue(null);
           this.generalDataForm.controls['vacationDay2Control'].setValue(null);
+          this.generalDataForm.markAsUntouched;
 
         },
       });

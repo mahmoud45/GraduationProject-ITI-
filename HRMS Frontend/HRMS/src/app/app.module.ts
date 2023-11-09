@@ -1,6 +1,3 @@
-
-import { GeneralSettingComponent } from './components/general-setting/general-setting.component';
-
 import { HttpClientModule } from '@angular/common/http';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -24,6 +21,7 @@ import { NgModule } from '@angular/core';
 
 import { DepartmentComponent } from './components/department/department.component';
 import { DepartmentFormComponent } from './components/department/department-form/department-form.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 import { GeneralSettingComponent } from './components/general-setting/general-setting.component';
 
@@ -46,10 +44,10 @@ declarations:
     SalaryComponent,
     EmployeeComponent,
     AddEmpComponent,
-
-    GeneralSettingComponent
+    GeneralSettingComponent,
     DepartmentComponent,
     DepartmentFormComponent,
+    NotFoundComponent,
     VacationsComponent,
      RolesComponent,
 ],  

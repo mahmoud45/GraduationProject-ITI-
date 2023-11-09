@@ -120,7 +120,7 @@ namespace HRMS.Application.Migrations
 
                     b.HasIndex("SeasonalVacationID");
 
-                    b.ToTable("Attendances", (string)null);
+                    b.ToTable("Attendances");
                 });
 
             modelBuilder.Entity("HRMS.Domain.Models.Department", b =>
@@ -137,7 +137,7 @@ namespace HRMS.Application.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments", (string)null);
+                    b.ToTable("Departments");
                 });
 
             modelBuilder.Entity("HRMS.Domain.Models.Employee", b =>
@@ -204,11 +204,9 @@ namespace HRMS.Application.Migrations
 
                     b.HasIndex("DepartID");
 
-                    b.HasIndex("SpecialSetting")
-                        .IsUnique()
-                        .HasFilter("[SpecialSetting] IS NOT NULL");
+                    b.HasIndex("SpecialSetting");
 
-                    b.ToTable("Employees", (string)null);
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("HRMS.Domain.Models.GeneralSettings", b =>
@@ -235,7 +233,7 @@ namespace HRMS.Application.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GeneralSettings", (string)null);
+                    b.ToTable("GeneralSettings");
                 });
 
             modelBuilder.Entity("HRMS.Domain.Models.SeasonalVacation", b =>
@@ -255,7 +253,7 @@ namespace HRMS.Application.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SeasonalVacations", (string)null);
+                    b.ToTable("SeasonalVacations");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -415,8 +413,8 @@ namespace HRMS.Application.Migrations
                         .HasForeignKey("DepartID");
 
                     b.HasOne("HRMS.Domain.Models.GeneralSettings", "SpecialSettings")
-                        .WithOne("Employee")
-                        .HasForeignKey("HRMS.Domain.Models.Employee", "SpecialSetting");
+                        .WithMany("Employee")
+                        .HasForeignKey("SpecialSetting");
 
                     b.Navigation("Department");
 

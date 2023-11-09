@@ -36,6 +36,7 @@ export class LoginComponent implements OnDestroy{
 
     login(e: Event): void{
         e.preventDefault();
+        
         if(this.loginForm.valid){
             let loginModel: LoginModel = this.loginForm.value as LoginModel;
             this.loginUserSubscription = this.userService.Login(loginModel).subscribe({

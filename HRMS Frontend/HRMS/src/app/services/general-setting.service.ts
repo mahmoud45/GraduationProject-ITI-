@@ -7,7 +7,7 @@ import { Observable, catchError, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class GeneralSettingService {
-  api:string = "https://localhost:44324/";
+  api:string = "https://localhost:7073/";
   constructor(public http :HttpClient) { }
   getGeneralSettings():Observable <any>{
     return this.http.get(`${this.api}api/GeneralSettings`).pipe(

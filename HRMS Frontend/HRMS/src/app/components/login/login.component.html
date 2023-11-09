@@ -10,7 +10,7 @@
             >
           </div>
 
-          <form class="form-horizontal" [formGroup]="loginForm">
+          <form class="form-horizontal">
             <h3 class="title">Member Login</h3>
 
             <div class="mb-3">
@@ -27,7 +27,7 @@
               </div>
               <div
                 class="text-danger errors"
-                *ngIf="usernameFunc && loginForm.controls['username'].touched"
+                *ngIf="loginForm.controls['username'].touched"
               >
                 username must be at least 5 characters
               </div>
@@ -46,7 +46,7 @@
 
               <div
                 class="text-danger errors"
-                *ngIf="passwordFunc && loginForm.controls['password'].touched"
+                *ngIf="loginForm.controls['password'].touched"
               >
                 password Length at least must be 10
               </div>

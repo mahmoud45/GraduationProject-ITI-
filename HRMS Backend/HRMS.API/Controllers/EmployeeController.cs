@@ -1,5 +1,4 @@
-﻿
-using HRMS.Application.Models;
+﻿using HRMS.Application.Models;
 using HRMS.Application.Repository;
 using HRMS.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -32,7 +31,7 @@ namespace HRMS.API.Controllers
             {
 		        var employeeDTO = new EmployeeDto()
 		        {
-                    Id = employee.Id,
+                    id = employee.Id,
 			        firstName = employee.FirstName,
 			        lastName = employee.LastName,
 			        address = employee.Address,

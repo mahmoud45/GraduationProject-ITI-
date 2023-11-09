@@ -14,6 +14,8 @@ namespace HRMS.Application.Services.SalaryServices.Queries.GetSalaries
       
         public string EmpName { get; set; }
         public string DepartmentName { get; set; }
+        public string Month { get; set; }
+        public string Year { get; set; }
         public decimal Salary { get; set; }
         public int Attendance { get; set; }
         public int Absence { get; set; }

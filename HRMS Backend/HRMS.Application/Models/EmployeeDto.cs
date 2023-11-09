@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HRMS.Application.Models
 {
-    public class EmployeeDto:BaseEntity
+    public class EmployeeDto
     {
         public int? id { get; set; }
         [Required(ErrorMessage = "field is requird")]
