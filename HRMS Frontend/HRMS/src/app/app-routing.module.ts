@@ -1,4 +1,3 @@
-import { NotFoundComponent } from './components/not-found/not-found.component';
 import { DepartmentFormComponent } from './components/department/department-form/department-form.component';
 import { NgModule, Component } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -14,7 +13,7 @@ import { DepartmentComponent } from './components/department/department.componen
 import { SalaryComponent } from './components/salary/salary.component';
 import { GeneralSettingComponent } from './components/general-setting/general-setting.component';
 import { RolesComponent } from './components/roles/roles.component';
-
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 const routes: Routes = [
     {path:'', redirectTo: 'home', pathMatch: 'full'},
@@ -34,7 +33,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

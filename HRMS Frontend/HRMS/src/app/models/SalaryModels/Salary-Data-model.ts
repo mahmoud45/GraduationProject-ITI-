@@ -1,6 +1,8 @@
 export type SalaryDataModel = {
   empName: string;
   departmentName: string;
+  month : string;
+  year: string;
   salary: number;
   attendance: number;
   absence: number;

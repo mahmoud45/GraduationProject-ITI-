@@ -23,7 +23,7 @@ export class SalaryComponent {
     this.search = '';
     this.month = '';
     this.year = '';
-    this.pageSize = 2;
+    this.pageSize = 5;
     this.pageNumber = 1;
     this.pageCount = 0;
     this.salaryPaginatedList = [];
