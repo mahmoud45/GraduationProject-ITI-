@@ -12,6 +12,7 @@ import { AttendanceComponent } from './components/attendance/attendance.componen
 import { VacationsComponent } from './components/vacations/vacations.component';
 
 import { DepartmentComponent } from './components/department/department.component';
+import { GeneralSettingComponent } from './components/general-setting/general-setting.component';
 
 
 const routes: Routes = [
@@ -27,9 +28,9 @@ const routes: Routes = [
 
     {path:'departmentForm',component: DepartmentFormComponent},
     {path:'department',component: DepartmentComponent},
+
+    {path:'GeneralSettings',component:GeneralSettingComponent}
 ];
-
-
 
 @NgModule({
     imports: [RouterModule.forRoot(routes)],

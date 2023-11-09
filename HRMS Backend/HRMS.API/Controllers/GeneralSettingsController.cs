@@ -86,7 +86,9 @@ namespace HRMS.API.Controllers
         public ActionResult GetSettingByID(int id)
         {
             if (id != 0)
+
             {
+
                 var settingData = generalSettingRepository.GetById(id);
                 if (settingData != null)
                 {
@@ -100,12 +102,15 @@ namespace HRMS.API.Controllers
                     };
                     return Ok(general);
                 }
+
             }
             return NotFound("this id is not available");
+
         }
         [HttpPost]
         [Route("/General/SaveNew")]
         [Authorize(policy: "Permission:GeneralSettings.Create")]
+
         public async Task<ActionResult> AddGeneralSettings(GeneralDataDTO Data)
         {
             GeneralSettings exist;
@@ -123,6 +128,7 @@ namespace HRMS.API.Controllers
                 exist = generalSettingRepository.IsExist(Data);
             }
             //pass to employee
+
             if (Data.EmployeeID != 0)
             {
                 var empData = genaricrepository2.GetById(Data.EmployeeID);
@@ -150,6 +156,7 @@ namespace HRMS.API.Controllers
                 };
                 return CreatedAtAction("GetSettingByID", new { id = data.Id }, data);
             }
+
             return Content("Not Created But Passed to Employee(s) ,cause There's Setting With The Same Data You Entered ");
         }
 
@@ -161,6 +168,7 @@ namespace HRMS.API.Controllers
             if (Data.Id != null && Data.Id != 0)
             {
                 var result = generalSettingRepository.GetById((int)Data.Id);
+
                 if (result != null)
                 {
                     result.Bonus = Data.Bonus;
@@ -177,3 +185,4 @@ namespace HRMS.API.Controllers
         }
     }
 }
+

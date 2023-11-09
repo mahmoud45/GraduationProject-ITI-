@@ -14,7 +14,6 @@ namespace HRMS.Domain.Models
         public int Discount { get; set; }
         public string VacationDay1 { get; set; }
         public string VacationDay2 { get; set; }
-		public virtual Employee? Employee { get; set; }
-
+		public virtual ICollection <Employee>? Employee { get; set; }
 	}
 }

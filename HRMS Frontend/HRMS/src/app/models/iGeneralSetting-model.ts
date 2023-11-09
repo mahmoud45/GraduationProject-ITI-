@@ -8,4 +8,5 @@ export interface generalSettingData{
     EmployeeID:number|null,
     VacationDay1:string|null,
     VacationDay2:string|null,
+
 }

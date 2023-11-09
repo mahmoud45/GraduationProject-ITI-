@@ -10,9 +10,11 @@ export class EmployeeservicesService
 {
   constructor(public http :HttpClient) { }
 
+
   GetAllEmployees(): Observable<any>
+
   {
-   return this.http.get("https://localhost:7073/api/Employee")
+   return this.http.get("https://localhost:44324/api/Employee")
   }
 
   GetEmployee(id:number):any
