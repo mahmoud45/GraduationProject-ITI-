@@ -7,7 +7,7 @@ import { IRoleCliamsModel } from '../models/roleModel';
   providedIn: 'root',
 })
 export class RoleService {
-  private apiUrl = 'http://localhost:5190/api';
+  private apiUrl = 'http://localhost:7073/api';
 
   constructor(private http: HttpClient) {}
 

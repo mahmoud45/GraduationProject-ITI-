@@ -9,27 +9,27 @@ import { LoginComponent } from './components/user/login/login.component';
 import { RegisterComponent } from './components/user/register/register.component';
 import { AuthGuard } from './services/auth-guard.service';
 import { AttendanceComponent } from './components/attendance/attendance.component';
-
 import { VacationsComponent } from './components/vacations/vacations.component';
-
 import { DepartmentComponent } from './components/department/department.component';
 import { SalaryComponent } from './components/salary/salary.component';
 import { GeneralSettingComponent } from './components/general-setting/general-setting.component';
+import { RolesComponent } from './components/roles/roles.component';
 
 
 const routes: Routes = [
-    {path: '', redirectTo: 'home', pathMatch: 'full'},
-    {path: 'home', component: HomeComponent},
+    {path:'', redirectTo: 'home', pathMatch: 'full'},
+    {path:'home', component: HomeComponent},
     {path:'employee',component:EmployeeComponent},
     {path:'employee/:id',component:AddEmpComponent},
-    {path: 'login', component: LoginComponent},
-    {path: 'register', component: RegisterComponent, data: {allowedRoles: ["HumanResource"], allowedPermissions: ["generalsetting.View"]}, canActivate: [AuthGuard]},
+    {path:'login', component: LoginComponent},
+    {path:'register', component: RegisterComponent, data: {allowedRoles: ["HumanResource"], allowedPermissions: ["generalsetting.View"]}, canActivate: [AuthGuard]},
     {path:'attendance',component: AttendanceComponent},
     {path:'vacations',component: VacationsComponent},
     {path:'departmentForm',component: DepartmentFormComponent},
     {path:'department',component: DepartmentComponent},
     {path:'salary',component: SalaryComponent},
     {path:'GeneralSettings',component:GeneralSettingComponent},
+    {path:'roles',component:RolesComponent},
     {path:'**',component: NotFoundComponent},
 ];
 

@@ -5,7 +5,7 @@ export function uniqueValueValidator(control: AbstractControl) {
     if (formGroup) {
       const uniqueValue = control.value;
 
-      if(uniqueValue==='null'){
+      if(uniqueValue!=='null'){
         let otherControl = formGroup.get('vacationDay1Control');
         if(otherControl === control)
         {

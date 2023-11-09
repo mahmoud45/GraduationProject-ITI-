@@ -10,7 +10,7 @@ namespace HRMS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(policy: "Permission:GeneralSettings.View,GeneralSettings.Create,GeneralSettings.Edit")]
+    //[Authorize(policy: "Permission:GeneralSettings.View,GeneralSettings.Create,GeneralSettings.Edit")]
     public class GeneralSettingsController : ControllerBase
     {
         IGeneralSettingRepository generalSettingRepository;
@@ -22,7 +22,7 @@ namespace HRMS.API.Controllers
 
         }
         [HttpGet]
-        [Authorize(policy: "Permission:GeneralSettings.View")]
+        //[Authorize(policy: "Permission:GeneralSettings.View")]
         public ActionResult GeneralSettings()
         {
             int? id = generalSettingRepository.GetGeneralSettingingID();
@@ -34,7 +34,7 @@ namespace HRMS.API.Controllers
                 {
                     Id = (int)id,
                     Bonus = data.Bonus,
-                    Discount = data.Discount,
+                    Discount = data.Penality,
                     VacationDay1 = data.VacationDay1,
                     VacationDay2 = data.VacationDay2
                 };
@@ -49,7 +49,7 @@ namespace HRMS.API.Controllers
         }
         [HttpGet]
         [Route("/GeneralSetting/getbyempid/{empID:int}")]
-        [Authorize(policy: "Permission:GeneralSettings.View")]
+        //[Authorize(policy: "Permission:GeneralSettings.View")]
         public ActionResult GetSettingByEmpID(int empID)
         {
             if (empID != 0)
@@ -65,7 +65,7 @@ namespace HRMS.API.Controllers
                         {
                             Id = settingData.Id,
                             Bonus = settingData.Bonus,
-                            Discount = settingData.Discount,
+                            Discount = settingData.Penality,
                             EmployeeID = empID,
                             VacationDay1 = settingData.VacationDay1,
                             VacationDay2 = settingData.VacationDay2
@@ -82,7 +82,7 @@ namespace HRMS.API.Controllers
         }
         [HttpGet]
         [Route("/GeneralSetting/getbyid/{id:int}")]
-        [Authorize(policy: "Permission:GeneralSettings.View")]
+        //[Authorize(policy: "Permission:GeneralSettings.View")]
         public ActionResult GetSettingByID(int id)
         {
             if (id != 0)
@@ -96,7 +96,7 @@ namespace HRMS.API.Controllers
                     {
                         Id = settingData.Id,
                         Bonus = settingData.Bonus,
-                        Discount = settingData.Discount,
+                        Discount = settingData.Penality,
                         VacationDay1 = settingData.VacationDay1,
                         VacationDay2 = settingData.VacationDay2
                     };
@@ -109,7 +109,7 @@ namespace HRMS.API.Controllers
         }
         [HttpPost]
         [Route("/General/SaveNew")]
-        [Authorize(policy: "Permission:GeneralSettings.Create")]
+        //[Authorize(policy: "Permission:GeneralSettings.Create")]
 
         public async Task<ActionResult> AddGeneralSettings(GeneralDataDTO Data)
         {
@@ -119,9 +119,10 @@ namespace HRMS.API.Controllers
             //check if not exist ===> create 
             if (exist == null)
             {
+                exist = new GeneralSettings();
                 old = false;
                 exist.Bonus = Data.Bonus;
-                exist.Discount = Data.Discount;
+                exist.Penality = Data.Discount;
                 exist.VacationDay1 = Data.VacationDay1;
                 exist.VacationDay2 = Data.VacationDay2;
                 generalSettingRepository.Create(exist);
@@ -150,7 +151,7 @@ namespace HRMS.API.Controllers
                 {
                     Id = exist.Id,
                     Bonus = exist.Bonus,
-                    Discount = exist.Discount,
+                    Discount = exist.Penality,
                     VacationDay1 = exist.VacationDay1,
                     VacationDay2 = exist.VacationDay2,
                 };
@@ -162,7 +163,7 @@ namespace HRMS.API.Controllers
 
         [HttpPut]
         [Route("/Setting/EditGeneral")]
-        [Authorize(policy: "Permission:GeneralSettings.Edit")]
+        //[Authorize(policy: "Permission:GeneralSettings.Edit")]
         public async Task<ActionResult> EditGeneralSettings(GeneralDataDTO Data)
         {
             if (Data.Id != null && Data.Id != 0)
@@ -174,7 +175,7 @@ namespace HRMS.API.Controllers
                     result.Bonus = Data.Bonus;
                     result.VacationDay1 = Data.VacationDay1;
                     result.VacationDay2 = Data.VacationDay2;
-                    result.Discount = Data.Discount;
+                    result.Penality = Data.Discount;
                     generalSettingRepository.Edite(result);
                     return NoContent();
                 }

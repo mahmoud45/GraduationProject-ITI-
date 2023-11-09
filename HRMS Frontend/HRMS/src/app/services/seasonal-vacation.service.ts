@@ -7,7 +7,7 @@ import { SeasonalVacation } from '../models/vacationModel/seasonal-vacation.mode
   providedIn: 'root',
 })
 export class SeasonalVacationService {
-    private apiUrl = 'http://localhost:5190/api';
+    private apiUrl = 'http://localhost:7073/api';
 
   
 
