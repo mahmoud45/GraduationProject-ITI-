@@ -3,6 +3,7 @@ using HRMS.Application.Repository;
 using HRMS.Application.Repository.SalaryRepository;
 using HRMS.Application.Services.SalaryServices.Queries.GetSalaries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,7 @@ namespace HRMS.API.Controllers
 
         [HttpGet]
         [Route("Get")]
+       // [Authorize(policy: "Permission:Get.View")]
         public async Task<PaginatedDtO>? Get(int pageNumber, int pageSize, string? search, string? month, string? year)
         {
             return  await _mediator.Send(new GetSalariesQuery()

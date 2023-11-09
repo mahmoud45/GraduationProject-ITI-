@@ -1,4 +1,3 @@
-import { NotFoundComponent } from './components/not-found/not-found.component';
 import { DepartmentFormComponent } from './components/department/department-form/department-form.component';
 import { NgModule, Component } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -14,27 +13,28 @@ import { VacationsComponent } from './components/vacations/vacations.component';
 
 import { DepartmentComponent } from './components/department/department.component';
 import { SalaryComponent } from './components/salary/salary.component';
-import { GeneralSettingComponent } from './components/general-setting/general-setting.component';
-
 
 const routes: Routes = [
-    {path: '', redirectTo: 'home', pathMatch: 'full'},
-    {path: 'home', component: HomeComponent},
-    {path:'employee',component:EmployeeComponent},
-    {path:'employee/:id',component:AddEmpComponent},
-    {path: 'login', component: LoginComponent},
-    {path: 'register', component: RegisterComponent, data: {allowedRoles: ["HumanResource"], allowedPermissions: ["generalsetting.View"]}, canActivate: [AuthGuard]},
-    {path:'attendance',component: AttendanceComponent},
-    {path:'vacations',component: VacationsComponent},
-    {path:'departmentForm',component: DepartmentFormComponent},
-    {path:'department',component: DepartmentComponent},
-    {path:'salary',component: SalaryComponent},
-    {path:'GeneralSettings',component:GeneralSettingComponent},
-    {path:'**',component: NotFoundComponent},
+  { path: '', component: HomeComponent },
+  { path: 'employee', component: EmployeeComponent },
+  { path: 'employee/:id', component: AddEmpComponent },
+  { path: 'login', component: LoginComponent },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    data: { allowedRoles: ['HumanResource'] },
+    canActivate: [AuthGuard],
+  },
+  { path: 'attendance', component: AttendanceComponent },
+
+  { path: 'vacations', component: VacationsComponent },
+  { path: 'departmentForm', component: DepartmentFormComponent },
+  { path: 'department', component: DepartmentComponent },
+  { path: 'salary', component: SalaryComponent },
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

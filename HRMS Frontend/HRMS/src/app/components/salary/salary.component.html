@@ -24,7 +24,7 @@
             id="month"
             (change)="setMonth(month.value)"
           >
-            <option>Select Month</option>
+            <option value="">Select Month</option>
 
             <option value="01">January</option>
             <option value="02">February</option>
@@ -52,7 +52,7 @@
               id="year"
               (change)="setYear(year.value)"
             >
-              <option>Select Year</option>
+              <option value="">Select Year</option>
 
               <option *ngFor="let year of years" [value]="year">
                 {{ year }}
@@ -82,6 +82,8 @@
           <th scope="col" class="text-center">#</th>
           <th scope="col" class="text-center">Employee</th>
           <th scope="col" class="text-center">Department</th>
+          <th scope="col" class="text-center">Month</th>
+          <th scope="col" class="text-center">Year</th>
           <th scope="col" class="text-center">Salary</th>
           <th scope="col" class="text-center">Attendance Days</th>
           <th scope="col" class="text-center">Absence Days</th>
@@ -98,6 +100,8 @@
           <th scope="row" class="text-center">{{ i + 1 }}</th>
           <td class="text-center">{{ x.empName }}</td>
           <td class="text-center">{{ x.departmentName }}</td>
+          <td class="text-center">{{ x.month }}</td>
+          <td class="text-center">{{ x.year }}</td>
           <td class="text-center">{{ x.salary }}</td>
           <td class="text-center">{{ x.attendance }}</td>
           <td class="text-center">{{ x.absence }}</td>

@@ -15,7 +15,7 @@ export class SalaryApiService {
     salaryPaginatedModel: SalaryPaginatedModel
   ): Observable<PaginatedDTOModel> {
     return this.http.get<PaginatedDTOModel>(
-      'https://localhost:7073/api/Salary/Get?pageNumber=' +
+      'https://localhost:44324/api/Salary/Get?pageNumber=' +
         salaryPaginatedModel.pageNumber +
         '&pageSize=' +
         salaryPaginatedModel.pageSize +

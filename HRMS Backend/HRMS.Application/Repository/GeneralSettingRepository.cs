@@ -35,7 +35,7 @@ namespace HRMS.Application.Repository
 
         public GeneralSettings IsExist(GeneralDataDTO obj)
 
-        => _dBContext.GeneralSettings.FirstOrDefault(x => x.Bonus == obj.Bonus && x.VacationDay1 == obj.VacationDay1 && x.Discount == obj.Discount && x.VacationDay2 == obj.VacationDay2);
+        => _dBContext.GeneralSettings.FirstOrDefault(x => x.Bonus == obj.Bonus && x.VacationDay1 == obj.VacationDay1 && x.Penality == obj.Discount && x.VacationDay2 == obj.VacationDay2);
 
     }
 }

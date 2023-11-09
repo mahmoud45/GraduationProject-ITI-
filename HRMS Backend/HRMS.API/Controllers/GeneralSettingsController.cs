@@ -34,7 +34,7 @@ namespace HRMS.API.Controllers
                 {
                     Id = (int)id,
                     Bonus = data.Bonus,
-                    Discount = data.Discount,
+                    Discount = data.Penality,
                     VacationDay1 = data.VacationDay1,
                     VacationDay2 = data.VacationDay2
                 };
@@ -65,7 +65,7 @@ namespace HRMS.API.Controllers
                         {
                             Id = settingData.Id,
                             Bonus = settingData.Bonus,
-                            Discount = settingData.Discount,
+                            Discount = settingData.Penality,
                             EmployeeID = empID,
                             VacationDay1 = settingData.VacationDay1,
                             VacationDay2 = settingData.VacationDay2
@@ -96,7 +96,7 @@ namespace HRMS.API.Controllers
                     {
                         Id = settingData.Id,
                         Bonus = settingData.Bonus,
-                        Discount = settingData.Discount,
+                        Discount = settingData.Penality,
                         VacationDay1 = settingData.VacationDay1,
                         VacationDay2 = settingData.VacationDay2
                     };
@@ -121,7 +121,7 @@ namespace HRMS.API.Controllers
             {
                 old = false;
                 exist.Bonus = Data.Bonus;
-                exist.Discount = Data.Discount;
+                exist.Penality = Data.Discount;
                 exist.VacationDay1 = Data.VacationDay1;
                 exist.VacationDay2 = Data.VacationDay2;
                 generalSettingRepository.Create(exist);
@@ -150,7 +150,7 @@ namespace HRMS.API.Controllers
                 {
                     Id = exist.Id,
                     Bonus = exist.Bonus,
-                    Discount = exist.Discount,
+                    Discount = exist.Penality,
                     VacationDay1 = exist.VacationDay1,
                     VacationDay2 = exist.VacationDay2,
                 };
@@ -174,7 +174,7 @@ namespace HRMS.API.Controllers
                     result.Bonus = Data.Bonus;
                     result.VacationDay1 = Data.VacationDay1;
                     result.VacationDay2 = Data.VacationDay2;
-                    result.Discount = Data.Discount;
+                    result.Penality = Data.Discount;
                     generalSettingRepository.Edite(result);
                     return NoContent();
                 }

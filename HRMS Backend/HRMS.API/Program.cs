@@ -123,7 +123,7 @@ using (var serviceScope = app.Services.CreateScope())
     var dbContext = serviceScope.ServiceProvider.GetRequiredService<DBContext>();
     var serviceProvider = serviceScope.ServiceProvider;
     
-    //SeedContext.Seed(dbContext, serviceProvider);
+    SeedContext.Seed(dbContext, serviceProvider);
 }
 app.MapControllers();
 

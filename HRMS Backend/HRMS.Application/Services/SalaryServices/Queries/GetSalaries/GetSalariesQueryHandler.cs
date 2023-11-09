@@ -50,33 +50,48 @@ namespace HRMS.Application.Services.SalaryServices.Queries.GetSalaries
                 {
                     foreach (var item in empSalary[i].Attendance)
                     {
-                        if (item.DepartureTime.Hour > empSalary[i].LeaveTime.Hour && item.ArrivalTime.Hour <= empSalary[i].ArrivalTime.Hour)
+                        if (item.SeasonalVacationID == null && item.DepartureTime.Hour > empSalary[i].LeaveTime.Hour && item.ArrivalTime.Hour <= empSalary[i].ArrivalTime.Hour )
                         {
                             bounsHours += item.DepartureTime.Hour - empSalary[i].LeaveTime.Hour;
                         }
 
-                        else if (item.DepartureTime.Hour < empSalary[i].LeaveTime.Hour || item.ArrivalTime.Hour > empSalary[i].ArrivalTime.Hour)
+                        else if (item.SeasonalVacationID == null && (item.DepartureTime.Hour < empSalary[i].LeaveTime.Hour || item.ArrivalTime.Hour > empSalary[i].ArrivalTime.Hour))
                         {
                             penalityHours += (empSalary[i].LeaveTime.Hour - item.DepartureTime.Hour) + (item.ArrivalTime.Hour - empSalary[i].ArrivalTime.Hour);
                         }
                     }
-                    penalityHours += mappedObjs[i].Absence * 8;
 
-                    mappedObjs[i].TotalBouns += bounsHours * mappedObjs[i].SpecialSettingsBonus;
-                    mappedObjs[i].TotalPenality += penalityHours * mappedObjs[i].SpecialSettingsPenality;
+                    penalityHours += mappedObjs[i].Absence * 8;
+                    var salaryHour = mappedObjs[i].Salary / 176;
+
+
+                    mappedObjs[i].TotalBouns += bounsHours * salaryHour * mappedObjs[i].SpecialSettingsBonus;
+                    mappedObjs[i].TotalBouns= Math.Round(mappedObjs[i].TotalBouns,2);
+
+
+                    mappedObjs[i].TotalPenality += (penalityHours*salaryHour) * mappedObjs[i].SpecialSettingsPenality;
+                    mappedObjs[i].TotalPenality= Math.Round(mappedObjs[i].TotalPenality,2);
+
+
                     mappedObjs[i].TotalSalary += (mappedObjs[i].Salary + mappedObjs[i].TotalBouns) - mappedObjs[i].TotalPenality;
+                    mappedObjs[i].TotalSalary = Math.Round(mappedObjs[i].TotalSalary,2);
+
+
                     mappedObjs[i].SpecialSettingsBonus = bounsHours;
                     mappedObjs[i].SpecialSettingsPenality= penalityHours;
+                    mappedObjs[i].Month = request.Month;
+                    mappedObjs[i].Year = request.Year;
                     bounsHours = 0;
                     penalityHours = 0;
+                    salaryHour=0;
                 }
 
-                return new PaginatedDtO() { salaryDTOs = mappedObjs, pageCount = count % request.PageSize == 0 ? count/request.PageSize: (count / request.PageSize) + 1};
+                return new PaginatedDtO() { salaryDTOs = mappedObjs, pageCount = count % request.PageSize == 0 ? count/request.PageSize: (count / request.PageSize) + 1 , message="Success"};
 
             }
             catch (Exception ex)
             {
-                return null;
+                return new PaginatedDtO() { message = "Failed   "+ex};
             }
 
         }
