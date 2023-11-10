@@ -28,41 +28,5 @@
 
 
         </div>
-        <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Username</label>
-          <input
-            type="text"
-            class="form-control"
-            id="exampleInputEmail1"
-            formControlName="UserName"
-          />
-          <ng-container
-            *ngIf="userName.hasError('required') && userName.touched"
-          >
-            <span class="text-danger">Username is required</span>
-          </ng-container>
-        </div>
-        <div class="mb-3">
-          <label for="ePassword" class="form-label">Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="Password"
-            formControlName="Password"
-          />
-          <ng-container
-            *ngIf="password.hasError('required') && password.touched"
-          >
-            <span class="text-danger">Password is required</span>
-          </ng-container>
-        </div>
-        <div class="row">
-          <button type="submit" class="btn btn-success mb-3">Login</button>
-          <button type="submit" routerLink="/register" class="btn btn-primary">
-            Register
-          </button>
-        </div>
-      </form>
     </div>
   </div>
-</div>

@@ -97,9 +97,15 @@
             ></i>
           </span>
 
-          <div class="d-flex flex-column pe-4">
-            <button routerLink="/login" type="button" class="btn btn-warning">
+          <div class="d-flex flex-row pe-4">
+            <button *ngIf="!isAuthenticatd()" routerLink="/login" type="button" class="btn btn-warning">
               Login
+            </button>
+            <button *ngIf="isAuthenticatd()" routerLink="/register" type="button" class="btn btn-warning">
+              Register Account
+            </button>
+            <button *ngIf="isAuthenticatd()" type="button" class="btn btn-danger" (click)="logout()">
+              Logout
             </button>
           </div>
         </div>

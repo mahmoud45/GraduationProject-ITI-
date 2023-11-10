@@ -36,7 +36,7 @@ export class LoginComponent implements OnDestroy{
 
     login(e: Event): void{
         e.preventDefault();
-        
+
         if(this.loginForm.valid){
             let loginModel: LoginModel = this.loginForm.value as LoginModel;
             this.loginUserSubscription = this.userService.Login(loginModel).subscribe({
@@ -45,7 +45,7 @@ export class LoginComponent implements OnDestroy{
                         const token = response.token;
                         localStorage.setItem("jwt", token);
 
-                        this.router.navigate(['']);
+                        this.router.navigate(['department']);
                     }
 
                     this.message = response.message;

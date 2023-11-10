@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using HRMS.Application.Repository.SalaryRepository;
+using Microsoft.AspNetCore.Authorization;
 
 string MyAllowSpecificOrigins = "m";
 
@@ -86,7 +87,7 @@ builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
 builder.Services.AddScoped<ISeasonalVacationRepository, SeasonalVacationRepository>();
 builder.Services.AddScoped<IGeneralSettingRepository, GeneralSettingRepository>();
 
-
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 builder.Services.AddScoped<ISalaryRepository,SalaryRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -118,14 +119,14 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseCors(MyAllowSpecificOrigins);
-using (var serviceScope = app.Services.CreateScope())
+/*using (var serviceScope = app.Services.CreateScope())
 {
 
     var dbContext = serviceScope.ServiceProvider.GetRequiredService<DBContext>();
     var serviceProvider = serviceScope.ServiceProvider;
     
     SeedContext.Seed(dbContext, serviceProvider);
-}
+}*/
 app.MapControllers();
 
 SeedDataBase.SeedAdminAndRoles(app).Wait();
