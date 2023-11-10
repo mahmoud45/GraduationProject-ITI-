@@ -7,6 +7,7 @@
       class="form-select"
       name="departID"
     >
+      <option selected disabled>--Select Department--</option>
       <option *ngFor="let x of allDepartments" value="{{ x.id }}">
         {{ x.name }}
       </option>

@@ -1,7 +1,6 @@
 import { SalaryPaginatedModel } from './../models/SalaryModels/Salary-Paginated-model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SalaryDataModel } from '../models/SalaryModels/Salary-Data-model';
 import { Observable } from 'rxjs';
 import { PaginatedDTOModel } from '../models/SalaryModels/Paginated-DTO-Model';
 
@@ -15,7 +14,7 @@ export class SalaryApiService {
     salaryPaginatedModel: SalaryPaginatedModel
   ): Observable<PaginatedDTOModel> {
     return this.http.get<PaginatedDTOModel>(
-      'https://localhost:44324/api/Salary/Get?pageNumber=' +
+      'https://localhost:7073/api/Salary/Get?pageNumber=' +
         salaryPaginatedModel.pageNumber +
         '&pageSize=' +
         salaryPaginatedModel.pageSize +

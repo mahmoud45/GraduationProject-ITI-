@@ -29,6 +29,14 @@ export class RolesComponent {
       name: 'Salary',
       permissions: [ {add: false}, {edit: false}, {delete: false},{ update: false}, {view: false }]
     },
+    {
+      name: 'Department',
+      permissions: [ {add: false}, {edit: false}, {delete: false},{ update: false}, {view: false }]
+    },
+    {
+      name: 'SeasonalVacations',
+      permissions: [ {add: false}, {edit: false}, {delete: false},{ update: false}, {view: false }]
+    },
     // Add more pages as needed
   ];
 
@@ -43,13 +51,13 @@ export class RolesComponent {
     
     for(let page of this.pages){
      if(page.permissions[0].add==true)
-       this.claimss.push({pageName:page.name,permission: 'add'})
+       this.claimss.push({pageName:page.name,permission: 'Add'})
      if(page.permissions[1].edit==true)
-     this.claimss.push({pageName:page.name,permission: 'edit'})
+     this.claimss.push({pageName:page.name,permission: 'Edit'})
     if(page.permissions[2].delete==true)
-    this.claimss.push({pageName:page.name,permission: 'delete'})
+    this.claimss.push({pageName:page.name,permission: 'Delete'})
     if(page.permissions[3].view==true)
-    this.claimss.push({pageName:page.name,permission: 'view'})      
+    this.claimss.push({pageName:page.name,permission: 'View'})      
     }
     this.data={roleName:this.roleName,claims:this.claimss}
     console.log(this.data);

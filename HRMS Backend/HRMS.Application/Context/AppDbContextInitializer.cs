@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,7 +15,10 @@ namespace HRMS.Application.Context
         {  
 
             if (!await roleManager.RoleExistsAsync(Authorization.Roles.HumanResource.ToString()))
+            {
                 await roleManager.CreateAsync(new IdentityRole(Authorization.Roles.HumanResource.ToString()));
+			}
+
 
             if (!await roleManager.RoleExistsAsync(Authorization.Roles.User.ToString()))
                 await roleManager.CreateAsync(new IdentityRole(Authorization.Roles.User.ToString()));

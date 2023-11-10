@@ -18,7 +18,7 @@ namespace HRMS.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] SeasonalVacationDto seasonalVacationDto)
+        public IActionResult Create(SeasonalVacationDto seasonalVacationDto)
         {
             // Check if the model state is valid
             if (ModelState.IsValid)
