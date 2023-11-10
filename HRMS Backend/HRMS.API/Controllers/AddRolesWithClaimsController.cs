@@ -1,11 +1,9 @@
 ﻿using HRMS.Application.Models.AddedRolesAndClaimsDTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-
-
-
 namespace HRMS.API.Controllers
 {
     [Route("api/[controller]")]
@@ -19,8 +17,9 @@ namespace HRMS.API.Controllers
             this.roleManager = roleManager;
         }
 
-        [HttpPost] 
-        public async Task<IActionResult> SaveRolesWithClaims(AddedRolesAndClaimsDTO addedRolesAndClaimsDTO)
+        [HttpPost]		
+		[Authorize(Roles = "HumanResource")]
+		public async Task<IActionResult> SaveRolesWithClaims(AddedRolesAndClaimsDTO addedRolesAndClaimsDTO)
         {
             // Check if the role already exists.
             if (await roleManager.RoleExistsAsync(addedRolesAndClaimsDTO.RoleName))

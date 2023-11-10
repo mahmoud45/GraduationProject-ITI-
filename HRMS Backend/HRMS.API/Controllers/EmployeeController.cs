@@ -20,6 +20,7 @@ namespace HRMS.API.Controllers
         }
 
         [HttpGet]
+        //[Authorize(Policy = "Permission:Employee.View")]
         public async Task<ActionResult<IEnumerable<Employee>>> GetAll()
         {
             var Employee = await _genaricrepository.GetAllAsync();
@@ -52,7 +53,8 @@ namespace HRMS.API.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public ActionResult<Employee> GetEmployeeByID(int id)
+		//[Authorize(Policy = "Permission:Employee.View")]
+		public ActionResult<Employee> GetEmployeeByID(int id)
         {
             var Employee = _genaricrepository.GetById(id);
             if (Employee is null)
@@ -102,7 +104,9 @@ namespace HRMS.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Edite(int id,EmployeeDto employeeDto)
+		//[Authorize(Policy = "Permission:Employee.Edit")]
+
+		public IActionResult Edite(int id,EmployeeDto employeeDto)
         {
             var emp = _genaricrepository.GetById(id);
             if (emp == null)
@@ -126,7 +130,8 @@ namespace HRMS.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(int id)
+		//[Authorize(Policy = "Permission:Employee.Delete")]
+		public async Task<IActionResult> DeleteAsync(int id)
         {
             var employee = _genaricrepository.GetById(id);
 

@@ -48,11 +48,11 @@
       <div class="collapse navbar-collapse bg-transparent" id="navbarCollapse">
         <div class="navbar-nav ms-auto mx-xl-auto p-0">
           <a
-            routerLink="home"
+            routerLink="/register"
             routerLinkActive="'border border-bottom border-success'"
             [routerLinkActiveOptions]="{ exact: true }"
             class="nav-item nav-link px-0 mx-2"
-            >Home</a
+            >Create Account</a
           >
           <a
             routerLink="/department"
@@ -82,6 +82,13 @@
             class="nav-item nav-link px-0 mx-2"
             >Salaries</a
           >
+          <a
+            routerLink="/vacations"
+            routerLinkActive="'border border-bottom border-success'"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="nav-item nav-link px-0 mx-2"
+            >Vacations</a
+          >
         </div>
       </div>
       <div class="d-none d-xl-flex flex-shrink-0">
@@ -97,9 +104,23 @@
             ></i>
           </span>
 
-          <div class="d-flex flex-column pe-4">
-            <button routerLink="/login" type="button" class="btn btn-warning">
+          <div class="d-flex flex-row pe-4">
+            <button
+              *ngIf="!isAuthenticatd()"
+              routerLink="/login"
+              type="button"
+              class="btn btn-warning"
+            >
               Login
+            </button>
+
+            <button
+              *ngIf="isAuthenticatd()"
+              type="button"
+              class="btn btn-danger"
+              (click)="logout()"
+            >
+              Logout
             </button>
           </div>
         </div>

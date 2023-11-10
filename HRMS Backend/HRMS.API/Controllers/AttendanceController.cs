@@ -12,6 +12,7 @@ using HRMS.Application.Services.AttendanceServices;
 using HRMS.Application.Models.AttendancesDTO;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HRMS.API.Controllers
 {
@@ -31,6 +32,7 @@ namespace HRMS.API.Controllers
 		// GET: api/Attendance
 		[Route("/FDattendance", Name = "GetAttendancesByDates")]
 		[HttpGet]
+		[Authorize(Policy = "Permission:Attendance.View")]
 		public ActionResult<List<AttendanceDTO>> GetAttendancesByDates()
         {
 			Request.Headers.TryGetValue("Pnum", out var PageNumber);
@@ -67,6 +69,7 @@ namespace HRMS.API.Controllers
 
 		[Route("/FDsearch/{name:alpha}", Name = "GetAttendancesByNameByDates")]
 		[HttpGet]
+		[Authorize(Policy = "Permission:Attendance.View")]
 		public ActionResult<List<AttendanceDTO>> GetAttendancesByNameByDates(string name)
 		{
 			Request.Headers.TryGetValue("Pnum", out var PageNumber);
@@ -95,17 +98,20 @@ namespace HRMS.API.Controllers
 
 		[Route("/emp/{emp_name:alpha}", Name = "GetAttendancesByEmployeeName")]
         [HttpGet]
-        public ActionResult<List<AttendanceDTO>> GetAttendancesByEmployeeName(string emp_name)
+		[Authorize(Policy = "Permission:Attendance.View")]
+		public ActionResult<List<AttendanceDTO>> GetAttendancesByEmployeeName(string emp_name)
         {
 			return attendanceService.GetListAttendanceDTO(attendanceRepository.getAttendancesByEmployeeName(emp_name));
         }
         [Route("/dept/{dept_name:alpha}", Name = "GetAttendancesByDepartmentName")]
 		[HttpGet]
+		[Authorize(Policy = "Permission:Attendance.View")]
 		public ActionResult<List<AttendanceDTO>> GetAttendancesByDepartmentName(string dept_name)
 		{
 			return attendanceService.GetListAttendanceDTO(attendanceRepository.getAttendancesByDepartmentName(dept_name));
 		}
 		[HttpPost]
+		//[Authorize(Policy = "Permission:Attendance.Add")]
 		public ActionResult AddAttendance(AttendanceDTO attendanceDTO)
 		{
             try
@@ -120,6 +126,7 @@ namespace HRMS.API.Controllers
 			return NoContent();
 		}
 		[HttpPut]
+		[Authorize(Policy = "Permission:Attendance.Edit")]
 		public ActionResult EditAttendance(AttendanceDTO attendanceDTO)
 		{
 			try
@@ -134,6 +141,7 @@ namespace HRMS.API.Controllers
 			return NoContent();
 		}
 		[HttpDelete]
+		[Authorize(Policy = "Permission:Attendance.Delete")]
 		public ActionResult deleteAttendance(int id)
 		{
 			try

@@ -42,14 +42,15 @@ export class VacationsComponent implements OnInit {
   }
 
   loadSeasonalVacations() {
-    this.vacationService.getSeasonalVacations().subscribe(
-      (data) => {
+    this.vacationService.getSeasonalVacations().subscribe({
+      next: (data) => {
         this.seasonalVacations = data;
       },
-      (error) => {
+      error:(error) => {
         console.error('Error loading seasonal vacations:', error);
-      }
-    );
+      },
+      complete:()=>{}
+  });
   }
   // validation for add new vacation
   get name() {
@@ -75,6 +76,7 @@ export class VacationsComponent implements OnInit {
 
     this.vacationService.createSeasonalVacation(this.newVacation).subscribe({
       next: (data) => {
+
         this.loadSeasonalVacations(); // Reload the list after adding a new vacation
         this.newVacation = { id: 0, name: '', vacationDate: new Date() }; // Clear the form
         this.vacationForm.reset();

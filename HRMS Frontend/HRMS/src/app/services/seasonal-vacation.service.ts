@@ -7,19 +7,19 @@ import { SeasonalVacation } from '../models/vacationModel/seasonal-vacation.mode
   providedIn: 'root',
 })
 export class SeasonalVacationService {
-  private apiUrl = 'http://localhost:7073/api';
+  private apiUrl = 'https://localhost:7073/api';
 
   constructor(private http: HttpClient) {}
 
   getSeasonalVacations(): Observable<SeasonalVacation[]> {
-    return this.http.get<SeasonalVacation[]>(`${this.apiUrl}/seasonalvacation`);
+    return this.http.get<SeasonalVacation[]>("https://localhost:7073/api/SeasonalVacation");
   }
 
   createSeasonalVacation(
     seasonalVacation: SeasonalVacation
   ): Observable<SeasonalVacation> {
     return this.http.post<SeasonalVacation>(
-      `${this.apiUrl}/seasonalvacation`,
+      "https://localhost:7073/api/SeasonalVacation",
       seasonalVacation
     );
   }

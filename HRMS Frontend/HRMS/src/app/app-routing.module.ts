@@ -21,7 +21,7 @@ const routes: Routes = [
     {path:'employee',component:EmployeeComponent},
     {path:'employee/:id',component:AddEmpComponent},
     {path:'login', component: LoginComponent},
-    {path:'register', component: RegisterComponent, data: {allowedRoles: ["HumanResource"], allowedPermissions: ["generalsetting.View"]}, canActivate: [AuthGuard]},
+    {path:'register', component: RegisterComponent, data: {allowedRoles: ["HumanResource"]}, canActivate: [AuthGuard]},
     {path:'attendance',component: AttendanceComponent},
     {path:'vacations',component: VacationsComponent},
     {path:'departmentForm',component: DepartmentFormComponent},
