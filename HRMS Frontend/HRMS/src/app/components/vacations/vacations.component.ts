@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SeasonalVacationService } from 'src/app/services/seasonal-vacation.service';
 import { SeasonalVacation } from 'src/app/models/vacationModel/seasonal-vacation.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AuthGuardService } from 'src/app/services/auth-guard.service';
 
 
 
@@ -16,25 +17,31 @@ export class VacationsComponent implements OnInit {
   editForm: FormGroup; // Create an edit FormGroup
   newVacation: SeasonalVacation = { id: 0, name: '', vacationDate: new Date() }; // Initialize with empty data
   selectedVacation: SeasonalVacation | null = null;
-  
-
-  
 
 
-  constructor(private vacationService: SeasonalVacationService) {
+
+
+
+  constructor(private vacationService: SeasonalVacationService, private authGuard: AuthGuardService) {
     // Initialize the vacationForm property here
     this.vacationForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
       vacationDate: new FormControl('', [Validators.required]),
     });
 
-    
+
 
     // Initialize the editForm property here
     this.editForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
       vacationDate: new FormControl('', [Validators.required]),
     });
+  }
+
+  token = localStorage.getItem("jwt") ?? "";
+
+  hasPermissions(permissions: string[]){
+    return this.authGuard.hasPermission(this.token, permissions) || this.authGuard.hasRole(this.token, ['HumanResource']);
   }
 
   ngOnInit(): void {

@@ -20,8 +20,7 @@ export class RoleService {
 
     return this.http.post("https://localhost:7073/api/AddRolesWithClaims", data,{
       headers: new HttpHeaders({ "Content-Type": "application/json", 'Authorization': `Bearer ${this.tokenGetter}`}),
-      responseType: "text"
-  });;
+  });
   }
-  
+
 }

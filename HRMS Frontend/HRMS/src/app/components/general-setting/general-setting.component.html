@@ -126,6 +126,7 @@
       <!-- Buttons -->
       <div class="text-center mt-4">
         <input
+          *ngIf="hasPermissions(['GeneralSettings.Create'])"
           type="submit"
           [value]="action ? 'Save' : 'Save As New Setting'"
           (click)="setButtonClicked('save')"
@@ -136,7 +137,7 @@
           value="Edit Current Setting Data"
           (click)="setButtonClicked('edit')"
           class="btn btn-outline-primary ms-4 h-25 w-25"
-          *ngIf="!action"
+          *ngIf="!action && hasPermissions(['GeneralSettings.Edit'])"
         />
       </div>
     </form>

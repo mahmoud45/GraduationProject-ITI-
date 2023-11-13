@@ -2,7 +2,7 @@
   <h1 class="text-center py-5">Salary Report</h1>
 
   <!-- Search -->
-  <section class="row">
+  <section *ngIf="hasPermissions(['Salary.View'])" class="row">
     <form>
       <section class="col-lg-8 col-sm-10 offset-sm-1 offset-md-2">
         <input

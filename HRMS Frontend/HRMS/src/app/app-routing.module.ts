@@ -18,7 +18,7 @@ import { AccessDeniedComponent } from './components/access-denied/access-denied.
 
 const routes: Routes = [
     {path:'', redirectTo: 'home', pathMatch: 'full'},
-    {path:'home', component: LoginComponent},
+    {path:'home', component: HomeComponent},
     {path:'employee',component:EmployeeComponent},
     {path:'employee/:id',component:AddEmpComponent},
     {path:'login', component: LoginComponent},

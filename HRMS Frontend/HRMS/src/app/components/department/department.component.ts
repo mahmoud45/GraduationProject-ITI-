@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { IDepartment } from 'src/app/models/IDepartment';
+import { AuthGuardService } from 'src/app/services/auth-guard.service';
 import { DepartmentService } from 'src/app/services/department.service';
 
 @Component({
@@ -10,9 +11,17 @@ import { DepartmentService } from 'src/app/services/department.service';
 })
 export class DepartmentComponent {
   departments:IDepartment[]=[];
-  constructor(private departmentService:DepartmentService,private router:Router){
+  constructor(private departmentService:DepartmentService, private authGuard: AuthGuardService, private router:Router){
     this.getAlldepartments();
   }
+
+  token = localStorage.getItem("jwt") ?? "";
+
+  hasPermissions(permissions: string[]){
+    return this.authGuard.hasPermission(this.token, permissions) || this.authGuard.hasRole(this.token, ['HumanResource']);
+  }
+
+
   deleteDepartment(id:number){
     this.departmentService.deleteDepartment(id).subscribe({
       next: () => {
