@@ -10,6 +10,7 @@ namespace HRMS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class DepartmentController : ControllerBase
     {
         private readonly IGenaricrepository<Department> _genaricrepository;
@@ -20,19 +21,22 @@ namespace HRMS.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Permission:Department.View")]
         public async Task<ActionResult<IEnumerable<Department>>>GetAll()
         {
           var  dept =await _genaricrepository.GetAllAsync();
             return Ok(dept);
         }
 		[HttpGet("{id:int}")]
-		public ActionResult<Department> getDepartmentByID(int id)
+        [Authorize(Policy = "Permission:Department.View")]
+        public ActionResult<Department> getDepartmentByID(int id)
 		{
 			var dept =  _genaricrepository.GetById(id);
 			return Ok(dept);
 		}
 
 		[HttpPost]
+        [Authorize(Policy = "Permission:Department.Create")]
         public ActionResult<EmployeeDto> Create(DepartmentDto departmentDto)
         {
             var dept = new Department()
@@ -45,6 +49,7 @@ namespace HRMS.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "Permission:Department.Edit")]
         public IActionResult Edite(int id, DepartmentDto departmentDto)
         {
 
@@ -62,6 +67,7 @@ namespace HRMS.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Permission:Department.Delete")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
             var department = _genaricrepository.GetById(id);

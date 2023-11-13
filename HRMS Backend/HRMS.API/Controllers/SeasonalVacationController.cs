@@ -1,6 +1,7 @@
 ﻿using HRMS.Application.Models.SeasonalVacationDto;
 using HRMS.Application.Repository;
 using HRMS.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace HRMS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class SeasonalVacationController : ControllerBase
     {
         private readonly ISeasonalVacationRepository _seasonalVacationRepository;
@@ -18,6 +20,7 @@ namespace HRMS.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy ="Permission:SeasonalVacation.Create")]
         public IActionResult Create(SeasonalVacationDto seasonalVacationDto)
         {
             // Check if the model state is valid
@@ -35,6 +38,7 @@ namespace HRMS.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Permission:SeasonalVacation.View")]
         public IActionResult Get()
         {
             // Get all seasonal vacations
@@ -43,6 +47,7 @@ namespace HRMS.API.Controllers
         }
 
         [HttpGet("{id}", Name = "GetSeasonalVacationById")]
+        [Authorize(Policy = "Permission:SeasonalVacation.View")]
         public IActionResult GetById(int id)
         {
             // Get a seasonal vacation by ID
@@ -58,6 +63,7 @@ namespace HRMS.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "Permission:SeasonalVacation.Edit")]
         public IActionResult Update(int id, [FromBody] SeasonalVacationDto seasonalVacationDto)
         {
             // Check if the model state is valid
@@ -120,6 +126,7 @@ namespace HRMS.API.Controllers
         //}
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Permission:SeasonalVacation.Delete")]
         public IActionResult Delete(int id)
         {
             // Get the seasonal vacation by ID

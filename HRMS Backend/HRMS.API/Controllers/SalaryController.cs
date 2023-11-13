@@ -11,6 +11,7 @@ namespace HRMS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class SalaryController : ControllerBase
     {
         private ISalaryRepository salaryRepository;
@@ -25,7 +26,7 @@ namespace HRMS.API.Controllers
 
         [HttpGet]
         [Route("Get")]
-       // [Authorize(policy: "Permission:Get.View")]
+       [Authorize(Policy = "Permission:Salary.View")]
         public async Task<PaginatedDtO>? Get(int pageNumber, int pageSize, string? search, string? month, string? year)
         {
             return  await _mediator.Send(new GetSalariesQuery()
