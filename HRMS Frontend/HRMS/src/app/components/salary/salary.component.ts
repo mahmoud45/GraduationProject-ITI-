@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { SalaryDataModel } from 'src/app/models/SalaryModels/Salary-Data-model';
 import { SalaryPaginatedModel } from 'src/app/models/SalaryModels/Salary-Paginated-model';
 import { SalaryApiService } from 'src/app/services/Salary-Api.service';
+import { AuthGuardService } from 'src/app/services/auth-guard.service';
 
 @Component({
   selector: 'app-salary',
@@ -17,7 +18,7 @@ export class SalaryComponent {
   pageSize: number;
   pageNumber: number;
   pageCount: number;
-  constructor(private service: SalaryApiService) {
+  constructor(private service: SalaryApiService, private authGuard: AuthGuardService) {
     // Create an array of years for the last two years
     this.years = [];
     this.search = '';
@@ -35,6 +36,12 @@ export class SalaryComponent {
 
   ngOnInit(): void {
     this.getData();
+  }
+
+  token = localStorage.getItem("jwt") ?? "";
+
+  hasPermissions(permissions: string[]){
+    return this.authGuard.hasPermission(this.token, permissions) || this.authGuard.hasRole(this.token, ['HumanResource']);
   }
 
   getData(): void {

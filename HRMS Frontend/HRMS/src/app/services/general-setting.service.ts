@@ -9,8 +9,15 @@ import { Observable, catchError, throwError } from 'rxjs';
 export class GeneralSettingService {
   api:string = "https://localhost:7073/";
   constructor(public http :HttpClient) { }
+
+  get tokenGetter() {
+    return localStorage.getItem("jwt");
+  }
+
   getGeneralSettings():Observable <any>{
-    return this.http.get(`${this.api}api/GeneralSettings`).pipe(
+    return this.http.get(`${this.api}api/GeneralSettings`,{
+      headers: new HttpHeaders({ "Content-Type": "application/json", 'Authorization': `Bearer ${this.tokenGetter}`}),
+  }).pipe(
       catchError((error) => {
 
         return throwError(error);
@@ -19,7 +26,9 @@ export class GeneralSettingService {
     );
   }
   createGeneralSettings(generalData:generalSettingData):Observable<any>{
-    return this.http.post(`${this.api}General/SaveNew`,generalData).pipe(
+    return this.http.post(`${this.api}General/SaveNew`,generalData,{
+      headers: new HttpHeaders({ "Content-Type": "application/json", 'Authorization': `Bearer ${this.tokenGetter}`}),
+  }).pipe(
       catchError((error) => {
 
         return throwError(error);
@@ -28,7 +37,9 @@ export class GeneralSettingService {
     )
   }
   editGeneralSettings(generalEditedData:generalSettingData):Observable<any> {
-   return this.http.put(`${this.api}Setting/EditGeneral`,generalEditedData).pipe(
+   return this.http.put(`${this.api}Setting/EditGeneral`,generalEditedData,{
+    headers: new HttpHeaders({ "Content-Type": "application/json", 'Authorization': `Bearer ${this.tokenGetter}`}),
+}).pipe(
     catchError((error) => {
 
       return throwError(error);
@@ -37,7 +48,9 @@ export class GeneralSettingService {
    )
   }
   getGeneralSettingByEmpID(id:number): Observable<any>{
-    return this.http.get(`${this.api}GeneralSetting/getbyempid/${id}`).pipe(
+    return this.http.get(`${this.api}GeneralSetting/getbyempid/${id}`,{
+      headers: new HttpHeaders({ "Content-Type": "application/json", 'Authorization': `Bearer ${this.tokenGetter}`}),
+  }).pipe(
       catchError((error) => {
 
         return throwError(error);
@@ -46,7 +59,9 @@ export class GeneralSettingService {
      )
   }
   getGeneralSettingByID(id:number): Observable<any>{
-    return this.http.get(`${this.api}GeneralSetting/getbyid/${id}`).pipe(
+    return this.http.get(`${this.api}GeneralSetting/getbyid/${id}`,{
+      headers: new HttpHeaders({ "Content-Type": "application/json", 'Authorization': `Bearer ${this.tokenGetter}`}),
+  }).pipe(
       catchError((error) => {
 
         return throwError(error);

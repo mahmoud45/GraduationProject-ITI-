@@ -2,6 +2,7 @@
   <h2 class="p-4 alert alert-light mt-4 text-center text-dark">Employees</h2>
 
   <button
+    *ngIf="hasPermissions(['Employee.Create'])"
     routerLink="/employee/0"
     type="button"
     class="btn btn-outline-primary p-2 my-2 form-control"
@@ -37,11 +38,13 @@
         <td>{{ emp.hireDate | date : "yyyy-MM-dd" }}</td>
         <td>
           <i
+            *ngIf="hasPermissions(['Employee.Edit'])"
             (click)="editEmployee(emp.id)"
             class="bi bi-pencil-fill text-warning"
           >
           </i>
           <i
+            *ngIf="hasPermissions(['Employee.Delete'])"
             (click)="deleteEmployee(emp.id)"
             class="bi bi-trash-fill text-danger p-2"
           ></i>

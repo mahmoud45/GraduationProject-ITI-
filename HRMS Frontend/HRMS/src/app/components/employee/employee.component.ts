@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IEmployee } from 'src/app/models/iemployee';
+import { AuthGuardService } from 'src/app/services/auth-guard.service';
 
 @Component({
   selector: 'app-employee',
@@ -12,9 +13,10 @@ import { IEmployee } from 'src/app/models/iemployee';
 export class EmployeeComponent implements OnInit {
   employeeForm :FormGroup | undefined;
   selectedEmployee: IEmployee | null = null;
-  employees: IEmployee[] = []; 
+  employees: IEmployee[] = [];
   Employee:any;
-  constructor(private _Employeeservices:EmployeeservicesService,private router:Router) {}
+  constructor(private _Employeeservices:EmployeeservicesService, private authGuard: AuthGuardService, private router:Router) {}
+
   ngOnInit() : void {
       this._Employeeservices.GetAllEmployees().subscribe({
         next: (response:any)=>{
@@ -22,8 +24,15 @@ export class EmployeeComponent implements OnInit {
         },
         error:()=>{},
         complete:()=>{},
-      });  
+      });
     };
+
+  token = localStorage.getItem("jwt") ?? "";
+
+  hasPermissions(permissions: string[]){
+    return this.authGuard.hasPermission(this.token, permissions) || this.authGuard.hasRole(this.token, ['HumanResource']);
+  }
+  
   deleteEmployee(EmployeeId:number)
   {
     const userConfirmed = window.confirm('Do you really want to delete this?');
@@ -44,6 +53,6 @@ export class EmployeeComponent implements OnInit {
     this.router.navigate([`/employee/${id}`]);
   };
 }
- 
-  
+
+
 

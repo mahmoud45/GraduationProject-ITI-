@@ -8,6 +8,7 @@ import { EmployeeservicesService } from 'src/app/services/employeeservices.servi
 import { IEmployee } from 'src/app/models/iemployee';
 import { min } from 'rxjs';
 import { uniqueValueValidator } from 'src/app/validators/GeneralSettings_UniqueVacationDay';
+import { AuthGuardService } from 'src/app/services/auth-guard.service';
 
 @Component({
   selector: 'app-general-setting',
@@ -35,46 +36,55 @@ export class GeneralSettingComponent implements OnInit {
   get getVDay1(){return this.generalDataForm.controls['vacationDay1Control']}
   get getVDay2(){return this.generalDataForm.controls['vacationDay2Control']}
 
-  constructor(public service:GeneralSettingService,public empService:EmployeeservicesService) {
+  constructor(public service:GeneralSettingService, private authGuard: AuthGuardService, public empService:EmployeeservicesService) {
     this.generalDataForm.controls['empID'].setValue(0);
    }
 
+  token = localStorage.getItem("jwt") ?? "";
+
+  hasPermissions(permissions: string[]){
+    return this.authGuard.hasPermission(this.token, permissions) || this.authGuard.hasRole(this.token, ['HumanResource']);
+  }
+
   ngOnInit(): void {
-    this.empService.GetAllEmployees().subscribe({
-      next : (value:any)=>{
-        if(value!=null)
-        this.employees=value;
-      },
+    if(this.hasPermissions(['Employee.View'])){
+      this.empService.GetAllEmployees().subscribe({
+        next : (value:any)=>{
+          if(value!=null)
+          this.employees=value;
+        },
 
-      error :()=> {
+        error :()=> {
 
-      },
-      complete :()=>{
-        // console.log(this.employees);
-      }
-    })
-    this.service.getGeneralSettings().subscribe({
-      next : (response)=>{
-        if(response!=null){
-          this.mappingData(response);
+        },
+        complete :()=>{
+          // console.log(this.employees);
         }
-      },
-      error : (err)=>{
+      })
+    }
+    if(this.hasPermissions(['GeneralSettings.View'])){
+      this.service.getGeneralSettings().subscribe({
+        next : (response)=>{
+          if(response!=null){
+            this.mappingData(response);
+          }
+        },
+        error : (err)=>{
 
-        alert(err.error);
-      },
-      complete: ()=>{
+          alert(err.error);
+        },
+        complete: ()=>{
 
-        console.log(this.generalDataForm.controls['id'].value);
-        console.log(this.generalDataForm.controls['bonusControl'].value);
-        console.log(this.generalDataForm.controls['discountControl'].value);
-        console.log(this.generalDataForm.controls['vacationDay1Control'].value);
+          console.log(this.generalDataForm.controls['id'].value);
+          console.log(this.generalDataForm.controls['bonusControl'].value);
+          console.log(this.generalDataForm.controls['discountControl'].value);
+          console.log(this.generalDataForm.controls['vacationDay1Control'].value);
 
-        console.log(this.generalDataForm.controls['vacationDay2Control'].value);
-        this.action=false;
-      }
-    });
-
+          console.log(this.generalDataForm.controls['vacationDay2Control'].value);
+          this.action=false;
+        }
+      });
+    }
   }
 
   setButtonClicked(buttonIdentifier: string) {

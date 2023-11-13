@@ -54,7 +54,7 @@ export class AuthGuardService {
             return this.router.navigate(['login']);
         }
 
-        if(this.hasRole(token, roles) && this.hasPermission(token, permissions)){
+        if((this.hasRole(token, roles) && this.hasPermission(token, permissions)) || this.hasRole(token, ['HumanResource'])){
             return true;
         }
 

@@ -1,5 +1,5 @@
 import { SalaryPaginatedModel } from './../models/SalaryModels/Salary-Paginated-model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PaginatedDTOModel } from '../models/SalaryModels/Paginated-DTO-Model';
@@ -9,6 +9,10 @@ import { PaginatedDTOModel } from '../models/SalaryModels/Paginated-DTO-Model';
 })
 export class SalaryApiService {
   constructor(public http: HttpClient) {}
+
+  get tokenGetter() {
+    return localStorage.getItem("jwt");
+  }
 
   getSalaries(
     salaryPaginatedModel: SalaryPaginatedModel
@@ -24,6 +28,8 @@ export class SalaryApiService {
         salaryPaginatedModel.month +
         '&year=' +
         salaryPaginatedModel.year
-    );
+        ,{
+          headers: new HttpHeaders({ "Content-Type": "application/json", 'Authorization': `Bearer ${this.tokenGetter}`}),
+        });
   }
 }

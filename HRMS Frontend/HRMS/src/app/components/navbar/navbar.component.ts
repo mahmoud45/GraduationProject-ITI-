@@ -25,6 +25,25 @@ export class NavbarComponent {
       return this.authGuard.hasRole(token, ["HumanResource"]);
     }
 
+    hasPermissions(permissions: string[]){
+      const decodedToken = this.jwtHelper.decodeToken(localStorage.getItem("jwt") ?? "");
+
+      for(let key in decodedToken){
+        if(key.includes("permission")){
+
+          return permissions.some(permission => {
+              if(typeof decodedToken[key] === "object"){
+                return decodedToken[key].some((_permission: string) => _permission.includes(permission))
+              }else{
+                return decodedToken[key].includes(permission);
+              }
+            });
+        }
+      }
+      
+      return false;
+    }
+
     logout(){
         localStorage.removeItem("jwt");
 

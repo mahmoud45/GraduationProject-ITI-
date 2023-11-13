@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SeasonalVacation } from '../models/vacationModel/seasonal-vacation.model';
 
@@ -11,8 +11,14 @@ export class SeasonalVacationService {
 
   constructor(private http: HttpClient) {}
 
+  get tokenGetter() {
+    return localStorage.getItem("jwt");
+  }
+
   getSeasonalVacations(): Observable<SeasonalVacation[]> {
-    return this.http.get<SeasonalVacation[]>("https://localhost:7073/api/SeasonalVacation");
+    return this.http.get<SeasonalVacation[]>("https://localhost:7073/api/SeasonalVacation",{
+      headers: new HttpHeaders({ "Content-Type": "application/json", 'Authorization': `Bearer ${this.tokenGetter}`}),
+    });
   }
 
   createSeasonalVacation(
@@ -21,7 +27,9 @@ export class SeasonalVacationService {
     return this.http.post<SeasonalVacation>(
       "https://localhost:7073/api/SeasonalVacation",
       seasonalVacation
-    );
+      ,{
+        headers: new HttpHeaders({ "Content-Type": "application/json", 'Authorization': `Bearer ${this.tokenGetter}`}),
+      });
   }
 
   updateSeasonalVacation(
@@ -29,11 +37,15 @@ export class SeasonalVacationService {
   ): Observable<SeasonalVacation> {
     return this.http.put<SeasonalVacation>(
       `${this.apiUrl}/seasonalvacation/${seasonalVacation.id}`,
-      seasonalVacation
+      seasonalVacation,{
+        headers: new HttpHeaders({ "Content-Type": "application/json", 'Authorization': `Bearer ${this.tokenGetter}`}),
+      }
     );
   }
 
   deleteSeasonalVacation(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/seasonalvacation/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/seasonalvacation/${id}`,{
+      headers: new HttpHeaders({ "Content-Type": "application/json", 'Authorization': `Bearer ${this.tokenGetter}`}),
+    });
   }
 }

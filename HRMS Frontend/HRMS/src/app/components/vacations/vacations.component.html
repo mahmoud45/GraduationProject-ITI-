@@ -1,4 +1,4 @@
-<div class="container my-4">
+<div *ngIf="hasPermissions(['SeasonalVacations.Create'])" class="container my-4">
   <h2>Create a New Seasonal Vacation</h2>
   <form [formGroup]="vacationForm" (ngSubmit)="onSubmit()" class="my-3">
     <div class="form-group">
@@ -27,7 +27,7 @@
 
 
 <!-- Seasonal Vacations Table -->
-<div class="container my-4">
+<div *ngIf="hasPermissions(['SeasonalVacations.View'])" class="container my-4">
   <h2>Seasonal Vacations</h2>
   <table class="table">
     <thead>
@@ -43,10 +43,10 @@
         <td>{{ vacation.vacationDate | date: 'shortDate' }}</td>
         <td>
           <!-- Edit Button -->
-          <button (click)="editVacation(vacation)" class="btn btn-primary">Edit</button>
+          <button *ngIf="hasPermissions(['SeasonalVacations.Edit'])" (click)="editVacation(vacation)" class="btn btn-primary">Edit</button>
 
           <!-- Delete Button -->
-          <button (click)="deleteVacation(vacation)" class="btn btn-danger">Delete</button>
+          <button *ngIf="hasPermissions(['SeasonalVacations.Delete'])" (click)="deleteVacation(vacation)" class="btn btn-danger">Delete</button>
         </td>
       </tr>
     </tbody>

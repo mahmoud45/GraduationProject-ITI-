@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { LoginModel } from "../../../models/login-model";
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { Subscription } from 'rxjs';
@@ -12,9 +12,16 @@ import { UserService } from 'src/app/services/user-service.service';
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnDestroy{
+export class LoginComponent implements OnDestroy, OnInit{
     constructor(private userService: UserService, private router: Router) {}
 
+    ngOnInit(): void {
+      const token = localStorage.getItem("jwt") ?? "";
+
+      if(token !== ""){
+        this.router.navigate(['']);
+      }
+    }
 
     loginForm = new FormGroup({
         UserName: new FormControl('', [Validators.required]),
@@ -48,7 +55,7 @@ export class LoginComponent implements OnDestroy{
                         const token = response.token;
                         localStorage.setItem("jwt", token);
 
-                        this.router.navigate(['department']);
+                        this.router.navigate(['']);
                         return;
                     }
 

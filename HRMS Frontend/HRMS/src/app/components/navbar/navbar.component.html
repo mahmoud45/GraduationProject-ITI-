@@ -56,6 +56,15 @@
             >Create Account</a
           >
           <a
+            *ngIf="isAuthenticatd() && isHRAdmin()"
+            routerLink="/roles"
+            routerLinkActive="'border border-bottom border-success'"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="nav-item nav-link px-0 mx-2"
+            >Roles</a
+          >
+          <a
+            *ngIf="isAuthenticatd() && (isHRAdmin() || hasPermissions(['Department']))"
             routerLink="/department"
             routerLinkActive="'border border-bottom border-success'"
             [routerLinkActiveOptions]="{ exact: true }"
@@ -63,6 +72,7 @@
             >Department</a
           >
           <a
+            *ngIf="isAuthenticatd() && (isHRAdmin() || hasPermissions(['Employee']))"
             routerLink="/employee"
             routerLinkActive="'border border-bottom border-success'"
             [routerLinkActiveOptions]="{ exact: true }"
@@ -70,6 +80,7 @@
             >Employees</a
           >
           <a
+          *ngIf="isAuthenticatd() && (isHRAdmin() || hasPermissions(['Attendance']))"
             routerLink="/attendance"
             routerLinkActive="'border border-bottom border-success'"
             [routerLinkActiveOptions]="{ exact: true }"
@@ -77,6 +88,7 @@
             >Attendance</a
           >
           <a
+            *ngIf="isAuthenticatd() && (isHRAdmin() || hasPermissions(['Salary']))"
             routerLink="/salary"
             routerLinkActive="'border border-bottom border-success'"
             [routerLinkActiveOptions]="{ exact: true }"
@@ -84,6 +96,7 @@
             >Salaries</a
           >
           <a
+            *ngIf="isAuthenticatd() && (isHRAdmin() || hasPermissions(['SeasonalVacations']))"
             routerLink="/vacations"
             routerLinkActive="'border border-bottom border-success'"
             [routerLinkActiveOptions]="{ exact: true }"
@@ -98,7 +111,9 @@
           class="d-flex align-items-center justify-content-center me-4"
         ></div>
         <div class="d-flex flex-row pe-4">
-          <span routerLink="/GeneralSettings" class="pt-1 pe-2"
+          <span
+          *ngIf="isAuthenticatd() && (isHRAdmin() || hasPermissions(['GeneralSettings']))"
+          routerLink="/GeneralSettings" class="pt-1 pe-2"
             ><i
               style="cursor: pointer"
               class="bi bi-gear-fill mx-2 fs-3 text-dark"

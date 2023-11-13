@@ -5,7 +5,7 @@ import { RoleService } from 'src/app/services/role.service';
 @Component({
   selector: 'app-roles',
   templateUrl: './roles.component.html',
-})  
+})
 
 export class RolesComponent {
   roleName:string='';
@@ -18,7 +18,7 @@ export class RolesComponent {
       permissions: [ {add: false}, {edit: false}, {delete: false},{ update: false}, {view: false }]
     },
     {
-      name: 'General Settings',
+      name: 'GeneralSettings',
       permissions: [ {add: false}, {edit: false}, {delete: false},{ update: false}, {view: false }]
     },
     {
@@ -43,12 +43,12 @@ export class RolesComponent {
 
   constructor(private roleService: RoleService) {
     console.log(this.pages[0].permissions[0]);
-    
+
   }
 
   createRole() {
     console.log(this.roleName);
-    
+
     for(let page of this.pages){
      if(page.permissions[0].add==true)
        this.claimss.push({pageName:page.name,permission: 'Add'})
@@ -57,11 +57,11 @@ export class RolesComponent {
     if(page.permissions[2].delete==true)
     this.claimss.push({pageName:page.name,permission: 'Delete'})
     if(page.permissions[3].view==true)
-    this.claimss.push({pageName:page.name,permission: 'View'})      
+    this.claimss.push({pageName:page.name,permission: 'View'})
     }
     this.data={roleName:this.roleName,claims:this.claimss}
     console.log(this.data);
-    
+
    this.roleService.createRoleWithPermissions(this.data).subscribe({
     next: (response)=>{
       alert('Created Successfully')
@@ -69,7 +69,7 @@ export class RolesComponent {
     error: (error)=>{
       alert(error.message)
       console.log(error);
-      
+
     },
     complete: ()=>{
     }
@@ -87,5 +87,5 @@ export class RolesComponent {
   }
       }
     }
- 
+
 
