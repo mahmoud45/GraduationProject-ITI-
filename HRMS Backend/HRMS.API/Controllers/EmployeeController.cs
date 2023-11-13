@@ -10,6 +10,7 @@ namespace HRMS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EmployeeController : ControllerBase
     {
         private readonly IGenaricrepository<Employee> _genaricrepository;
@@ -20,7 +21,7 @@ namespace HRMS.API.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Policy = "Permission:Employee.View")]
+        [Authorize(Policy = "Permission:Employee.View")]
         public async Task<ActionResult<IEnumerable<Employee>>> GetAll()
         {
             var Employee = await _genaricrepository.GetAllAsync();
@@ -53,7 +54,7 @@ namespace HRMS.API.Controllers
         }
 
         [HttpGet("{id:int}")]
-		//[Authorize(Policy = "Permission:Employee.View")]
+		[Authorize(Policy = "Permission:Employee.View")]
 		public ActionResult<Employee> GetEmployeeByID(int id)
         {
             var Employee = _genaricrepository.GetById(id);
@@ -81,6 +82,7 @@ namespace HRMS.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Permission:Employee.Create")]
         public ActionResult<EmployeeDto> Create( EmployeeDto employeeDto)
         {
             var employee = new Employee()
@@ -104,8 +106,7 @@ namespace HRMS.API.Controllers
         }
 
         [HttpPut("{id}")]
-		//[Authorize(Policy = "Permission:Employee.Edit")]
-
+		[Authorize(Policy = "Permission:Employee.Edit")]
 		public IActionResult Edite(int id,EmployeeDto employeeDto)
         {
             var emp = _genaricrepository.GetById(id);
@@ -130,7 +131,7 @@ namespace HRMS.API.Controllers
         }
 
         [HttpDelete("{id}")]
-		//[Authorize(Policy = "Permission:Employee.Delete")]
+		[Authorize(Policy = "Permission:Employee.Delete")]
 		public async Task<IActionResult> DeleteAsync(int id)
         {
             var employee = _genaricrepository.GetById(id);

@@ -8,6 +8,7 @@ namespace HRMS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AddRolesWithClaimsController : ControllerBase
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -17,9 +18,9 @@ namespace HRMS.API.Controllers
             this.roleManager = roleManager;
         }
 
-        [HttpPost]		
-		[Authorize(Roles = "HumanResource")]
-		public async Task<IActionResult> SaveRolesWithClaims(AddedRolesAndClaimsDTO addedRolesAndClaimsDTO)
+        [HttpPost]
+        [Authorize(Roles = "HumanResource")]
+        public async Task<IActionResult> SaveRolesWithClaims(AddedRolesAndClaimsDTO addedRolesAndClaimsDTO)
         {
             // Check if the role already exists.
             if (await roleManager.RoleExistsAsync(addedRolesAndClaimsDTO.RoleName))

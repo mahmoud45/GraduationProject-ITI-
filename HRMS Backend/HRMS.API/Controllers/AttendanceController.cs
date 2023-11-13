@@ -18,6 +18,7 @@ namespace HRMS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+	[Authorize]
     public class AttendanceController : ControllerBase
     {
 		private IAttendanceRepository attendanceRepository;
@@ -55,7 +56,8 @@ namespace HRMS.API.Controllers
 
 		[Route("/attendance", Name = "GetAttendances")]
 		[HttpGet]
-		public ActionResult<List<AttendanceDTO>> GetAttendances()
+        [Authorize(Policy = "Permission:Attendance.View")]
+        public ActionResult<List<AttendanceDTO>> GetAttendances()
 		{
 			Request.Headers.TryGetValue("Pnum", out var PageNumber);
 
@@ -85,7 +87,8 @@ namespace HRMS.API.Controllers
 
 		[Route("/search/{name:alpha}", Name = "GetAttendancesByName")]
 		[HttpGet]
-		public ActionResult<List<AttendanceDTO>> GetAttendancesByName(string name)
+        [Authorize(Policy = "Permission:Attendance.View")]
+        public ActionResult<List<AttendanceDTO>> GetAttendancesByName(string name)
 		{
 			Request.Headers.TryGetValue("Pnum", out var PageNumber);
 
@@ -111,7 +114,7 @@ namespace HRMS.API.Controllers
 			return attendanceService.GetListAttendanceDTO(attendanceRepository.getAttendancesByDepartmentName(dept_name));
 		}
 		[HttpPost]
-		//[Authorize(Policy = "Permission:Attendance.Add")]
+		[Authorize(Policy = "Permission:Attendance.Create")]
 		public ActionResult AddAttendance(AttendanceDTO attendanceDTO)
 		{
             try
