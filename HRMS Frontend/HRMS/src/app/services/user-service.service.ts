@@ -10,7 +10,7 @@ import { RegisterModel } from '../models/register-model';
 })
 export class UserService {
 
-    baseURL = "http://localhost:5190/api/User"
+    baseURL = "https://localhost:7073/api/User"
 
     token?: string;
 

@@ -86,13 +86,10 @@ builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
 
 builder.Services.AddScoped<ISeasonalVacationRepository, SeasonalVacationRepository>();
 builder.Services.AddScoped<IGeneralSettingRepository, GeneralSettingRepository>();
-<<<<<<< HEAD
+
 
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
-=======
-builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 
->>>>>>> 8e452b29b6c44a4eacd8d8e67f942863afb13f63
 builder.Services.AddScoped<ISalaryRepository,SalaryRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

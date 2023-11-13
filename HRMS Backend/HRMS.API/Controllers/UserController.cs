@@ -60,11 +60,9 @@ namespace HRMS.API.Controllers
             return BadRequest(response);
         }
 
-<<<<<<< HEAD
-        [HttpGet("Roles"), Authorize(Roles = "User", Policy = "Permission:generalsetting.View")]
-=======
+
         [HttpGet("Roles"), Authorize(Roles = "HumanResource")]
->>>>>>> 8e452b29b6c44a4eacd8d8e67f942863afb13f63
+
         public async Task<ActionResult> GetRoles()
         {
             var roles = await _userService.GetRoles();
