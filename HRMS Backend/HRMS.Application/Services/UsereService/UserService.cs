@@ -31,15 +31,14 @@ namespace HRMS.Application.Services.UsereService
 
             if(userEmailExists != null)
             {
-                return $"Email {registerDTO.Email} already exists";
+                throw new Exception($"Email '{registerDTO.Email}' already exists") ;
             }
 
             var userNameExists = await _userManager.FindByNameAsync(registerDTO.UserName);
 
-            if(userNameExists != null)
+            if (userNameExists != null)
             {
-                return $"Username {registerDTO.UserName} already exists";
-
+                throw new Exception($"Username '{registerDTO.UserName}' already exists");
             }
 
             AppUser user = new AppUser()
@@ -71,7 +70,7 @@ namespace HRMS.Application.Services.UsereService
                 }
                 else
                 {
-                    return $"No such role exists.";
+                    throw new Exception($"No such role exists.");
                 }
             }
 

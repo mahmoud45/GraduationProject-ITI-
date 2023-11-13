@@ -60,7 +60,9 @@ namespace HRMS.API.Controllers
             return BadRequest(response);
         }
 
+
         [HttpGet("Roles"), Authorize(Roles = "HumanResource")]
+
         public async Task<ActionResult> GetRoles()
         {
             var roles = await _userService.GetRoles();

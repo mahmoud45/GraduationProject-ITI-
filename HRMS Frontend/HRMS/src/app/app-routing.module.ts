@@ -14,14 +14,15 @@ import { SalaryComponent } from './components/salary/salary.component';
 import { GeneralSettingComponent } from './components/general-setting/general-setting.component';
 import { RolesComponent } from './components/roles/roles.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
 
 const routes: Routes = [
     {path:'', redirectTo: 'home', pathMatch: 'full'},
-    {path:'home', component: HomeComponent},
+    {path:'home', component: LoginComponent},
     {path:'employee',component:EmployeeComponent},
     {path:'employee/:id',component:AddEmpComponent},
     {path:'login', component: LoginComponent},
-    {path:'register', component: RegisterComponent, data: {allowedRoles: ["HumanResource"]}, canActivate: [AuthGuard]},
+    {path:'register', component: RegisterComponent, data: {allowedRoles: ['HumanResource']}, canActivate: [AuthGuard]},
     {path:'attendance',component: AttendanceComponent},
     {path:'vacations',component: VacationsComponent},
     {path:'departmentForm',component: DepartmentFormComponent},
@@ -29,6 +30,7 @@ const routes: Routes = [
     {path:'salary',component: SalaryComponent},
     {path:'GeneralSettings',component:GeneralSettingComponent},
     {path:'roles',component:RolesComponent},
+    {path: 'AccessDenied', component: AccessDeniedComponent},
     {path:'**',component: NotFoundComponent},
 ];
 

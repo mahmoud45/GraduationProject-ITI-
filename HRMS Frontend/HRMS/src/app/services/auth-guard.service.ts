@@ -58,7 +58,7 @@ export class AuthGuardService {
             return true;
         }
 
-        return this.router.navigate(['']);
+        return this.router.navigate(['AccessDenied']);
     }
 }
 

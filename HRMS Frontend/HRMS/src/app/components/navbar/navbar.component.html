@@ -48,6 +48,7 @@
       <div class="collapse navbar-collapse bg-transparent" id="navbarCollapse">
         <div class="navbar-nav ms-auto mx-xl-auto p-0">
           <a
+            *ngIf="isAuthenticatd() && isHRAdmin()"
             routerLink="/register"
             routerLinkActive="'border border-bottom border-success'"
             [routerLinkActiveOptions]="{ exact: true }"

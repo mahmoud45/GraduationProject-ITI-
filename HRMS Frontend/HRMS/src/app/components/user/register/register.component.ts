@@ -14,7 +14,7 @@ import { UserService } from 'src/app/services/user-service.service';
     styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit, OnDestroy{
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserService, private router: Router, private jwtHelper: JwtHelperService) {}
 
   userRolesSubscriper?: Subscription;
 
@@ -41,6 +41,8 @@ export class RegisterComponent implements OnInit, OnDestroy{
         Role: new FormControl('',[Validators.required]),
     });
 
+    registerFormTouched: boolean = false;
+
     get fullNameInput(){
       return this.registerForm.controls.FullName;
     }
@@ -65,18 +67,27 @@ export class RegisterComponent implements OnInit, OnDestroy{
 
     errors?: string;
 
+    success?: string;
+
     register(e: Event){
         e.preventDefault();
+        this.registerFormTouched = true;
 
         if(this.registerForm.valid){
             let registerModel: RegisterModel = this.registerForm.value as RegisterModel;
 
             this.registerUserSubscriper = this.userService.Register(registerModel).subscribe({
                 next: (response) => {
-                    this.router.navigate(['']);
+                  this.success = response;
+                  this.errors = undefined;
+                  //this.router.navigate(['']);
                 },
 
                 error: (err: HttpErrorResponse) => {
+                  if(err.status == 403){
+                    this.router.navigate(['AccessDenied']);
+                  }
+                  this.success = undefined;
                     this.errors = err.error;
                 }
             })

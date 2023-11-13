@@ -24,6 +24,7 @@ import { DepartmentFormComponent } from './components/department/department-form
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
 import { GeneralSettingComponent } from './components/general-setting/general-setting.component';
+import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
 
 
 
@@ -50,6 +51,7 @@ declarations:
     NotFoundComponent,
     VacationsComponent,
      RolesComponent,
+     AccessDeniedComponent,
 ],  
 
 

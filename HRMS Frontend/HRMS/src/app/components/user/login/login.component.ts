@@ -21,6 +21,8 @@ export class LoginComponent implements OnDestroy{
         Password: new FormControl('', [Validators.required])
     });
 
+    loginFormTouched: boolean = false;
+
     get userName(){
         return this.loginForm.controls.UserName;
     }
@@ -36,7 +38,8 @@ export class LoginComponent implements OnDestroy{
 
     login(e: Event): void{
         e.preventDefault();
-        
+        this.loginFormTouched = true;
+
         if(this.loginForm.valid){
             let loginModel: LoginModel = this.loginForm.value as LoginModel;
             this.loginUserSubscription = this.userService.Login(loginModel).subscribe({
@@ -45,7 +48,8 @@ export class LoginComponent implements OnDestroy{
                         const token = response.token;
                         localStorage.setItem("jwt", token);
 
-                        this.router.navigate(['']);
+                        this.router.navigate(['department']);
+                        return;
                     }
 
                     this.message = response.message;
@@ -58,7 +62,7 @@ export class LoginComponent implements OnDestroy{
                         Name: err.name,
                         Message: err.message
                     }
-                    console.log(err);
+                    this.message = err.message;
                 }
             });
         }
