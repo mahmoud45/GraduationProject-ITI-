@@ -35,13 +35,11 @@ export class SalaryComponent {
   }
 
   ngOnInit(): void {
-    this.getData();
+      this.getData();
   }
 
-  token = localStorage.getItem("jwt") ?? "";
-
   hasPermissions(permissions: string[]){
-    return this.authGuard.hasPermission(this.token, permissions) || this.authGuard.hasRole(this.token, ['HumanResource']);
+    return this.authGuard.hasPermission(permissions) || this.authGuard.hasRole(['HumanResource']);
   }
 
   getData(): void {

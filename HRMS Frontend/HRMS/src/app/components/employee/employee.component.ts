@@ -27,12 +27,10 @@ export class EmployeeComponent implements OnInit {
       });
     };
 
-  token = localStorage.getItem("jwt") ?? "";
-
   hasPermissions(permissions: string[]){
-    return this.authGuard.hasPermission(this.token, permissions) || this.authGuard.hasRole(this.token, ['HumanResource']);
+    return this.authGuard.hasPermission(permissions) || this.authGuard.hasRole(['HumanResource']);
   }
-  
+
   deleteEmployee(EmployeeId:number)
   {
     const userConfirmed = window.confirm('Do you really want to delete this?');
