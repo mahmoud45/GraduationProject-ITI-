@@ -44,7 +44,7 @@
   color: var(--bs-white);
   font-size: 18px;
   outline: none;
-  
+
 }
 
 .navbar .dropdown-toggle::after {
@@ -73,4 +73,8 @@
   visibility: visible;
   transition: .5s;
   opacity: 1;
+}
+
+.my-bg{
+  background: linear-gradient(120deg, #0062cc 0%, rgba(113, 174, 183, 1) 100%);
 }

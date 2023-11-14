@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { empAge, hireDate } from 'src/app/validators/EmployeeValidators';
 import { IEmployee } from 'src/app/models/iemployee';
 import { IDepartment } from 'src/app/models/IDepartment';
+import { AuthGuardService } from 'src/app/services/auth-guard.service';
 
 @Component({
   selector: 'app-add-emp',
@@ -18,7 +19,7 @@ export class AddEmpComponent implements OnInit {
   allDepartments:IDepartment[]=[];
 
   constructor(private fb: FormBuilder, private employeeServices: EmployeeservicesService,private router:Router,
-              private route: ActivatedRoute,private departmentService: DepartmentService) {
+              private route: ActivatedRoute,private departmentService: DepartmentService, private authGuard: AuthGuardService) {
     this.empval = this.fb.group({
       firstName: new FormControl ('', Validators.required),
       lastName: new FormControl ('', Validators.required),
@@ -34,14 +35,16 @@ export class AddEmpComponent implements OnInit {
       leaveTime: new FormControl ('', Validators.required),
       departID: new FormControl ('', Validators.required)
     });
-    this.departmentService.GetAllDepartments().subscribe({
-      next: (response:any) => {
-        this.allDepartments=response;        
-      },
-      error: () => {
-        window.alert('Error in getting departments');
-      }
-    });
+    if(authGuard.hasPermission(['Department.View']) || authGuard.hasRole(['HumanResource'])){
+      this.departmentService.GetAllDepartments().subscribe({
+        next: (response:any) => {
+          this.allDepartments=response;
+        },
+        error: () => {
+          window.alert('Error in getting departments');
+        }
+      });
+    }
   }
   ngOnInit(): void {
     if(parseInt(this.route.snapshot.url[1].path)!=0){
@@ -60,8 +63,8 @@ export class AddEmpComponent implements OnInit {
           this.empval.get("birthDate")?.setValue(emp.birthDate.toString().split("T")[0])
           this.empval.get("hireDate")?.setValue(emp.hireDate.toString().split("T")[0])
           this.empval.get("arrivalTime")?.setValue(emp.arrivalTime.toString().split("T")[1])
-          this.empval.get("leaveTime")?.setValue(emp.leaveTime.toString().split("T")[1])          
-          this.empval.get("departID")?.setValue(emp.departID)          
+          this.empval.get("leaveTime")?.setValue(emp.leaveTime.toString().split("T")[1])
+          this.empval.get("departID")?.setValue(emp.departID)
         },
         error: () => {
           console.error();
@@ -69,7 +72,7 @@ export class AddEmpComponent implements OnInit {
         }
       });
     }
-    
+
   }
 
   onsubmitform() {
@@ -84,14 +87,14 @@ export class AddEmpComponent implements OnInit {
         arrivalTime: formData.arrivalTime,
         leaveTime: formData.leaveTime,
       };
-      
+
       const arrivalTime = this.convertTimeToDate(dates.arrivalTime);
       const leaveTime = this.convertTimeToDate(dates.leaveTime);
-      
+
       const employeeData:IEmployee = { ...formData, arrivalTime, leaveTime,id:this.route.snapshot.url[1].path };
 
       console.log(employeeData);
-      
+
 
       if(parseInt(this.route.snapshot.url[1].path)!=0){
         this.employeeServices.editEmployee(employeeData).subscribe({
@@ -117,7 +120,7 @@ export class AddEmpComponent implements OnInit {
           }
         });
       }
-    } 
+    }
     else {
       window.alert('Please fill out all required fields and correct any validation errors.');
     }

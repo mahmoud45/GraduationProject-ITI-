@@ -17,8 +17,10 @@ export class AuthGuardService {
         return false;
     }
 
-    hasRole(token: string, allowedRoles: string[]){
+    hasRole(allowedRoles: string[]){
+        const token = localStorage.getItem("jwt") ?? "";
         const decodedToken = this.jwtHelper.decodeToken(token);
+
         if(allowedRoles === undefined)
           return true;
 
@@ -30,7 +32,8 @@ export class AuthGuardService {
         return false;
     }
 
-    hasPermission(token: string, allowedPermissions: string[]){
+    hasPermission(allowedPermissions: string[], exact: boolean = true){
+      const token = localStorage.getItem("jwt") ?? "";
       const decodedToken = this.jwtHelper.decodeToken(token);
 
       if(allowedPermissions === undefined)
@@ -38,7 +41,17 @@ export class AuthGuardService {
 
       for(let key in decodedToken){
         if(key.includes("permission")){
-            return allowedPermissions.some(permission => decodedToken[key].includes(permission));
+            if(exact){
+              return allowedPermissions.some(permission => decodedToken[key].includes(permission));
+            }else{
+              return allowedPermissions.some(permission => {
+                if(typeof decodedToken[key] === "object"){
+                  return decodedToken[key].some((_permission: string) => _permission.includes(permission))
+                }else{
+                  return decodedToken[key].includes(permission);
+                }
+              });
+            }
         }
       }
       return false;
@@ -47,6 +60,9 @@ export class AuthGuardService {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Promise<boolean> {
         const roles = route.data['allowedRoles'];
         const permissions = route.data['allowedPermissions'];
+        const exactMatch: boolean = route.data['exact'];
+
+        exactMatch === undefined ? true : exactMatch;
 
         const token = localStorage.getItem("jwt") ?? "";
 
@@ -54,7 +70,7 @@ export class AuthGuardService {
             return this.router.navigate(['login']);
         }
 
-        if((this.hasRole(token, roles) && this.hasPermission(token, permissions)) || this.hasRole(token, ['HumanResource'])){
+        if((this.hasRole(roles) && this.hasPermission(permissions, exactMatch)) || this.hasRole(['HumanResource'])){
             return true;
         }
 
