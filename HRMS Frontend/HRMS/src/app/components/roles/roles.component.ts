@@ -51,7 +51,7 @@ export class RolesComponent {
 
     for(let page of this.pages){
      if(page.permissions[0].add==true)
-       this.claimss.push({pageName:page.name,permission: 'Add'})
+       this.claimss.push({pageName:page.name,permission: 'Create'})
      if(page.permissions[1].edit==true)
      this.claimss.push({pageName:page.name,permission: 'Edit'})
     if(page.permissions[2].delete==true)
