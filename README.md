@@ -24,3 +24,5 @@ the project contains different sections that start from department and employees
   - [Mohamed Ellithy](https://github.com/mohamedellithy6541)
   - [mohamed mokhtar](https://github.com/mohamedmokhtaarr)
   - [Alaa Saber](https://github.com/AlaaSaber)
+## Usage
+https://archive.org/details/hrms-project
